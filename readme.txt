@@ -1,7 +1,7 @@
 === Upload+ ===
 Contributors: swergroup,pixline
 Donate link: http://bit.ly/Vpy3MP
-Tags: admin, images, files, options, upload, filename, protection, security, sanitization, file, wpmu, transliteration, 2.7
+Tags: rename, uploads, upload, filename, filenames, images, files, security, sanitization, transliteration, utf8, ascii
 Requires at least: 3.4.2
 Tested up to: 3.4.2
 Stable tag: trunk

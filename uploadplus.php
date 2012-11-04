@@ -1,17 +1,18 @@
 <?php
 /*
 Plugin Name: Upload+
-Plugin URI: http://swergroup.com/
-Description: Security and sanity in file names while uploading. Once activate, please <a href="options-general.php?page=uploadplus">define your settings</a>. 
+Plugin URI: http://wordpress.org/extend/plugins/uploadplus/
+Description: Security and sanity in file names while uploading. Once activate, please <a href="options-media.php#uploadplus">check your settings</a>. 
 Author: SWERgroup
 Version: 3.0
 Author URI: http://swergroup.com/
 
-Copyright (C) 2007+ Paolo Tresso aka Pixline (http://pixline.net/)
+Copyright (C) 2007+ Paolo Tresso / SWERgroup (http://swergroup.com/)
 
 Includes hints and code by:
 	Francesco Terenzani (http://terenzani.it/)
 	Jennifer Hodgdon (http://www.poplarware.com/)
+	difreo (http://wordpress.org/support/topic/plugin-upload-file-name-suffix?replies=3)
 
 Make use of UTF8 PHP classes by http://phputf8.sourceforge.net/
 
@@ -45,6 +46,8 @@ if( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
 		 // Initializes the plugin (actions/filters)
 		function __construct() {
             add_action('admin_init', array( &$this, 'settings_init' ) );
+            add_action('wp_handle_upload', array( 'SWER_uploadplus_core', 'upp_rename' ) );           
+#            print_r( get_option('uploadplus_utf8toascii') ); die();
 		}
 	  
 	    function settings_init() {
@@ -65,36 +68,23 @@ if( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
 	  
 	  
 	    function activate(){
-	        $version = get_option('uploadplus_version');
-            if( isset($version) ):
-                // pre-3.0 options consolidation
-                
-                $pre30_options = array(
-                    'version'   =>  '3.0',
-                    'cleanlevel'    => get_option('uploadplus_cleanlevel'),
-                    'case'          => get_option('uploadplus_case'),
-                    'prefix'        => get_option('uploadplus_prefix'),
-                    'utf8toascii'   => get_option('uploadplus_utf8toascii')
-                );
-                
-                update_option( 'uploadplus', json_encode($pre30_options) );
-            	delete_option('uploadplus_version');
-            	delete_option('uploadplus_cleanlevel');
-            	delete_option('uploadplus_case');
-            	delete_option('uploadplus_prefix');
-            	delete_option('uploadplus_style');
-            	delete_option('uploadplus_prefix_custom');
-            	delete_option('uploadplus_prefix_standard');
-            	delete_option('uploadplus_lettercase');
-            	delete_option('uploadplus_utf8toascii');
-                
-            endif;  
+	        if( ! get_option('uploadplus_version') ):
+            	update_option('uploadplus_version', '3.0');
+            	add_option('uploadplus_cleanlevel','');
+            	add_option('uploadplus_case','');
+            	add_option('uploadplus_prefix','');
+            	add_option('uploadplus_utf8toascii','');
+        	endif;
 	    }
 
         function deactivate(){}
 
         function uninstall(){
-            delete_option( 'uploadplus' );            
+        	delete_option( 'uploadplus_cleanlevel' );
+        	delete_option( 'uploadplus_case' );
+        	delete_option( 'uploadplus_prefix' );
+        	delete_option( 'uploadplus_utf8toascii' );
+            delete_option( 'uploadplus_version' );
         }
 
 	

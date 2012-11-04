@@ -20,9 +20,7 @@ class SWER_uploadplus_core{
 
     /*    sanitize uploaded file name    */
     function upp_mangle_filename($file_name){	
-        
-        $options = json_decode( get_option('uploadplus') );        
-        
+
     	/* remove internal dots (cosmetical, it would be done by WP, but we need to display it :)*/
     	$ext = SWER_uploadplus_core::upp_findexts($file_name);
     	$file_name = str_replace(".".$ext,"",$file_name);
@@ -40,11 +38,13 @@ class SWER_uploadplus_core{
     	$de_to 		= array('ae','oe','ue','ss','Ae','Oe','Ue');
     	$file_name	= str_replace($de_from, $de_to, $file_name);
 
-    	if($options['utf8toascii']===1) $file_name = utf8_to_ascii($file_name); 
+        $utf8 = get_option('uploadplus_utf8toascii');
+    	if( $utf8[0] === 1 ) $file_name = utf8_to_ascii($file_name); 
 
     	$file_name = $file_name.".".$ext;
 
-    	switch( $options['case'] ):
+        $case = get_option('uploadplus_case');
+    	switch( $case[0] ):
     		case "1":
     			$file_name = utf8_strtolower($file_name);
     			break;
@@ -53,7 +53,8 @@ class SWER_uploadplus_core{
     			break;
     	endswitch;
 
-    	switch( $options['cleanlevel'] ):
+        $cleanlevel = get_option('uploadplus_cleanlevel');
+    	switch( $cleanlevel[0] ):
     	case "1":
     		$file_name = ereg_replace("[^A-Za-z0-9._]", "-", $file_name);
     		$file_name = utf8_ireplace("_", "-", $file_name);	
@@ -74,10 +75,10 @@ class SWER_uploadplus_core{
     		break;
     	endswitch;
 
-    	$sep = ( $options['cleanlevel'] ==='1') ? "-" : "";
-    	if(!$sep) $sep = ( $options['cleanlevel'] =='3') ? "_" : "";
+    	$sep = ( $cleanlevel[0] ==='1') ? "-" : "";
+    	if(!$sep) $sep = ( $cleanlevel[0] =='3') ? "_" : "";
 
-		switch( $options['prefix'] ):
+		switch( get_option('uploadplus_prefix') ):
 			case "0":		$file_name = date('d').$sep.$file_name;			break;
 			case "1":		$file_name = date('md').$sep.$file_name;		break;
 			case "2":		$file_name = date('ymd').$sep.$file_name;		break;
@@ -145,9 +146,8 @@ class SWER_uploadplus_admin{
 
 
     function upp_options_box_cleanlevel(){
-        $options = json_decode( get_option('uploaduplus') );
-        $actual = $options['cleanlevel'];
-        
+        $actual = get_option('uploadplus_cleanlevel');
+
     	$styles = array(
     		"1" => array('label'=>'Convert spaces and underscores into dashes', 'demo'=>'wordpress-manual.pdf'), 
     		"2" => array('label'=>'Strip all spaces/dashes/underscores', 'demo'=>'wordpressmanual.pdf'), 
@@ -163,8 +163,7 @@ class SWER_uploadplus_admin{
     }
 
     function upp_options_box_case(){
-        $options = json_decode( get_option('uploaduplus') );
-        $case = $options['case'];
+        $case = get_option('uploadplus_case');
 
     	$cases = array(
     	"0"	=> "Leave it whatever it is", 
@@ -178,12 +177,12 @@ class SWER_uploadplus_admin{
     }
 
     function upp_options_box_prefix(){
-        $options = json_decode( get_option('uploaduplus') );
-        $clean = $options['cleanlevel'];
+        $clean = get_option('uploadplus_cleanlevel');
+        $prefix = get_option('uploadplus_prefix');
+        
         $sep = ($clean[0]=='1') ? "-" : "";
         if(!$sep) $sep = ($clean[0]=='3') ? "_" : "";
 
-        $prefix = $options['prefix'];
 
         $datebased = array(
         	"0" => 'dd (like: '.date('d').$sep.')',
@@ -203,7 +202,7 @@ class SWER_uploadplus_admin{
             "B" => 'WordPress style (unique filename)'
         	);
 
-        $nullval = ($prefix=="") ? 'selected="selected"' : "";
+        $nullval = ($prefix[0]=="") ? 'selected="selected"' : "";
         echo '
         	<select name="uploadplus_prefix" id="uploadplus_prefix">	
         	<option value="" label="No Prefix" '.$nullval.'>No Prefix</option>
@@ -211,7 +210,7 @@ class SWER_uploadplus_admin{
         	';
         	$flag = $oflag = "";
         	foreach($datebased as $key=>$val):
-        		$flag = ($prefix==$key && $nullval=="") ? 'selected="selected"' : "";
+        		$flag = ($prefix[0]==$key && $nullval=="") ? 'selected="selected"' : "";
         		echo '<option value="'.$key.'" label="'.$val.'" '.$flag.'>'.$val.'</option>
         		';
         	endforeach;
@@ -235,8 +234,7 @@ class SWER_uploadplus_admin{
 
 
     function upp_options_box_utf8toascii(){
-        $options = json_decode( get_option('uploaduplus') );
-        $utf8ornot = $options['utf8toascii'];
+        $utf8ornot = get_option('uploadplus_utf8toascii');
 
     	$options = array(
     	"0"	=> "Don't convert <code>(safe mode)</code>", 

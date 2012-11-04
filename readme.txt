@@ -30,8 +30,7 @@ Actual prefix allowed:
 * year/month/day/hour/minutes/seconds (yyyymmddhhmmss_)
 * random (mt-rand)
 * unix timestamp
-
-and many more...
+* ...
 
 == Screenshots ==
 
@@ -40,6 +39,7 @@ and many more...
 
 == Changelog ==
 
+* 3.0   (04/11/12) upgrade for WordPress 3.4.2, partial rewrite and refactoring.
 * 2.7	(28/02/09) version 2.7 for WordPress 2.7 working
 * 2.7b1	(26/02/09) beta version for WordPress 2.7 only 
 * 2.5.1 (10/03/08) little bugfix
@@ -56,19 +56,13 @@ and many more...
 
 = Credits = 
 
-This plugin is GPL&copy; 2008 Paolo Tresso / [Pixline](http://pixline.net/)
+GPL&copy; 2008+ Paolo Tresso / [SWERgroup siti internet Torino](http://swergroup.com/)
 and make use of UTF8 PHP classes by http://phputf8.sourceforge.net/
-
-Thanks to:
-
-* [Francesco Terenzani](http://terenzani.it/) for hints and code,
-* [Jennifer Hodgdon](http://www.poplarware.com/) for mentoring my first plugin,
-* [WordressGarage.com](http://www.wordpressgarage.com) for the best description ever :-)
 
 == Installation ==
 
 1. Download the plugin Zip archive.
 1. Upload `uploadplus` folder to your `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Tweak the 'Upload+ Plugin' section under 'Options'->'Misc' to match your need.
+1. Tweak the 'Upload+ Plugin' section under 'Options'->'Media' to match your need.
 1. Enjoy :-)

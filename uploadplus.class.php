@@ -1,137 +1,152 @@
 <?php
 
 
-class SWER_uploadplus_core{
+if( ! array_key_exists( 'swer-uploadplus-core', $GLOBALS ) ) { 
+
+    class SWER_uploadplus_core{
     
-    /* find extension */
-    function upp_findexts ($filename) { 
-    	$exts = split("[/\\.]", $filename) ; 
-    	$n = count($exts)-1; 
-    	$exts = $exts[$n]; 
-    	return $exts; 
-    } 
+        /* find extension */
+        function upp_findexts ($filename) { 
+        	$exts = split("[/\\.]", $filename) ; 
+        	$n = count($exts)-1; 
+        	$exts = $exts[$n]; 
+        	return $exts; 
+        } 
 
-    /* find full filename */
-    function upp_find_filename ($filename) { 
-    	$explode = explode("/",$filename);
-    	$explode = array_reverse($explode);
-    	return $explode[0];
-    } 
+        /* find full filename */
+        function upp_find_filename ($filename) { 
+        	$explode = explode("/",$filename);
+        	$explode = array_reverse($explode);
+        	return $explode[0];
+        } 
 
-    /*    sanitize uploaded file name    */
-    function upp_mangle_filename($file_name){	
+        function upp_remove_chars( $file_name ){
+        	// initial cleaning
+        	$file_name = str_replace("(","",$file_name);
+        	$file_name = str_replace(")","",$file_name);
+        	$file_name = str_replace("'","",$file_name);
+        	$file_name = str_replace('"',"",$file_name);
+        	$file_name = str_replace(',',"",$file_name);
+        	return $file_name;
+        }
 
-    	/* remove internal dots (cosmetical, it would be done by WP, but we need to display it :)*/
-    	$ext = SWER_uploadplus_core::upp_findexts($file_name);
-    	$file_name = str_replace(".".$ext,"",$file_name);
-    	$file_name = str_replace(".","",$file_name);
 
-    	// initial cleaning
-    	$file_name = str_replace("(","",$file_name);
-    	$file_name = str_replace(")","",$file_name);
-    	$file_name = str_replace("'","",$file_name);
-    	$file_name = str_replace('"',"",$file_name);
-    	$file_name = str_replace(',',"",$file_name);
+        /*    sanitize uploaded file name    */
+        function upp_mangle_filename($file_name){	
 
-    	// some language-based prefilter. props denis.
-    	$de_from 	= array('ä','ö','ü','ß','Ä','Ö','Ü');
-    	$de_to 		= array('ae','oe','ue','ss','Ae','Oe','Ue');
-    	$file_name	= str_replace($de_from, $de_to, $file_name);
+        	/* remove internal dots (cosmetical, it would be done by WP, but we need to display it :)*/
+        	$ext = SWER_uploadplus_core::upp_findexts($file_name);
+        	$file_name = str_replace(".".$ext,"",$file_name);
+        	$file_name = str_replace(".","",$file_name);
 
-        $utf8 = get_option('uploadplus_utf8toascii');
-    	if( $utf8[0] === 1 ) $file_name = utf8_to_ascii($file_name); 
+            SWER_uploadplus_core::upp_remove_chars( $file_name );
 
-    	$file_name = $file_name.".".$ext;
+        	// some language-based prefilter. props denis.
+        	$de_from 	= array('ä','ö','ü','ß','Ä','Ö','Ü');
+        	$de_to 		= array('ae','oe','ue','ss','Ae','Oe','Ue');
+        	$file_name	= str_replace($de_from, $de_to, $file_name);
 
-        $case = get_option('uploadplus_case');
-    	switch( $case[0] ):
-    		case "1":
-    			$file_name = utf8_strtolower($file_name);
-    			break;
-    		case "2":
-    			$file_name = utf8_strtoupper($file_name);
-    			break;
-    	endswitch;
+            $utf8 = get_option('uploadplus_utf8toascii');
+        	if( $utf8[0] === 1 ) $file_name = utf8_to_ascii($file_name); 
 
-        $cleanlevel = get_option('uploadplus_cleanlevel');
-    	switch( $cleanlevel[0] ):
-    	case "1":
-    		$file_name = ereg_replace("[^A-Za-z0-9._]", "-", $file_name);
-    		$file_name = utf8_ireplace("_", "-", $file_name);	
-    		$file_name = utf8_ireplace(" ", "-", $file_name);
-    		$file_name = utf8_ireplace("%20", "-", $file_name);
-    		break;
-    	case "2":	
-    		$file_name = ereg_replace("[^A-Za-z0-9._]", "", $file_name);
-    		$file_name = utf8_ireplace("_", "", $file_name);	
-    		$file_name = utf8_ireplace("-", "", $file_name);	
-    		$file_name = utf8_ireplace("%20", "", $file_name);
-    		break;
-    	case "3":
-    		$file_name = ereg_replace("[^A-Za-z0-9._]", "_", $file_name);
-    		$file_name = utf8_ireplace("-", "_", $file_name);	
-    		$file_name = utf8_ireplace(" ", "_", $file_name);
-    		$file_name = utf8_ireplace("%20", "_", $file_name);
-    		break;
-    	endswitch;
+        	$file_name = $file_name.".".$ext;
 
-    	$sep = ( $cleanlevel[0] ==='1') ? "-" : "";
-    	if(!$sep) $sep = ( $cleanlevel[0] =='3') ? "_" : "";
+            $case = get_option('uploadplus_case');
+        	switch( $case[0] ):
+        		case "1":
+        			$file_name = utf8_strtolower($file_name);
+        			break;
+        		case "2":
+        			$file_name = utf8_strtoupper($file_name);
+        			break;
+        	endswitch;
 
-		switch( get_option('uploadplus_prefix') ):
-			case "1":		$file_name = date('d').$sep.$file_name;			break;
-			case "2":		$file_name = date('md').$sep.$file_name;		break;
-			case "3":		$file_name = date('ymd').$sep.$file_name;		break;
-			case "4":		$file_name = date('Ymd').$sep.$file_name;		break;
-			case "5":		$file_name = date('YmdHi').$sep.$file_name;		break;
-			case "6":		$file_name = date('YmdHis').$sep.$file_name;	break;
-			case "7":		$file_name = date('U').$sep.$file_name;			break;
-			case "8":		$file_name = mt_rand().$sep.$file_name;			break;
-			case "9":		$file_name = md5(mt_rand()).$sep.$file_name;	break;
-			case "10":		$file_name = str_replace( array(".","_","-"," ") ,$sep, utf8_to_ascii(get_bloginfo('name'))).$sep.$file_name; break;
-			case "A":		$file_name = str_replace( array(".","_","-"," ") ,"", utf8_to_ascii(get_bloginfo('name'))).$sep.$file_name;	break;
-            case "B":
-                $uploads = wp_upload_dir();
-                $dir = ( $uploads['path'] );
-                $filename = wp_unique_filename( $dir, $file_name, $unique_filename_callback = null );
-                $file_name = $filename;
-            break;
+            $cleanlevel = get_option('uploadplus_cleanlevel');
+        	switch( $cleanlevel[0] ):
+        	case "1":
+        		$file_name = ereg_replace("[^A-Za-z0-9._]", "-", $file_name);
+        		$file_name = utf8_ireplace("_", "-", $file_name);	
+        		$file_name = utf8_ireplace(" ", "-", $file_name);
+        		$file_name = utf8_ireplace("%20", "-", $file_name);
+        		break;
+        	case "2":	
+        		$file_name = ereg_replace("[^A-Za-z0-9._]", "", $file_name);
+        		$file_name = utf8_ireplace("_", "", $file_name);	
+        		$file_name = utf8_ireplace("-", "", $file_name);	
+        		$file_name = utf8_ireplace("%20", "", $file_name);
+        		break;
+        	case "3":
+        		$file_name = ereg_replace("[^A-Za-z0-9._]", "_", $file_name);
+        		$file_name = utf8_ireplace("-", "_", $file_name);	
+        		$file_name = utf8_ireplace(" ", "_", $file_name);
+        		$file_name = utf8_ireplace("%20", "_", $file_name);
+        		break;
+        	endswitch;
+
+        	$sep = ( $cleanlevel[0] ==='1') ? "-" : "";
+        	if(!$sep) $sep = ( $cleanlevel[0] =='3') ? "_" : "";
+
+    		switch( get_option('uploadplus_prefix') ):
+    			case "1":		$file_name = date('d').$sep.$file_name;			break;
+    			case "2":		$file_name = date('md').$sep.$file_name;		break;
+    			case "3":		$file_name = date('ymd').$sep.$file_name;		break;
+    			case "4":		$file_name = date('Ymd').$sep.$file_name;		break;
+    			case "5":		$file_name = date('YmdHi').$sep.$file_name;		break;
+    			case "6":		$file_name = date('YmdHis').$sep.$file_name;	break;
+    			case "7":		$file_name = date('U').$sep.$file_name;			break;
+    			case "8":		$file_name = mt_rand().$sep.$file_name;			break;
+    			case "9":		$file_name = md5(mt_rand()).$sep.$file_name;	break;
+    			case "10":		$file_name = str_replace( array(".","_","-"," ") ,$sep, utf8_to_ascii(get_bloginfo('name'))).$sep.$file_name; break;
+    			case "A":		$file_name = str_replace( array(".","_","-"," ") ,"", utf8_to_ascii(get_bloginfo('name'))).$sep.$file_name;	break;
+                case "B":
+                    $uploads = wp_upload_dir();
+                    $dir = ( $uploads['path'] );
+                    $filename = wp_unique_filename( $dir, $file_name, $unique_filename_callback = null );
+                    $file_name = $filename;
+                break;
             
-            default:
-                    $file_name = $file_name;
-            break;
-        endswitch;
+                default:
+                        $file_name = $file_name;
+                break;
+            endswitch;
 
-        $custom = get_option('uploadplus_customprefix');
-        if( $custom !== '' ):
-            $file_name = $custom.$file_name;
-        else:
-            $file_name = $filename;
-        endif;
+            $custom = get_option('uploadplus_customprefix');
+            if( $custom !== '' ):
+                $file_name = $custom.$file_name;
+            else:
+                $file_name = $filename;
+            endif;
 
-    	return $file_name;
+        	return $file_name;
+        }
+
+        /* apply out changes to the real file while it's being moved to its destination */
+        // $array( 'file' => $new_file, 'url' => $url, 'type' => $type );
+        function upp_rename($array){ 
+        global $action;
+        	$current_name = SWER_uploadplus_core::upp_find_filename($array['file']);
+        	$current_name = urldecode($current_name);
+        	$new_name = SWER_uploadplus_core::upp_mangle_filename($current_name);		
+        	$lpath = str_replace($current_name, "", urldecode($array['file']));
+        	$wpath = str_replace($current_name, "", urldecode($array['url']));
+        	$lpath_new = $lpath . $new_name;
+        	$wpath_new = $wpath . $new_name;
+        	if( @rename($array['file'], $lpath_new) )
+        	return array(
+        		'file' => $lpath_new,
+        		'url' => $wpath_new,
+        		'type' => $array['type']
+        		);
+        	return $array;
+        }
+
+
+        function testFindExtensions( $filename ){
+        }
+
     }
 
-    /* apply out changes to the real file while it's being moved to its destination */
-    // $array( 'file' => $new_file, 'url' => $url, 'type' => $type );
-    function upp_rename($array){ 
-    global $action;
-    	$current_name = SWER_uploadplus_core::upp_find_filename($array['file']);
-    	$current_name = urldecode($current_name);
-    	$new_name = SWER_uploadplus_core::upp_mangle_filename($current_name);		
-    	$lpath = str_replace($current_name, "", urldecode($array['file']));
-    	$wpath = str_replace($current_name, "", urldecode($array['url']));
-    	$lpath_new = $lpath . $new_name;
-    	$wpath_new = $wpath . $new_name;
-    	if( @rename($array['file'], $lpath_new) )
-    	return array(
-    		'file' => $lpath_new,
-    		'url' => $wpath_new,
-    		'type' => $array['type']
-    		);
-    	return $array;
-    }
-
+    $GLOBALS['swer-uploadplus-core'] = new SWER_uploadplus_core();
 }
 
 

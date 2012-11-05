@@ -4,7 +4,7 @@ Plugin Name: Upload+
 Plugin URI: http://wordpress.org/extend/plugins/uploadplus/
 Description: Security and sanity in file names while uploading. Once activate, please <a href="options-media.php#uploadplus">check your settings</a>. 
 Author: SWERgroup
-Version: 3.0
+Version: 3.0.1
 Author URI: http://swergroup.com/
 
 Copyright (C) 2007+ Paolo Tresso / SWERgroup (http://swergroup.com/)
@@ -56,11 +56,13 @@ if( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
         	add_settings_field('uploadplus_cleanlevel', 'Cleaning options', array( 'SWER_uploadplus_admin', 'upp_options_box_cleanlevel'), 'media', 'upp_options_section');
         	add_settings_field('uploadplus_case', 'Case options', array( 'SWER_uploadplus_admin', 'upp_options_box_case'), 'media', 'upp_options_section');
         	add_settings_field('uploadplus_prefix', 'Prefix', array( 'SWER_uploadplus_admin', 'upp_options_box_prefix'), 'media', 'upp_options_section');
+        	add_settings_field('uploadplus_customprefix', 'Custom Prefix', array( 'SWER_uploadplus_admin', 'upp_options_box_customprefix'), 'media', 'upp_options_section');
         	add_settings_field('uploadplus_utf8toascii', 'Transcription', array( 'SWER_uploadplus_admin', 'upp_options_box_utf8toascii'), 'media', 'upp_options_section');
 
         	register_setting('media', 'uploadplus_cleanlevel');
         	register_setting('media', 'uploadplus_case');
         	register_setting('media', 'uploadplus_prefix');
+        	register_setting('media', 'uploadplus_customprefix');
         	register_setting('media', 'uploadplus_utf8toascii');
         }
       
@@ -69,10 +71,11 @@ if( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
 	  
 	    function activate(){
 	        if( ! get_option('uploadplus_version') ):
-            	update_option('uploadplus_version', '3.0');
+            	update_option('uploadplus_version', '3.0.1');
             	add_option('uploadplus_cleanlevel','');
             	add_option('uploadplus_case','');
             	add_option('uploadplus_prefix','');
+            	add_option('uploadplus_customprefix','');
             	add_option('uploadplus_utf8toascii','');
         	endif;
 	    }
@@ -83,6 +86,7 @@ if( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
         	delete_option( 'uploadplus_cleanlevel' );
         	delete_option( 'uploadplus_case' );
         	delete_option( 'uploadplus_prefix' );
+        	delete_option( 'uploadplus_customprefix' );
         	delete_option( 'uploadplus_utf8toascii' );
             delete_option( 'uploadplus_version' );
         }

@@ -79,16 +79,16 @@ class SWER_uploadplus_core{
     	if(!$sep) $sep = ( $cleanlevel[0] =='3') ? "_" : "";
 
 		switch( get_option('uploadplus_prefix') ):
-			case "0":		$file_name = date('d').$sep.$file_name;			break;
-			case "1":		$file_name = date('md').$sep.$file_name;		break;
-			case "2":		$file_name = date('ymd').$sep.$file_name;		break;
-			case "3":		$file_name = date('Ymd').$sep.$file_name;		break;
-			case "4":		$file_name = date('YmdHi').$sep.$file_name;		break;
-			case "5":		$file_name = date('YmdHis').$sep.$file_name;	break;
-			case "6":		$file_name = date('U').$sep.$file_name;			break;
-			case "7":		$file_name = mt_rand().$sep.$file_name;			break;
-			case "8":		$file_name = md5(mt_rand()).$sep.$file_name;	break;
-			case "9":		$file_name = str_replace( array(".","_","-"," ") ,$sep, utf8_to_ascii(get_bloginfo('name'))).$sep.$file_name; break;
+			case "1":		$file_name = date('d').$sep.$file_name;			break;
+			case "2":		$file_name = date('md').$sep.$file_name;		break;
+			case "3":		$file_name = date('ymd').$sep.$file_name;		break;
+			case "4":		$file_name = date('Ymd').$sep.$file_name;		break;
+			case "5":		$file_name = date('YmdHi').$sep.$file_name;		break;
+			case "6":		$file_name = date('YmdHis').$sep.$file_name;	break;
+			case "7":		$file_name = date('U').$sep.$file_name;			break;
+			case "8":		$file_name = mt_rand().$sep.$file_name;			break;
+			case "9":		$file_name = md5(mt_rand()).$sep.$file_name;	break;
+			case "10":		$file_name = str_replace( array(".","_","-"," ") ,$sep, utf8_to_ascii(get_bloginfo('name'))).$sep.$file_name; break;
 			case "A":		$file_name = str_replace( array(".","_","-"," ") ,"", utf8_to_ascii(get_bloginfo('name'))).$sep.$file_name;	break;
             case "B":
                 $uploads = wp_upload_dir();
@@ -96,7 +96,18 @@ class SWER_uploadplus_core{
                 $filename = wp_unique_filename( $dir, $file_name, $unique_filename_callback = null );
                 $file_name = $filename;
             break;
-            endswitch;
+            
+            default:
+                    $file_name = $file_name;
+            break;
+        endswitch;
+
+        $custom = get_option('uploadplus_customprefix');
+        if( $custom !== '' ):
+            $file_name = $custom.$file_name;
+        else:
+            $file_name = $filename;
+        endif;
 
     	return $file_name;
     }
@@ -176,6 +187,13 @@ class SWER_uploadplus_admin{
     	endforeach;
     }
 
+    function upp_options_box_customprefix(){
+        $prefix = get_option('uploadplus_customprefix');
+        $value = ( $prefix !== '' ) ? $prefix : '';
+        echo '<p> <input type="text" name="uploadplus_customprefix" id="uploadplus_customprefix" value="'.$value.'" /></p>';
+    }
+
+
     function upp_options_box_prefix(){
         $clean = get_option('uploadplus_cleanlevel');
         $prefix = get_option('uploadplus_prefix');
@@ -185,32 +203,32 @@ class SWER_uploadplus_admin{
 
 
         $datebased = array(
-        	"0" => 'dd (like: '.date('d').$sep.')',
-        	"1" => 'mmdd (like: '.date('md').$sep.')',
-        	"2" => 'yymmdd (like: '.date('ymd').$sep.')"',
-        	"3" => 'yyyymmdd (like: '.date('Ymd').$sep.')',
-        	"4" => 'yyyymmddhhmm (like: '.date('YmdHi').$sep.')',
-        	"5" => 'yyyymmddhhmmss (like: '.date('YmdHis').$sep.')',
-         	"6" => 'unix timestamp (like: '.date('U').$sep.')',
+        	"1" => 'dd (like: '.date('d').$sep.')',
+        	"2" => 'mmdd (like: '.date('md').$sep.')',
+        	"3" => 'yymmdd (like: '.date('ymd').$sep.')"',
+        	"4" => 'yyyymmdd (like: '.date('Ymd').$sep.')',
+        	"5" => 'yyyymmddhhmm (like: '.date('YmdHi').$sep.')',
+        	"6" => 'yyyymmddhhmmss (like: '.date('YmdHis').$sep.')',
+         	"7" => 'unix timestamp (like: '.date('U').$sep.')',
         	);
 
         $otherstyles = array(
-        	"7" => '[random (mt-rand)] '.mt_rand().$sep,
-        	"8" => '[random md5(mt-rand)] '.md5(mt_rand()).$sep,
-         	"9" => '[blog name] '.str_replace( array(".", " ", "-", "_") ,$sep,strtolower(get_bloginfo('name'))).$sep,
+        	"8" => '[random (mt-rand)] '.mt_rand().$sep,
+        	"9" => '[random md5(mt-rand)] '.md5(mt_rand()).$sep,
+         	"10" => '[blog name] '.str_replace( array(".", " ", "-", "_") ,$sep,strtolower(get_bloginfo('name'))).$sep,
          	"A" => '[short blog name] '.str_replace( array(".","_","-"," "),"",strtolower(get_bloginfo('name'))).$sep,
             "B" => 'WordPress style (unique filename)'
         	);
 
-        $nullval = ($prefix[0]=="") ? 'selected="selected"' : "";
+        $nullval = ($prefix=="") ? 'selected="selected"' : "";
         echo '
         	<select name="uploadplus_prefix" id="uploadplus_prefix">	
-        	<option value="" label="No Prefix" '.$nullval.'>No Prefix</option>
+        	<option value="" label="No Prefix / Custom Prefix" '.$nullval.'>No Prefix / Custom Prefix</option>
         	<optgroup label="Date Based">
         	';
         	$flag = $oflag = "";
         	foreach($datebased as $key=>$val):
-        		$flag = ($prefix[0]==$key && $nullval=="") ? 'selected="selected"' : "";
+        		$flag = ($prefix==$key && $nullval=="") ? 'selected="selected"' : "";
         		echo '<option value="'.$key.'" label="'.$val.'" '.$flag.'>'.$val.'</option>
         		';
         	endforeach;

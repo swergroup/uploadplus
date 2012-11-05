@@ -39,6 +39,7 @@ Actual prefix allowed:
 
 == Changelog ==
 
+* 3.0.1 (04/11/12) custom prefix
 * 3.0   (04/11/12) upgrade for WordPress 3.4.2, partial rewrite and refactoring.
 * 2.7	(28/02/09) version 2.7 for WordPress 2.7 working
 * 2.7b1	(26/02/09) beta version for WordPress 2.7 only 

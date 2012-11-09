@@ -37,20 +37,19 @@ require_once  UTF8 . '/utils/ascii.php';
 require_once 'utf8_to_ascii/utf8_to_ascii.php';
 require_once 'uploadplus.class.php';
 
-// Only create an instance of the plugin if it doesn't already exists in GLOBALS
 if( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) { 
 
     class SWER_uploadplus {
 
         // Initializes the plugin (actions/filters)
         function __construct() {
-            add_action('admin_init', array( &$this, 'settings_init' ) );
-            add_action('wp_handle_upload', array( 'SWER_uploadplus_core', 'upp_rename' ) );
             $core = new SWER_uploadplus_core();
+            add_action( 'admin_init', array( &$this, '_admin_init' ) );
+            add_action( 'wp_handle_upload', array( &$core, 'upp_rename' ) );
             # print_r( get_option('uploadplus_utf8toascii') ); die();
         }
 
-        function settings_init() {
+        function _admin_init() {
             add_settings_section( 'upp_options_section', 'Upload+ Plugin', array('SWER_uploadplus_admin', 'upp_options_intro'), 'media');
 
             add_settings_field( 'uploadplus_cleanlevel', 'Cleaning options', 
@@ -72,7 +71,8 @@ if( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
             add_settings_field('uploadplus_utf8toascii', 'Transcription', 
                 array( 'SWER_uploadplus_admin', 'upp_options_box_utf8toascii'), 'media', 'upp_options_section');
             register_setting('media', 'uploadplus_utf8toascii');
-        }
+            
+            }
 
         function activate(){
             if( ! get_option('uploadplus_version') ):

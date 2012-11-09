@@ -1,27 +1,25 @@
-=== Upload+ ===
+=== Upload+ : Filenames Cleaner ===
 Contributors: swergroup,pixline
 Donate link: http://bit.ly/Vpy3MP
-Tags: rename, uploads, upload, filename, filenames, images, files, security, sanitization, transliteration, utf8, ascii
+Tags: media, filename, filenames, clean, rename, uploads, upload, images, files, security, sanitization, transliteration, utf8, ascii, prefix, custom
 Requires at least: 3.4.2
 Tested up to: 3.4.2
 Stable tag: trunk
 
-Security and sanity in file names while uploading.
+Clean filenames , add security and sanity while uploading.
 
 == Description ==
 
-If you are building a site for clients based on WordPress, you want to make it as easy for them as possible to enter information without having to consider coding and other issues. This plugin is great for those types of sites, as well as for anyone with a WordPress site who wants to have one less thing to think about. 
+Filenames on the web are different than those on the desktop. Empty spaces and strange characters doesn't belong to web space.
 
-In the plugin settings page you can preview what transformation will apply without even uploading a file. Also, 2.5 version ships with transliteration to utf8 characters, thanks to [phputf8](http://phputf8.sourceforge.net/) opensource PHP classes.
-
-This is how the plugin works: when a file is selected for uploading, this plugin changes the filename according to the following three rules:
+Enter Upload+: you can set your rules and clean your files' name while they upload. Three basic rules:
 
 * convert spaces and strange characters into dashes (-)
 * only alphanumeric [A-Za-z] and digits, spaces and strange characters stripped out;
 * convert spaces and strange characters in underscores (_)
 
-You can also choose to make file names lowercase or keep uppercase characters, or add a date/unique/custom prefix.
-Actual prefix allowed:
+You can apply website-based or date-based prefix, even a custom prefix. Lowercase or Uppercase? Your choice! 
+Some default prefix:
 
 * day (dd_)
 * month/day	(mmdd_)
@@ -32,10 +30,17 @@ Actual prefix allowed:
 * unix timestamp
 * ...
 
+Upload+ can transliterate filenames to utf8 characters, thanks to [phputf8](http://phputf8.sourceforge.net/) opensource PHP classes: arabic or russian readable filenames!
+
+Last but not least, you can preview settings in the media settings page without uploading files. 
+
+= Credits = 
+
+GPL&copy; 2008+ [SWERgroup siti internet Torino](http://swergroup.com/)
+
 == Screenshots ==
 
-1. New option panel (under Options &raquo; Misc)
-
+1. Option panel (under Options &raquo; Media)
 
 == Changelog ==
 
@@ -55,10 +60,6 @@ Actual prefix allowed:
 * 0.1c  (06/03/07) fix on plugin activation, options
 * 0.1a  (20/02/07) initial release
 
-= Credits = 
-
-GPL&copy; 2008+ Paolo Tresso / [SWERgroup siti internet Torino](http://swergroup.com/)
-and make use of UTF8 PHP classes by http://phputf8.sourceforge.net/
 
 == Installation ==
 

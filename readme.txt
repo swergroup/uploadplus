@@ -1,17 +1,16 @@
-=== Upload+ : Filenames Cleaner ===
-Contributors: swergroup,pixline
-Donate link: http://bit.ly/Vpy3MP
+=== UploadPlus : File Name Cleaner ===
+Contributors: swergroup, pixline
+Donate link: http://swergroup.com/sviluppo/siti-internet-torino/
 Tags: media, filename, filenames, clean, rename, uploads, upload, images, files, security, sanitization, transliteration, utf8, ascii, prefix, custom
 Requires at least: 3.4.2
-Tested up to: 3.4.2
+Tested up to: 3.5b3
 Stable tag: trunk
 
-Clean filenames , add security and sanity while uploading.
+Clean file names and enhance security while uploading.
 
 == Description ==
 
 Filenames on the web are different than those on the desktop. Empty spaces and strange characters doesn't belong to web space.
-
 Enter Upload+: you can set your rules and clean your files' name while they upload. Three basic rules:
 
 * convert spaces and strange characters into dashes (-)
@@ -28,7 +27,7 @@ Some default prefix:
 * year/month/day/hour/minutes/seconds (yyyymmddhhmmss_)
 * random (mt-rand)
 * unix timestamp
-* ...
+* and many more!
 
 Upload+ can transliterate filenames to utf8 characters, thanks to [phputf8](http://phputf8.sourceforge.net/) opensource PHP classes: arabic or russian readable filenames!
 
@@ -36,13 +35,30 @@ Last but not least, you can preview settings in the media settings page without 
 
 = Credits = 
 
-GPL&copy; 2008+ [SWERgroup siti internet Torino](http://swergroup.com/)
+GPL&copy; 2008+ [SWERgroup siti internet Torino](http://swergroup.com/sviluppo/siti-internet-torino/)
 
 == Screenshots ==
 
 1. Option panel (under Options &raquo; Media)
 
 == Changelog ==
+
+= 3.1 =
+
+(22/02/2013)
+
+* FIX   filename in media uploader
+* FIX   non-latin strings transliteration
+* NEW   enhanced arabic transliteration support
+
+= 3.0.2 =
+
+(24/11/12) 
+
+* FIX default options on first activation
+* FIX prefix bug
+
+= Older Releases =
 
 * 3.0.1 (04/11/12) custom prefix
 * 3.0   (04/11/12) upgrade for WordPress 3.4.2, partial rewrite and refactoring.
@@ -66,5 +82,5 @@ GPL&copy; 2008+ [SWERgroup siti internet Torino](http://swergroup.com/)
 1. Download the plugin Zip archive.
 1. Upload `uploadplus` folder to your `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Tweak the 'Upload+ Plugin' section under 'Options'->'Media' to match your need.
+1. Tune the 'Upload+ Plugin' section under 'Options'->'Media' to match your need.
 1. Enjoy :-)

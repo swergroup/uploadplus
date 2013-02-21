@@ -1,15 +1,19 @@
 <?php
 /*
-Plugin Name: Upload+
+Plugin Name: UploadPlus : File Name Cleaner
 Plugin URI: http://wordpress.org/extend/plugins/uploadplus/
-Description: Security and sanity in file names while uploading. Once activate, please <a href="options-media.php#uploadplus">check your settings</a>. 
+Description: Clean file names and enhance security while uploading. 
 Author: SWERgroup
-Version: 3.0.1
+Version: 3.1
 Author URI: http://swergroup.com/
 
 Copyright (C) 2007+ Paolo Tresso / SWERgroup (http://swergroup.com/)
 
-Includes UTF8 PHP classes by http://phputf8.sourceforge.net/
+Includes code from:
+* Arabic PHP - http://www.ar-php.org/
+* URLify (PHP port) - https://github.com/jbroadway/urlify/
+
+
 Includes hints and code by:
 * Francesco Terenzani (http://terenzani.it/)
 * Jennifer Hodgdon (http://www.poplarware.com/)
@@ -30,12 +34,12 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-require_once 'utf8/utf8.php';
-require_once 'utf8/str_ireplace.php';
-require_once  UTF8 . '/utils/validation.php';
-require_once  UTF8 . '/utils/ascii.php';
-require_once 'utf8_to_ascii/utf8_to_ascii.php';
-require_once 'uploadplus.class.php';
+define( 'UPLOADPLUS_VERSION', '3.0.3' );
+
+require_once 'lib/URLify.php';
+require_once 'lib/Arabic.php';
+require_once 'inc/core.class.php';
+require_once 'inc/admin.class.php';
 
 if( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) { 
 
@@ -46,11 +50,11 @@ if( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
             $core = new SWER_uploadplus_core();
             add_action( 'admin_init', array( &$this, '_admin_init' ) );
             add_action( 'wp_handle_upload', array( &$core, 'upp_rename' ) );
-            # print_r( get_option('uploadplus_utf8toascii') ); die();
+            add_action( 'wp_handle_upload_prefilter', array( &$core, 'wp_handle_upload_prefilter' ) );
         }
 
         function _admin_init() {
-            add_settings_section( 'upp_options_section', 'Upload+ Plugin', array('SWER_uploadplus_admin', 'upp_options_intro'), 'media');
+            add_settings_section( 'upp_options_section', 'UploadPlus: File Name Cleaner', array('SWER_uploadplus_admin', 'upp_options_intro'), 'media');
 
             add_settings_field( 'uploadplus_cleanlevel', 'Cleaning options', 
                 array( 'SWER_uploadplus_admin', 'upp_options_box_cleanlevel'), 'media', 'upp_options_section');
@@ -76,12 +80,12 @@ if( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
 
         function activate(){
             if( ! get_option('uploadplus_version') ):
-                update_option( 'uploadplus_version', '3.0.1' );
-                add_option( 'uploadplus_cleanlevel' ,'' );
+                add_option( 'uploadplus_version', UPLOADPLUS_VERSION );
+                add_option( 'uploadplus_cleanlevel' ,'1' );
                 add_option( 'uploadplus_case', '' );
-                add_option( 'uploadplus_prefix', '' );
+                add_option( 'uploadplus_prefix', '0' );
                 add_option( 'uploadplus_customprefix', '' );
-                add_option( 'uploadplus_utf8toascii', '' );
+                add_option( 'uploadplus_utf8toascii', '0' );
             endif;
         }
 

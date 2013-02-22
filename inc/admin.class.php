@@ -6,8 +6,8 @@ class SWER_uploadplus_admin{
     /* admin panel intro */
     function upp_options_intro() {
     	$test_string1 = "WordPress Manual (for dummies and experts, if they're good at it) 2.2nd Edition.pdf";
-    	$test_string1 = "نرحب بكم في الموقع الرسمي لبرنامج ووردبريس المعرب،.pdf";
-    	#$test_string1 = "Τὸ δημιούργημα τῆς κόκα κόλα ποὺ ἀποδεχθήκαμε ὥς Ἅη Βασίλη.jpg";
+    	#$test_string1 = "نرحب بكم في الموقع الرسمي لبرنامج ووردبريس المعرب،.pdf";
+    	$test_string1 = "Τὸ δημιούργημα τῆς κόκα κόλα ποὺ ἀποδεχθήκαμε ὥς Ἅη Βασίλη.jpg";
     	$demo_string1 = SWER_uploadplus_core::upp_mangle_filename($test_string1);
     	echo "<a name='uploadplus'></a>";
     	echo "<p>This plugin allows you to rename every file you upload, and in this page you can define this behaviour. ";

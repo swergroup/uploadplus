@@ -47,10 +47,12 @@ if( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
 
         // Initializes the plugin (actions/filters)
         function __construct() {
-            $core = new SWER_uploadplus_core();
+            #$core = new SWER_uploadplus_core();
             add_action( 'admin_init', array( &$this, '_admin_init' ) );
-            add_action( 'wp_handle_upload', array( &$core, 'upp_rename' ) );
-            add_action( 'wp_handle_upload_prefilter', array( &$core, 'wp_handle_upload_prefilter' ) );
+            add_action( 'wp_handle_upload', array( 'SWER_uploadplus_core', 'wp_handle_upload' ) );
+            add_action( 'wp_handle_upload_prefilter', array( 'SWER_uploadplus_core', 'wp_handle_upload_prefilter' ), 1, 1);
+            add_filter( 'wp_read_image_metadata' , array( 'SWER_uploadplus_core','wp_read_image_metadata'), 1, 3);
+            add_filter( 'sanitize_file_name', array( 'SWER_uploadplus_core', 'sanitize_file_name' ) );
         }
 
         function _admin_init() {

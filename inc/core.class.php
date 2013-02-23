@@ -151,6 +151,25 @@ if( ! array_key_exists( 'swer-uploadplus-core', $GLOBALS ) ) {
         		);
         	return $array;
         }
+                
+        function add_attachment( $post_ID ){
+        	if ( !$post = get_post( $post_ID ) )
+        		return false;
+            global $wpdb;
+
+            $post = get_post($post_ID);
+        	$post_title = self::upp_mangle_filename($post->post_title);
+        	$post_title = str_replace( array('-',"_"), " ", $post_title);
+            $wpdb->query(  $wpdb->prepare( 
+                    "UPDATE $wpdb->posts SET post_title='%s', post_name='%s' WHERE ID ='%d' LIMIT 1;", 
+                    $post_title, 
+                    $post_title, 
+                    $post_ID
+                    ) );
+            #$newpost = get_post($post_ID);
+            #print_r( $newpost ); die();
+            return $post_ID;
+        }
         
         function sanitize_file_name( $filename, $filename_raw ){
             #print_r( $filename );

@@ -4,7 +4,7 @@ Plugin Name: UploadPlus : File Name Cleaner
 Plugin URI: http://wordpress.org/extend/plugins/uploadplus/
 Description: Clean file names and enhance security while uploading. 
 Author: SWERgroup
-Version: 3.1
+Version: 3.1.1
 Author URI: http://swergroup.com/
 
 Copyright (C) 2007+ Paolo Tresso / SWERgroup (http://swergroup.com/)
@@ -34,7 +34,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-define( 'UPLOADPLUS_VERSION', '3.0.3' );
+define( 'UPLOADPLUS_VERSION', '3.1.1' );
 
 require_once 'lib/URLify.php';
 require_once 'lib/Arabic.php';
@@ -51,8 +51,9 @@ if( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
             add_action( 'admin_init', array( &$this, '_admin_init' ) );
             add_action( 'wp_handle_upload', array( 'SWER_uploadplus_core', 'wp_handle_upload' ) );
             add_action( 'wp_handle_upload_prefilter', array( 'SWER_uploadplus_core', 'wp_handle_upload_prefilter' ), 1, 1);
-            add_filter( 'wp_read_image_metadata' , array( 'SWER_uploadplus_core','wp_read_image_metadata'), 1, 3);
-            add_filter( 'sanitize_file_name', array( 'SWER_uploadplus_core', 'sanitize_file_name' ) );
+            #add_filter( 'wp_read_image_metadata' , array( 'SWER_uploadplus_core','wp_read_image_metadata'), 1, 3);
+            #add_filter( 'sanitize_file_name', array( 'SWER_uploadplus_core', 'sanitize_file_name' ) );
+            add_action( 'add_attachment', array( 'SWER_uploadplus_core', 'add_attachment' ) );
         }
 
         function _admin_init() {

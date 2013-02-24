@@ -158,8 +158,9 @@ if( ! array_key_exists( 'swer-uploadplus-core', $GLOBALS ) ) {
             global $wpdb;
 
             $post = get_post($post_ID);
-        	$post_title = self::upp_mangle_filename($post->post_title);
-        	$post_title = str_replace( array('-',"_"), " ", $post_title);
+            $ext = self::find_extension($post->post_title);            
+        	#$post_title = self::upp_mangle_filename($post->post_title);
+        	$post_title = str_replace( array('-',"_"), " ", $post->post_title);
             $wpdb->query(  $wpdb->prepare( 
                     "UPDATE $wpdb->posts SET post_title='%s', post_name='%s' WHERE ID ='%d' LIMIT 1;", 
                     $post_title, 

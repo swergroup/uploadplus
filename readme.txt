@@ -11,7 +11,7 @@ Clean file names and enhance security while uploading.
 == Description ==
 
 Filenames on the web are different than those on the desktop. Empty spaces and strange characters doesn't belong to web space.
-Enter Upload+: you can set your rules and clean your files' name while they upload. Three basic rules:
+Enter UploadPlus: you can set your rules and clean your files' name while they upload. Three basic rules:
 
 * convert spaces and strange characters into dashes (-)
 * only alphanumeric [A-Za-z] and digits, spaces and strange characters stripped out;
@@ -29,9 +29,7 @@ Some default prefix:
 * unix timestamp
 * and many more!
 
-Upload+ can transliterate filenames to utf8 characters, thanks to [phputf8](http://phputf8.sourceforge.net/) opensource PHP classes: arabic or russian readable filenames!
-
-Last but not least, you can preview settings in the media settings page without uploading files. 
+UploadPlus can also transliterate filenames. You can preview settings in the media settings page without uploading files. 
 
 = Credits = 
 
@@ -43,9 +41,9 @@ GPL&copy; 2008+ [SWERgroup siti internet Torino](http://swergroup.com/sviluppo/s
 
 == Changelog ==
 
-= 3.1 =
+= 3.2.1 =
 
-(22/02/2013)
+(24/02/2013)
 
 * FIX   filename in media uploader
 * FIX   non-latin strings transliteration

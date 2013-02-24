@@ -46,6 +46,9 @@ if( ! array_key_exists( 'swer-uploadplus-core', $GLOBALS ) ) {
         		case "2":
         			$file_name = strtoupper($file_name);
         			break;
+        		case "3":
+        			$file_name = ucwords($file_name);
+        			break;
         		default:
         		    $file_name = trim($file_name);
         		    break;
@@ -54,21 +57,22 @@ if( ! array_key_exists( 'swer-uploadplus-core', $GLOBALS ) ) {
         }
 
         function _clean_global( $file_name ){
-            $cleanlevel = get_option('uploadplus_cleanlevel');
+            global $sep;
+            $cleanlevel = get_option('uploadplus_separator');
         	switch( $cleanlevel[0] ):
-        	case "1":
+        	case "dash":
         	default:
-        		$file_name = ereg_replace("[^A-Za-z0-9._]", "-", $file_name);
+        		#$file_name = ereg_replace("[^A-Za-z0-9._]", "-", $file_name);
         		$file_name = preg_replace ('/[-\s]+/', '-', $file_name);
         		$sep = "-";
         		break;
-        	case "2":	
-        		$file_name = ereg_replace("[^A-Za-z0-9._]", "", $file_name);
-        		$file_name = preg_replace ('/[-\s]+/', '', $file_name);
+        	case "space":	
+        		#$file_name = ereg_replace("[^A-Za-z0-9._]", "", $file_name);
+        		$file_name = preg_replace ('/[-\s]+/', ' ', $file_name);
         		$sep = "-";
         		break;
-        	case "3":
-        		$file_name = ereg_replace("[^A-Za-z0-9._]", "_", $file_name);
+        	case "underscore":
+        		#$file_name = ereg_replace("[^A-Za-z0-9._]", "_", $file_name);
         		$file_name = preg_replace ('/[-\s]+/', '_', $file_name);
         		$sep = "_";
         		break;
@@ -77,6 +81,7 @@ if( ! array_key_exists( 'swer-uploadplus-core', $GLOBALS ) ) {
         }
 
         function _add_prefix( $file_name ){
+            global $sep;
     		switch( get_option('uploadplus_prefix') ):
     			case "1":		$file_name = date('d').$sep.$file_name;			break;
     			case "2":		$file_name = date('md').$sep.$file_name;		break;
@@ -87,8 +92,8 @@ if( ! array_key_exists( 'swer-uploadplus-core', $GLOBALS ) ) {
     			case "7":		$file_name = date('U').$sep.$file_name;			break;
     			case "8":		$file_name = mt_rand().$sep.$file_name;			break;
     			case "9":		$file_name = md5(mt_rand()).$sep.$file_name;	break;
-    			case "10":		$file_name = str_replace( array(".","_","-"," ") ,$sep, utf8_to_ascii(get_bloginfo('name'))).$sep.$file_name; break;
-    			case "A":		$file_name = str_replace( array(".","_","-"," ") ,"", utf8_to_ascii(get_bloginfo('name'))).$sep.$file_name;	break;
+    			case "10":		$file_name = str_replace( array(".","_","-"," ") ,$sep,  get_bloginfo('name') ).$sep.$file_name; break;
+    			case "A":		$file_name = str_replace( array(".","_","-"," ") ,"", get_bloginfo('name') ).$sep.$file_name;	break;
                 case "B":
                     $uploads = wp_upload_dir();
                     $dir = ( $uploads['path'] );
@@ -120,9 +125,9 @@ if( ! array_key_exists( 'swer-uploadplus-core', $GLOBALS ) ) {
                 $file_name = self::_utf8_transliteration( $file_name );
         	endif;
 
+            $file_name = self::_clean_global( $file_name );
             $file_name = self::_clean_filename( $ext, $file_name );
             $file_name = self::_clean_case( $file_name );
-            #$file_name = self::_clean_global( $file_name );
             $file_name = self::_add_prefix( $file_name );
 
         	return $file_name;

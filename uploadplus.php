@@ -4,7 +4,7 @@ Plugin Name: UploadPlus : File Name Cleaner
 Plugin URI: http://wordpress.org/extend/plugins/uploadplus/
 Description: Clean file names and enhance security while uploading. 
 Author: SWERgroup
-Version: 3.1.3
+Version: 3.2
 Author URI: http://swergroup.com/
 
 Copyright (C) 2007+ Paolo Tresso / SWERgroup (http://swergroup.com/)
@@ -33,7 +33,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-define( 'UPLOADPLUS_VERSION', '3.1.3' );
+define( 'UPLOADPLUS_VERSION', '3.2' );
 
 require_once 'lib/URLify.php';
 require_once 'lib/Arabic.php';
@@ -44,17 +44,23 @@ if( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
 
     class SWER_uploadplus {
 
-        // Initializes the plugin (actions/filters)
+        /**
+         * actions and filter init
+         */
         function __construct() {
             #$core = new SWER_uploadplus_core();
             add_action( 'admin_init', array( &$this, '_admin_init' ) );
             add_action( 'wp_handle_upload', array( 'SWER_uploadplus_core', 'wp_handle_upload' ) );
             add_action( 'wp_handle_upload_prefilter', array( 'SWER_uploadplus_core', 'wp_handle_upload_prefilter' ), 1, 1);
+            add_action( 'add_attachment', array( 'SWER_uploadplus_core', 'add_attachment' ) );
+            
             #add_filter( 'wp_read_image_metadata' , array( 'SWER_uploadplus_core','wp_read_image_metadata'), 1, 3);
             #add_filter( 'sanitize_file_name', array( 'SWER_uploadplus_core', 'sanitize_file_name' ) );
-            add_action( 'add_attachment', array( 'SWER_uploadplus_core', 'add_attachment' ) );
         }
 
+        /**
+         * admin initialization
+         */
         function _admin_init() {
             add_settings_section( 'upp_options_section', 'UploadPlus plugin (file name cleaner)', array('SWER_uploadplus_admin', 'upp_options_intro'), 'media');
 
@@ -77,29 +83,46 @@ if( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
             add_settings_field('uploadplus_utf8toascii', 'Transliteration', 
                 array( 'SWER_uploadplus_admin', 'upp_options_box_utf8toascii'), 'media', 'upp_options_section');
             register_setting('media', 'uploadplus_utf8toascii');
-            
+            /*
+            add_settings_field('uploadplus_image_desctiption', 'Image Options', 
+                array( 'SWER_uploadplus_admin', 'upp_options_box_image'), 'media', 'upp_options_section');
+            register_setting('media', 'uploadplus_utf8toascii');
+            */
             }
 
+        /**
+         * on activation, check options or create them
+         */
         function activate(){
             if( ! get_option('uploadplus_version') )
                 update_option( 'uploadplus_version', UPLOADPLUS_VERSION );
+
             if( ! get_option('uploadplus_separator') )                
                 update_option( 'uploadplus_separator' ,'dash' );
+
             if( ! get_option('uploadplus_case') )
                 update_option( 'uploadplus_case', '0' );
+
             if( ! get_option('uploadplus_prefix') )
                 update_option( 'uploadplus_prefix', '0' );
             if( ! get_option('uploadplus_customprefix') )
                 update_option( 'uploadplus_customprefix', '' );
+
             if( ! get_option('uploadplus_utf8toascii') )
                 update_option( 'uploadplus_utf8toascii', '0' );
-            endif;
+
         }
 
+        /**
+         * on deactivation, do nothing (this time)
+         */
         function deactivate(){ 
-            // do nothing (yet).
+            return;
         }
 
+        /**
+         * on uninstall, delete options and say bye.
+         */
         function uninstall(){
             delete_option( 'uploadplus_separator' );
             delete_option( 'uploadplus_case' );

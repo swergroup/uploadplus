@@ -1,11 +1,10 @@
 <?php
-
-
 if( ! array_key_exists( 'swer-uploadplus-core', $GLOBALS ) ) { 
 
     class SWER_uploadplus_core{
         
-            
+        var $sep = "-";
+                    
         /* find extension */
         function find_extension ($filename) { 
         	$exts = split("[/\\.]", $filename) ; 
@@ -62,17 +61,14 @@ if( ! array_key_exists( 'swer-uploadplus-core', $GLOBALS ) ) {
         	switch( $cleanlevel[0] ):
         	case "dash":
         	default:
-        		#$file_name = ereg_replace("[^A-Za-z0-9._]", "-", $file_name);
         		$file_name = preg_replace ('/[-\s]+/', '-', $file_name);
         		$sep = "-";
         		break;
         	case "space":	
-        		#$file_name = ereg_replace("[^A-Za-z0-9._]", "", $file_name);
         		$file_name = preg_replace ('/[-\s]+/', ' ', $file_name);
         		$sep = "-";
         		break;
         	case "underscore":
-        		#$file_name = ereg_replace("[^A-Za-z0-9._]", "_", $file_name);
         		$file_name = preg_replace ('/[-\s]+/', '_', $file_name);
         		$sep = "_";
         		break;
@@ -117,7 +113,7 @@ if( ! array_key_exists( 'swer-uploadplus-core', $GLOBALS ) ) {
 
         /*    sanitize uploaded file name    */
         function upp_mangle_filename($file_name){	
-            $sep = "-";
+            global $sep;
         	$ext = self::find_extension($file_name);
 
             $utf8 = get_option('uploadplus_utf8toascii');
@@ -135,7 +131,6 @@ if( ! array_key_exists( 'swer-uploadplus-core', $GLOBALS ) ) {
         
         function wp_handle_upload_prefilter( $meta ){
             $meta['name'] = self::upp_mangle_filename( $meta['name'] );		
-            #print_r($meta); die();
             return $meta;
         }
         
@@ -171,20 +166,17 @@ if( ! array_key_exists( 'swer-uploadplus-core', $GLOBALS ) ) {
                     $post_title, 
                     $post_ID
                     ) );
-            #$newpost = get_post($post_ID);
-            #print_r( $newpost ); die();
             return $post_ID;
         }
         
-        function sanitize_file_name( $filename, $filename_raw ){
-            #print_r( $filename );
-            #print_r( $filename_raw );
-            #die();
+        function wp_read_image_metadata( $meta, $file, $sourceImageType ){
+        	$current_name = self::find_filename($file);
+        	$ext = self::find_extension($current_name);
+        	$meta['caption'] = str_replace( array($ext, '_', '-'), ' ', $current_name);
+            return $meta;
         }
 
-        function wp_read_image_metadata( $meta, $file, $sourceImageType ){
-#            $meta['title'] = $post_title;
-#            $meta['caption'] = $post_title;
+        function sanitize_file_name( $filename, $filename_raw ){
         }
 
     }

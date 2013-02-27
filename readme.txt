@@ -3,7 +3,7 @@ Contributors: swergroup, pixline
 Donate link: http://swergroup.com/sviluppo/siti-internet-torino/
 Tags: media, filename, filenames, clean, rename, uploads, upload, images, files, security, sanitization, transliteration, utf8, ascii, prefix, custom
 Requires at least: 3.4.2
-Tested up to: 3.5b3
+Tested up to: 3.5.1
 Stable tag: trunk
 
 Clean file names and enhance security while uploading.
@@ -30,6 +30,13 @@ Some default prefix:
 * and many more!
 
 UploadPlus can also transliterate filenames. You can preview settings in the media settings page without uploading files. 
+
+= FAQ =
+
+= Is this plugin supported? =
+
+We'll try our best to support it on the [support forum](http://wordpress.org/support/plugin/page2cat).
+If you rely on this plugin for commercial purposes please get in touch with our [helpdesk](http://swergroup.zendesk.com).
 
 = Credits = 
 

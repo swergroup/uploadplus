@@ -1,5 +1,5 @@
 <?php
-if( ! array_key_exists( 'swer-uploadplus-core', $GLOBALS ) ) { 
+#if( ! array_key_exists( 'swer-uploadplus-core', $GLOBALS ) ) { 
 
     class SWER_uploadplus_core{
         
@@ -7,7 +7,7 @@ if( ! array_key_exists( 'swer-uploadplus-core', $GLOBALS ) ) {
 
         // Based on http://www.freestuff.gr/forums/viewtopic.php?p=194579#194579
         function sanitize_greeklish($text) {
-            if ( !is_admin() ) return $text;
+            if ( !defined('WP_CLI') && !WP_CLI && !is_admin() ) return $text;
     
             $expressions = array(
                 '/[αΑ][ιίΙΊ]/u' => 'e',
@@ -240,6 +240,6 @@ if( ! array_key_exists( 'swer-uploadplus-core', $GLOBALS ) ) {
     }
 
 #    $GLOBALS['swer-uploadplus-core'] = new SWER_uploadplus_core();
-}
+#}
 
 ?>

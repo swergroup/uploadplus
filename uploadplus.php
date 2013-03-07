@@ -39,10 +39,13 @@ require_once 'lib/URLify.php';
 require_once 'lib/Arabic.php';
 require_once 'inc/core.class.php';
 require_once 'inc/admin.class.php';
+if ( defined('WP_CLI') && WP_CLI ) {
+    include __DIR__ . '/inc/wp-cli.class.php';
+}
 
 if( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) { 
 
-    class SWER_uploadplus {
+    class SWER_uploadplus extends SWER_uploadplus_core{
 
         /**
          * actions and filter init
@@ -89,6 +92,17 @@ if( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
             register_setting('media', 'uploadplus_utf8toascii');
             */
             }
+
+
+            function test_extension( $string ){
+                return self::find_extension( $string );
+            }
+
+            function test_filename( $string ){
+                return self::find_filename( $string );
+            }
+
+
 
         /**
          * on activation, check options or create them

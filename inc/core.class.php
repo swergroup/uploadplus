@@ -133,9 +133,13 @@
         	return $file_name;
         }
 
-        function _add_prefix( $file_name ){
+        function _add_prefix( $file_name, $options='', $custom=''){
             global $sep;
-    		switch( get_option('uploadplus_prefix') ):
+
+            $options = ($options == '') ? get_option('uploadplus_prefix') : $options;
+            $custom = ($custom == '') ? get_option('uploadplus_customprefix') : $custom;
+
+    		switch( $options ):
     			case "1":		$file_name = date('d').$sep.$file_name;			break;
     			case "2":		$file_name = date('md').$sep.$file_name;		break;
     			case "3":		$file_name = date('ymd').$sep.$file_name;		break;
@@ -158,7 +162,7 @@
                         $file_name = $file_name;
                 break;
             endswitch;
-            $custom = get_option('uploadplus_customprefix');
+
             if( $custom !== '' ):
                 $return_file_name = $custom.$file_name;
             else:

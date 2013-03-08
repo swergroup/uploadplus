@@ -10,6 +10,8 @@ Clean file names and enhance security while uploading.
 
 == Description ==
 
+[![Build Status](https://travis-ci.org/swergroup/uploadplus.png?branch=master)](https://travis-ci.org/swergroup/uploadplus)
+
 Filenames on the web are different than those on the desktop. Empty spaces and strange characters doesn't belong to web space.
 Enter UploadPlus: you can set your rules and clean your files' name while they upload. Three basic rules:
 

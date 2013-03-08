@@ -56,10 +56,10 @@ class UploadPlusTests extends WP_UnitTestCase {
     	$this->assertEquals( 'TestBlog'.'testfilename.ext', $test10, 'Prefix #10 not equal');
 
     	$test11 = $this->plugin->_add_prefix( $filename, 'A', '');
-    	$this->assertEquals( 'TestBlog'.'testfilename.ext', $test11, 'Prefix #11 not equal');
+    	$this->assertEquals( 'TestBlog'.'testfilename.ext', $test11, 'Prefix #A not equal');
 
     	$test12 = $this->plugin->_add_prefix( $filename, 'B', '');
-    	$this->assertEquals( 'testfilename.ext', $test12, 'Prefix #12 not equal');
+    	$this->assertEquals( 'testfilename.ext', $test12, 'Prefix #B not equal');
     }
 
 

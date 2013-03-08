@@ -2,7 +2,7 @@
 Contributors: swergroup, pixline
 Donate link: http://swergroup.com/sviluppo/siti-internet-torino/
 Tags: media, filename, filenames, clean, rename, uploads, upload, images, files, security, sanitization, transliteration, utf8, ascii, prefix, custom
-Requires at least: 3.4.2
+Requires at least: 3.4
 Tested up to: 3.5.1
 Stable tag: trunk
 

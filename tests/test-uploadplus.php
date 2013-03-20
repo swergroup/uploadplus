@@ -12,9 +12,14 @@ class UploadPlusTests extends WP_UnitTestCase {
     function testPluginInit(){
         $this->assertFalse( null == $this->plugin );
     }
+
+    function testPluginOptions(){
+        $this->assertEquals( '3.2.2', $this->plugin->version, 'Option: uploadplus_version does not match.');
+    }
     
     function testFindExtensions(){
-        $this->assertEquals( 'jpeg', $this->plugin->find_extension( 'filename.jpeg' ), 'Extension not found' );
+        $this->assertEquals( 'jpeg', $this->plugin->find_extension( 'filename.jpeg' ), 'Extension #1 is wrong' );
+        $this->assertEquals( 'zip', $this->plugin->find_extension( 'really complicated - strange filename.png.zip' ), 'Extension #2 is wrong' );
     }
 
     function testFindFilename(){
@@ -60,6 +65,14 @@ class UploadPlusTests extends WP_UnitTestCase {
 
     	$test12 = $this->plugin->_add_prefix( $filename, 'B', '');
     	$this->assertEquals( 'testfilename.ext', $test12, 'Prefix #B not equal');
+
+        $test13 = $this->plugin->_add_prefix( $filename, null, 'custom_');
+        $this->assertEquals( 'custom_testfilename.ext', $test13, 'Prefix custom not equal');
+
+        $test14 = $this->plugin->_add_prefix( $filename, '1', 'custom_');
+        $this->assertEquals( 'custom_'.date('d').'testfilename.ext', $test14, 'Prefix custom not equal');
+
+
     }
 
 

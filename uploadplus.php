@@ -47,6 +47,8 @@ if( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
 
     class SWER_uploadplus extends SWER_uploadplus_core{
 
+        var $version = UPLOADPLUS_VERSION;
+
         /**
          * actions and filter init
          */
@@ -59,6 +61,10 @@ if( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
             
             #add_filter( 'wp_read_image_metadata' , array( 'SWER_uploadplus_core','wp_read_image_metadata'), 1, 3);
             #add_filter( 'sanitize_file_name', array( 'SWER_uploadplus_core', 'sanitize_file_name' ) );
+            register_activation_hook(   __FILE__, array( &$this,'activate' ) );
+            register_deactivation_hook( __FILE__, array( &$this,'deactivate' ) );
+            register_uninstall_hook(    __FILE__, array( &$this,'uninstall' ));
+
         }
 
         /**
@@ -108,8 +114,10 @@ if( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
          * on activation, check options or create them
          */
         function activate(){
+
+            update_option( 'uploadplus_version', UPLOADPLUS_VERSION );
+
             if( ! get_option('uploadplus_version') )
-                update_option( 'uploadplus_version', UPLOADPLUS_VERSION );
 
             if( ! get_option('uploadplus_separator') )                
                 update_option( 'uploadplus_separator' ,'dash' );
@@ -151,7 +159,4 @@ if( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
     $GLOBALS['swer-uploadplus'] = new SWER_uploadplus();
 }
 
-register_activation_hook(   __FILE__, array( 'SWER_uploadplus','activate' ) );
-register_deactivation_hook( __FILE__, array( 'SWER_uploadplus','deactivate' ) );
-register_uninstall_hook(    __FILE__, array( 'SWER_uploadplus','uninstall' ));
 ?>

@@ -1,16 +1,16 @@
 === UploadPlus : File Name Cleaner ===
 Contributors: swergroup, pixline
-Donate link: http://swergroup.com/sviluppo/siti-internet-torino/
+Donate link: https://flattr.com/submit/auto?user_id=swergroup&url=http://wordpress.org/plugins/page2cat/&title=Page2Cat%20WP%20plugin
 Tags: media, filename, filenames, clean, rename, uploads, upload, images, files, security, sanitization, transliteration, utf8, ascii, prefix, custom
-Requires at least: 3.4
-Tested up to: 3.5.1
+Requires at least: 3.5
+Tested up to: master
 Stable tag: trunk
+License: GPLv2
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Clean file names and enhance security while uploading.
 
 == Description ==
-
-[![Build Status](https://travis-ci.org/swergroup/uploadplus.png?branch=master)](https://travis-ci.org/swergroup/uploadplus)
 
 Filenames on the web are different than those on the desktop. Empty spaces and strange characters doesn't belong to web space.
 Enter UploadPlus: you can set your rules and clean your files' name while they upload. Three basic rules:
@@ -33,16 +33,18 @@ Some default prefix:
 
 UploadPlus can also transliterate filenames. You can preview settings in the media settings page without uploading files. 
 
-= FAQ =
-
-= Is this plugin supported? =
-
-We'll try our best to support it on the [support forum](http://wordpress.org/support/plugin/page2cat).
-If you rely on this plugin for commercial purposes please get in touch with our [helpdesk](http://swergroup.zendesk.com).
-
 = Credits = 
 
 GPL&copy; 2008+ [SWERgroup siti internet Torino](http://swergroup.com/sviluppo/siti-internet-torino/)
+
+
+== Frequently Asked Questions ==
+
+= Is this plugin supported? =
+
+We'll try our best to support it on the [support forum](http://wordpress.org/support/plugin/page2cat) but we can't assure response time.
+If you rely on this plugin for production websites and you can't have an answer please get in touch with our [helpdesk](http://swergroup.zendesk.com): open source plugins support starts from $5/hour, 24h turnaround response time (please note we are GMT+1). 
+
 
 == Screenshots ==
 

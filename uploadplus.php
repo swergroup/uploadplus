@@ -4,7 +4,7 @@ Plugin Name: UploadPlus : File Name Cleaner
 Plugin URI: http://wordpress.org/extend/plugins/uploadplus/
 Description: Clean file names and enhance security while uploading. 
 Author: SWERgroup
-Version: 3.2.2
+Version: 3.3.0-alpha
 Author URI: http://swergroup.com/
 
 Copyright (C) 2007+ Paolo Tresso / SWERgroup (http://swergroup.com/)
@@ -33,130 +33,130 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-define( 'UPLOADPLUS_VERSION', '3.2.2' );
+define( 'UPLOADPLUS_VERSION', '3.3.0-alpha' );
+define( 'UPLOADPLUS_PATH', plugin_dir_path( __FILE__ ) );
 
-require_once 'lib/URLify.php';
-require_once 'lib/Arabic.php';
-require_once 'inc/core.class.php';
-require_once 'inc/admin.class.php';
-if ( defined('WP_CLI') && WP_CLI ) {
-    include __DIR__ . '/inc/wp-cli.class.php';
+require_once UPLOADPLUS_PATH . '/lib/URLify.php';
+require_once UPLOADPLUS_PATH . '/lib/Arabic.php';
+require_once UPLOADPLUS_PATH . '/inc/core.class.php';
+require_once UPLOADPLUS_PATH . '/inc/admin.class.php';
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+    include UPLOADPLUS_PATH . '/inc/wp-cli.class.php';
 }
 
-if( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) { 
+/**
+ * on activation, check options or create them
+ */
+function uploadplus_activate(){
+ global $wp_version;
+ 
+ if ( version_compare( $wp_version, '3.5', '<=' ) ) {
+      deactivate_plugins( __FILE__ );
+      wp_die( __( 'UploadPlus requires WordPress 3.5 or newer', 'uploadplus' ) . ' (yours: '.$wp_version.')' );
+  }
 
-    class SWER_uploadplus extends SWER_uploadplus_core{
+  if ( ! get_option( 'uploadplus_version' ) )
+  update_option( 'uploadplus_version', UPLOADPLUS_VERSION );
 
-        var $version = UPLOADPLUS_VERSION;
+  if ( ! get_option( 'uploadplus_separator' ) )
+      update_option( 'uploadplus_separator' ,'dash' );
 
-        /**
-         * actions and filter init
-         */
-        function __construct() {
-            #$core = new SWER_uploadplus_core();
-            add_action( 'admin_init', array( &$this, '_admin_init' ) );
-            add_action( 'wp_handle_upload', array( 'SWER_uploadplus_core', 'wp_handle_upload' ) );
-            add_action( 'wp_handle_upload_prefilter', array( 'SWER_uploadplus_core', 'wp_handle_upload_prefilter' ), 1, 1);
-            add_action( 'add_attachment', array( 'SWER_uploadplus_core', 'add_attachment' ) );
-            
-            #add_filter( 'wp_read_image_metadata' , array( 'SWER_uploadplus_core','wp_read_image_metadata'), 1, 3);
-            #add_filter( 'sanitize_file_name', array( 'SWER_uploadplus_core', 'sanitize_file_name' ) );
-            register_activation_hook(   __FILE__, array( &$this,'activate' ) );
-            register_deactivation_hook( __FILE__, array( &$this,'deactivate' ) );
-            register_uninstall_hook(    __FILE__, array( &$this,'uninstall' ));
+  if ( ! get_option( 'uploadplus_case' ) )
+      update_option( 'uploadplus_case', '0' );
 
-        }
+  if ( ! get_option( 'uploadplus_prefix' ) )
+      update_option( 'uploadplus_prefix', '0' );
 
-        /**
-         * admin initialization
-         */
-        function _admin_init() {
-            add_settings_section( 'upp_options_section', 'UploadPlus plugin (file name cleaner)', array('SWER_uploadplus_admin', 'upp_options_intro'), 'media');
+  if ( ! get_option( 'uploadplus_customprefix' ) )
+      update_option( 'uploadplus_customprefix', '' );
 
-            add_settings_field( 'uploadplus_separator', 'Separator', 
-                array( 'SWER_uploadplus_admin', 'upp_options_box_cleanlevel'), 'media', 'upp_options_section');
-            register_setting('media', 'uploadplus_separator');
-            
-            add_settings_field('uploadplus_case', 'Case', 
-                array( 'SWER_uploadplus_admin', 'upp_options_box_case'), 'media', 'upp_options_section');
-            register_setting('media', 'uploadplus_case');
-
-            add_settings_field('uploadplus_prefix', 'Prefix', 
-                array( 'SWER_uploadplus_admin', 'upp_options_box_prefix'), 'media', 'upp_options_section');
-            register_setting('media', 'uploadplus_prefix');
-
-            add_settings_field('uploadplus_customprefix', 'Custom Prefix', 
-                array( 'SWER_uploadplus_admin', 'upp_options_box_customprefix'), 'media', 'upp_options_section');
-            register_setting('media', 'uploadplus_customprefix');
-
-            add_settings_field('uploadplus_utf8toascii', 'Transliteration', 
-                array( 'SWER_uploadplus_admin', 'upp_options_box_utf8toascii'), 'media', 'upp_options_section');
-            register_setting('media', 'uploadplus_utf8toascii');
-            /*
-            add_settings_field('uploadplus_image_desctiption', 'Image Options', 
-                array( 'SWER_uploadplus_admin', 'upp_options_box_image'), 'media', 'upp_options_section');
-            register_setting('media', 'uploadplus_utf8toascii');
-            */
-            }
-
-
-            function test_extension( $string ){
-                return self::find_extension( $string );
-            }
-
-            function test_filename( $string ){
-                return self::find_filename( $string );
-            }
-
-
-
-        /**
-         * on activation, check options or create them
-         */
-        function activate(){
-
-            update_option( 'uploadplus_version', UPLOADPLUS_VERSION );
-
-            if( ! get_option('uploadplus_version') )
-
-            if( ! get_option('uploadplus_separator') )                
-                update_option( 'uploadplus_separator' ,'dash' );
-
-            if( ! get_option('uploadplus_case') )
-                update_option( 'uploadplus_case', '0' );
-
-            if( ! get_option('uploadplus_prefix') )
-                update_option( 'uploadplus_prefix', '0' );
-            if( ! get_option('uploadplus_customprefix') )
-                update_option( 'uploadplus_customprefix', '' );
-
-            if( ! get_option('uploadplus_utf8toascii') )
-                update_option( 'uploadplus_utf8toascii', '0' );
-
-        }
-
-        /**
-         * on deactivation, do nothing (this time)
-         */
-        function deactivate(){ 
-            return;
-        }
-
-        /**
-         * on uninstall, delete options and say bye.
-         */
-        function uninstall(){
-            delete_option( 'uploadplus_separator' );
-            delete_option( 'uploadplus_case' );
-            delete_option( 'uploadplus_prefix' );
-            delete_option( 'uploadplus_customprefix' );
-            delete_option( 'uploadplus_utf8toascii' );
-            delete_option( 'uploadplus_version' );
-        }
-        
-    }   // end class
-
-    $GLOBALS['swer-uploadplus'] = new SWER_uploadplus();
+  if ( ! get_option( 'uploadplus_utf8toascii' ) )
+      update_option( 'uploadplus_utf8toascii', '0' );
 }
 
-?>
+/**
+ * on deactivation, do nothing (this time)
+ */
+function uploadplus_deactivate(){
+  return;
+}
+
+
+/**
+ * on uninstall, delete options and say bye.
+ */
+function uploadplus_uninstall(){
+  delete_option( 'uploadplus_separator' );
+  delete_option( 'uploadplus_case' );
+  delete_option( 'uploadplus_prefix' );
+  delete_option( 'uploadplus_customprefix' );
+  delete_option( 'uploadplus_utf8toascii' );
+  delete_option( 'uploadplus_version' );
+}
+
+
+
+if ( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) { 
+ class SWER_uploadplus extends SWER_uploadplus_core{
+
+  var $version = UPLOADPLUS_VERSION;
+
+  /**
+   * actions and filter init
+   */
+  function __construct() {
+    #$core = new SWER_uploadplus_core();
+    add_action( 'admin_init', array( &$this, '_admin_init' ) );
+    add_action( 'wp_handle_upload', array( 'SWER_uploadplus_core', 'wp_handle_upload' ) );
+    add_action( 'wp_handle_upload_prefilter', array( 'SWER_uploadplus_core', 'wp_handle_upload_prefilter' ), 1, 1 );
+    add_action( 'add_attachment', array( 'SWER_uploadplus_core', 'add_attachment' ) );
+    
+    #add_filter( 'wp_read_image_metadata' , array( 'SWER_uploadplus_core','wp_read_image_metadata'), 1, 3);
+    #add_filter( 'sanitize_file_name', array( 'SWER_uploadplus_core', 'sanitize_file_name' ) );
+  }
+
+  /**
+   * admin initialization
+   */
+  function _admin_init() {
+    add_settings_section( 'upp_options_section', 'UploadPlus plugin (file name cleaner)', array('SWER_uploadplus_admin', 'upp_options_intro'), 'media' );
+
+    add_settings_field( 'uploadplus_separator', 'Separator', array( 'SWER_uploadplus_admin', 'upp_options_box_cleanlevel'), 'media', 'upp_options_section' );
+    register_setting( 'media', 'uploadplus_separator' );
+    
+    add_settings_field( 'uploadplus_case', 'Case', array( 'SWER_uploadplus_admin', 'upp_options_box_case'), 'media', 'upp_options_section' );
+    register_setting( 'media', 'uploadplus_case' );
+
+    add_settings_field( 'uploadplus_prefix', 'Prefix', array( 'SWER_uploadplus_admin', 'upp_options_box_prefix'), 'media', 'upp_options_section' );
+    register_setting( 'media', 'uploadplus_prefix' );
+
+    add_settings_field( 'uploadplus_customprefix', 'Custom Prefix', array( 'SWER_uploadplus_admin', 'upp_options_box_customprefix'), 'media', 'upp_options_section' );
+    register_setting( 'media', 'uploadplus_customprefix' );
+
+    add_settings_field( 'uploadplus_utf8toascii', 'Transliteration', array( 'SWER_uploadplus_admin', 'upp_options_box_utf8toascii'), 'media', 'upp_options_section' );
+    register_setting( 'media', 'uploadplus_utf8toascii' );
+    /*
+    add_settings_field('uploadplus_image_desctiption', 'Image Options', 
+        array( 'SWER_uploadplus_admin', 'upp_options_box_image'), 'media', 'upp_options_section');
+    register_setting('media', 'uploadplus_utf8toascii');
+    */
+  }
+
+
+  function test_extension( $string ){
+    return self::find_extension( $string );
+  }
+
+  function test_filename( $string ){
+    return self::find_filename( $string );
+  }
+     
+ }   // end class
+
+ $GLOBALS['swer-uploadplus'] = new SWER_uploadplus();
+}
+
+
+register_activation_hook( __FILE__, 'uploadplus_activate' );
+register_deactivation_hook( __FILE__, 'uploadplus_deactivate' );
+register_uninstall_hook( __FILE__, 'uploadplus_uninstall' );

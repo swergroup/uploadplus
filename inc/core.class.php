@@ -7,7 +7,7 @@ class SWER_uploadplus_core {
 
  // Based on http://www.freestuff.gr/forums/viewtopic.php?p=194579#194579
  function sanitize_greeklish( $text ) {
-    if ( !defined( 'WP_CLI' ) && !is_admin() ) return $text;
+    #if ( !defined( 'WP_CLI' ) && !is_admin() ) return $text;
 
     $expressions = array(
         '/[αΑ][ιίΙΊ]/u' => 'e',
@@ -244,7 +244,7 @@ class SWER_uploadplus_core {
   return $meta;
 }
 
- function sanitize_file_name( $filename, $filename_raw ){
+ function sanitize_file_name( $filename, $filename_raw = null ){
   return $filename;
  }
 

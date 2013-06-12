@@ -86,11 +86,24 @@ class SWER_uploadplus_core {
 }
 
  function _clean_filename( $ext, $file_name ){
+  /*
   $file_name = str_replace( '.'.$ext, '', $file_name );
   $file_name = str_replace( '.', '', $file_name );
   $file_name = preg_replace( '~[^\\pL0-9_]+~u', '-', $file_name );
   $file_name = preg_replace( '/^\s+|\s+$/', '', $file_name );
   $file_name = $file_name . '.' . $ext;
+  return $file_name;
+  */
+  $file_name = str_replace( '.'.$ext, '', $file_name );
+  if( in_array( strtolower( $ext ), array( 'jpg', 'tiff', 'jpeg', 'tif', 'png', 'bmp', 'gif') ) )
+    $file_name = str_replace( '.', '-', $file_name );
+  else
+    $file_name = str_replace( '.', 'qQQppQQq', $file_name );
+  $file_name = str_replace( 'qqQQppQQ', '', $file_name );
+  $file_name = preg_replace( '~[^\\pL0-9_]+~u', '-', $file_name );
+  $file_name = preg_replace( '/^\s+|\s+$/', '', $file_name );
+  $file_name = str_replace( 'qQQppQQq', '.', $file_name );
+  $file_name = $file_name.'.'.$ext;
   return $file_name;
 } 
 
@@ -120,6 +133,7 @@ class SWER_uploadplus_core {
   case 'dash' :
   default:
     $file_name = preg_replace( '/[-\s]+/', '-', $file_name );
+    $file_name = str_replace('_', '-', $file_name);
     $sep = '-';
     break;
   case 'space' :
@@ -128,6 +142,7 @@ class SWER_uploadplus_core {
     break;
   case 'underscore':
     $file_name = preg_replace( '/[-\s]+/', '_', $file_name );
+    $file_name = str_replace('-', '_', $file_name);
     $sep = '_';
     break;
   endswitch;
@@ -163,7 +178,12 @@ class SWER_uploadplus_core {
   endswitch;
 
   if ( $custom !== '' ):
-      $return_file_name = $custom.$file_name;
+    if(strtolower($custom) == 'exif'){
+      $return_file_name = $file_name;
+    } else {
+      if(isset( $GLOBALS['UPLOAD-PLUS-EXIF'] ) ) unset( $GLOBALS['UPLOAD-PLUS-EXIF'] );
+      $return_file_name = $custom.$sep.$file_name;
+    }
   else :
       $return_file_name = $file_name;
   endif;
@@ -181,6 +201,7 @@ class SWER_uploadplus_core {
 
  /*    sanitize uploaded file name    */
  function upp_mangle_filename( $file_name ){	
+  /*
   global $sep;
   $ext = self::find_extension( $file_name );
   $utf8 = get_option( 'uploadplus_utf8toascii' );
@@ -188,16 +209,59 @@ class SWER_uploadplus_core {
     $file_name = self::_utf8_transliteration( $file_name );
 	endif;
   $file_name = self::_clean_global( $file_name );
+  $file_name = self::_add_prefix( $file_name );
+  $file_name = self::_clean_filename( $ext, $file_name );
+  $file_name = self::_clean_case( $file_name );
+  return $file_name;
+  */
+  if( isset( $GLOBALS['UPLOAD-PLUS-NAMES'][$file_name] ) )
+    return $file_name;
+  global $sep;
+  $ext = self::find_extension($file_name);
+  $utf8 = get_option('uploadplus_utf8toascii');
+  if( $utf8[0] == "1" ):
+    $file_name = self::_utf8_transliteration( $file_name );
+  endif;
+
+  $file_name = self::_clean_global( $file_name );
   $file_name = self::_clean_filename( $ext, $file_name );
   $file_name = self::_clean_case( $file_name );
   $file_name = self::_add_prefix( $file_name );
+  $GLOBALS['UPLOAD-PLUS-NAMES'][$file_name] = 1;
   return $file_name;
  }
 
+ /*
  function wp_handle_upload_prefilter( $meta ){
   $meta['name'] = self::upp_mangle_filename( $meta['name'] );		
   return $meta;
  }
+ */
+
+
+ function wp_handle_upload_prefilter( $arr ){
+    //$name = self::upp_mangle_filename( $arr['name'] );
+    if( isset( $GLOBALS['UPLOAD-PLUS-EXIF'] ) ) unset( $GLOBALS['UPLOAD-PLUS-EXIF'] );
+
+    if ( is_callable('exif_read_data') && $arr['type'] == 'image/jpeg' ) {
+      $exif = exif_read_data($arr['tmp_name'], 0, true);
+      foreach ( array( 'DateTimeDigitized', 'DateTimeOriginal', 'FileDateTime' ) as $key ){
+        if ( isset( $exif['EXIF'][$key] ) && trim( $exif['EXIF'][$key] ) ){
+          $prefix = trim( $exif['EXIF'][$key] );
+        }
+      }
+      if( isset( $prefix ) ){
+        list( $date, $time ) = explode( ' ', $prefix );
+        list( $y, $m, $d ) = explode( ':', $date );
+        $prefix = "{$y}-{$m}-{$d}";
+        $GLOBALS['UPLOAD-PLUS-EXIF'] = $prefix;
+        unset($prefix);
+      }
+    }
+    return $arr;
+  }
+
+
 
  function wp_handle_upload( $array ){             
   global $action;
@@ -218,6 +282,7 @@ class SWER_uploadplus_core {
  }
         
  function add_attachment( $post_ID ){
+  /*
   if ( !$post = get_post( $post_ID ) )
     return false;
 
@@ -235,18 +300,35 @@ class SWER_uploadplus_core {
    )
   );
   return $post_ID;
+  */
+
+  $obj = get_post( $post_ID );
+  $title = $obj->post_title;
+  $title = apply_filters( 'upload_plus_add_attachment_title', $title );
+  // Update the post into the database
+  $uploaded_post = array();
+  $uploaded_post['ID'] = $post_ID;
+  $uploaded_post['post_title'] = $title;
+  wp_update_post( $uploaded_post );
+  return $post_ID;
 }
 
- function wp_read_image_metadata( $meta, $file, $sourceImageType ){
+function wp_read_image_metadata( $meta, $file, $sourceImageType ){
   $current_name = self::find_filename( $file );
   $ext = self::find_extension( $current_name );
   $meta['caption'] = str_replace( array( $ext, '_', '-' ), ' ', $current_name );
   return $meta;
 }
 
- function sanitize_file_name( $filename, $filename_raw = null ){
-  return $filename;
- }
+function sanitize_file_name( $filename, $filename_raw = null ){
+    global $sep;
+    $new_name = self::upp_mangle_filename( $filename );
+    if(isset( $GLOBALS['UPLOAD-PLUS-EXIF'] ) ) {
+      $new_name = $GLOBALS['UPLOAD-PLUS-EXIF'].$sep.$new_name;
+      unset( $GLOBALS['UPLOAD-PLUS-EXIF'] );
+    }
+    return $new_name;
+}
 
 }
 

@@ -86,24 +86,11 @@ class SWER_uploadplus_core {
 }
 
  function _clean_filename( $ext, $file_name ){
-  /*
   $file_name = str_replace( '.'.$ext, '', $file_name );
   $file_name = str_replace( '.', '', $file_name );
   $file_name = preg_replace( '~[^\\pL0-9_]+~u', '-', $file_name );
   $file_name = preg_replace( '/^\s+|\s+$/', '', $file_name );
   $file_name = $file_name . '.' . $ext;
-  return $file_name;
-  */
-  $file_name = str_replace( '.'.$ext, '', $file_name );
-  if( in_array( strtolower( $ext ), array( 'jpg', 'tiff', 'jpeg', 'tif', 'png', 'bmp', 'gif') ) )
-    $file_name = str_replace( '.', '-', $file_name );
-  else
-    $file_name = str_replace( '.', 'qQQppQQq', $file_name );
-  $file_name = str_replace( 'qqQQppQQ', '', $file_name );
-  $file_name = preg_replace( '~[^\\pL0-9_]+~u', '-', $file_name );
-  $file_name = preg_replace( '/^\s+|\s+$/', '', $file_name );
-  $file_name = str_replace( 'qQQppQQq', '.', $file_name );
-  $file_name = $file_name.'.'.$ext;
   return $file_name;
 } 
 
@@ -138,6 +125,7 @@ class SWER_uploadplus_core {
     break;
   case 'space' :
     $file_name = preg_replace( '/[-\s]+/', ' ', $file_name );
+    $file_name = str_replace( array( '_', '-' ), ' ', $file_name);
     $sep = ' ';
     break;
   case 'underscore':
@@ -155,18 +143,18 @@ class SWER_uploadplus_core {
   $options = ( $options == '' ) ? get_option( 'uploadplus_prefix' ) : $options;
   $custom = ( $custom == '' ) ? get_option( 'uploadplus_customprefix' ) : $custom;
 
-	switch ( $options ):
-  case '1':		$file_name = date( 'd' ) . $sep . $file_name;			break;
-  case '2':		$file_name = date( 'md' ) . $sep . $file_name;		break;
-  case '3':		$file_name = date( 'ymd' ) . $sep . $file_name;		break;
-  case '4':		$file_name = date( 'Ymd' ) . $sep . $file_name;		break;
-  case '5':		$file_name = date( 'YmdHi' ).$sep . $file_name;		break;
-  case '6':		$file_name = date( 'YmdHis' ).$sep . $file_name;	break;
-  case '7':		$file_name = date( 'U' ) . $sep . $file_name;			break;
-  case '8':		$file_name = mt_rand() . $sep . $file_name;			  break;
-  case '9':		$file_name = md5( mt_rand() ) . $sep . $file_name;	break;
-  case '10':	$file_name = str_replace( array( '.', '_', '-', ' ' ) ,$sep,  get_bloginfo( 'name' ) ) . $sep . $file_name; break;
-  case 'A':		$file_name = str_replace( array( '.', '_', '-', ' ' ) ,'', get_bloginfo( 'name' ) ) . $sep . $file_name;	break;
+  switch ( $options ):
+  case '1':   $file_name = date( 'd' ) . $sep . $file_name;     break;
+  case '2':   $file_name = date( 'md' ) . $sep . $file_name;    break;
+  case '3':   $file_name = date( 'ymd' ) . $sep . $file_name;   break;
+  case '4':   $file_name = date( 'Ymd' ) . $sep . $file_name;   break;
+  case '5':   $file_name = date( 'YmdHi' ).$sep . $file_name;   break;
+  case '6':   $file_name = date( 'YmdHis' ).$sep . $file_name;  break;
+  case '7':   $file_name = date( 'U' ) . $sep . $file_name;     break;
+  case '8':   $file_name = mt_rand() . $sep . $file_name;       break;
+  case '9':   $file_name = md5( mt_rand() ) . $sep . $file_name;  break;
+  case '10':  $file_name = str_replace( array( '.', '_', '-', ' ' ) ,$sep,  get_bloginfo( 'name' ) ) . $sep . $file_name; break;
+  case 'A':   $file_name = str_replace( array( '.', '_', '-', ' ' ) ,'', get_bloginfo( 'name' ) ) . $sep . $file_name;  break;
   case 'B':
     $uploads = wp_upload_dir();
     $dir = ( $uploads['path'] );
@@ -178,12 +166,7 @@ class SWER_uploadplus_core {
   endswitch;
 
   if ( $custom !== '' ):
-    if(strtolower($custom) == 'exif'){
-      $return_file_name = $file_name;
-    } else {
-      if(isset( $GLOBALS['UPLOAD-PLUS-EXIF'] ) ) unset( $GLOBALS['UPLOAD-PLUS-EXIF'] );
-      $return_file_name = $custom.$sep.$file_name;
-    }
+      $return_file_name = $custom.$file_name;
   else :
       $return_file_name = $file_name;
   endif;
@@ -200,73 +183,29 @@ class SWER_uploadplus_core {
 
 
  /*    sanitize uploaded file name    */
- function upp_mangle_filename( $file_name ){	
-  /*
+ function upp_mangle_filename( $file_name ){  
   global $sep;
   $ext = self::find_extension( $file_name );
   $utf8 = get_option( 'uploadplus_utf8toascii' );
   if ( $utf8[0] == '1' ):
     $file_name = self::_utf8_transliteration( $file_name );
-	endif;
-  $file_name = self::_clean_global( $file_name );
-  $file_name = self::_add_prefix( $file_name );
-  $file_name = self::_clean_filename( $ext, $file_name );
-  $file_name = self::_clean_case( $file_name );
-  return $file_name;
-  */
-  if( isset( $GLOBALS['UPLOAD-PLUS-NAMES'][$file_name] ) )
-    return $file_name;
-  global $sep;
-  $ext = self::find_extension($file_name);
-  $utf8 = get_option('uploadplus_utf8toascii');
-  if( $utf8[0] == "1" ):
-    $file_name = self::_utf8_transliteration( $file_name );
   endif;
-
+  $file_name = self::_add_prefix( $file_name );
   $file_name = self::_clean_global( $file_name );
   $file_name = self::_clean_filename( $ext, $file_name );
   $file_name = self::_clean_case( $file_name );
-  $file_name = self::_add_prefix( $file_name );
-  $GLOBALS['UPLOAD-PLUS-NAMES'][$file_name] = 1;
   return $file_name;
  }
 
- /*
  function wp_handle_upload_prefilter( $meta ){
-  $meta['name'] = self::upp_mangle_filename( $meta['name'] );		
+  $meta['name'] = self::upp_mangle_filename( $meta['name'] );   
   return $meta;
  }
- */
-
-
- function wp_handle_upload_prefilter( $arr ){
-    //$name = self::upp_mangle_filename( $arr['name'] );
-    if( isset( $GLOBALS['UPLOAD-PLUS-EXIF'] ) ) unset( $GLOBALS['UPLOAD-PLUS-EXIF'] );
-
-    if ( is_callable('exif_read_data') && $arr['type'] == 'image/jpeg' ) {
-      $exif = exif_read_data($arr['tmp_name'], 0, true);
-      foreach ( array( 'DateTimeDigitized', 'DateTimeOriginal', 'FileDateTime' ) as $key ){
-        if ( isset( $exif['EXIF'][$key] ) && trim( $exif['EXIF'][$key] ) ){
-          $prefix = trim( $exif['EXIF'][$key] );
-        }
-      }
-      if( isset( $prefix ) ){
-        list( $date, $time ) = explode( ' ', $prefix );
-        list( $y, $m, $d ) = explode( ':', $date );
-        $prefix = "{$y}-{$m}-{$d}";
-        $GLOBALS['UPLOAD-PLUS-EXIF'] = $prefix;
-        unset($prefix);
-      }
-    }
-    return $arr;
-  }
-
-
 
  function wp_handle_upload( $array ){             
   global $action;
   $current_name = self::find_filename( $array['file'] );
-  $new_name = self::upp_mangle_filename( $current_name );		
+  $new_name = self::upp_mangle_filename( $current_name );   
 
   $lpath = str_replace( $current_name, '', urldecode( $array['file'] ) );
   $wpath = str_replace( $current_name, '', urldecode( $array['url'] ) );
@@ -274,15 +213,14 @@ class SWER_uploadplus_core {
   $wpath_new = $wpath . $new_name;
   if ( @rename( $array['file'], $lpath_new ) )
     return array(
-  	 'file' => $lpath_new,
-  	 'url' => $wpath_new,
-  	 'type' => $array['type'],
-  	 );
+     'file' => $lpath_new,
+     'url' => $wpath_new,
+     'type' => $array['type'],
+     );
   return $array;
  }
         
  function add_attachment( $post_ID ){
-  /*
   if ( !$post = get_post( $post_ID ) )
     return false;
 
@@ -300,35 +238,18 @@ class SWER_uploadplus_core {
    )
   );
   return $post_ID;
-  */
-
-  $obj = get_post( $post_ID );
-  $title = $obj->post_title;
-  $title = apply_filters( 'upload_plus_add_attachment_title', $title );
-  // Update the post into the database
-  $uploaded_post = array();
-  $uploaded_post['ID'] = $post_ID;
-  $uploaded_post['post_title'] = $title;
-  wp_update_post( $uploaded_post );
-  return $post_ID;
 }
 
-function wp_read_image_metadata( $meta, $file, $sourceImageType ){
+ function wp_read_image_metadata( $meta, $file, $sourceImageType ){
   $current_name = self::find_filename( $file );
   $ext = self::find_extension( $current_name );
   $meta['caption'] = str_replace( array( $ext, '_', '-' ), ' ', $current_name );
   return $meta;
 }
 
-function sanitize_file_name( $filename, $filename_raw = null ){
-    global $sep;
-    $new_name = self::upp_mangle_filename( $filename );
-    if(isset( $GLOBALS['UPLOAD-PLUS-EXIF'] ) ) {
-      $new_name = $GLOBALS['UPLOAD-PLUS-EXIF'].$sep.$new_name;
-      unset( $GLOBALS['UPLOAD-PLUS-EXIF'] );
-    }
-    return $new_name;
-}
+ function sanitize_file_name( $filename, $filename_raw = null ){
+  return $filename;
+ }
 
 }
 

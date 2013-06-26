@@ -7,16 +7,32 @@ class SWER_uploadplus_admin extends SWER_uploadplus_core {
   $test_string = 'αι βασίλης και σύζηγος.jpeg';
   $demo_string = parent::upp_mangle_filename( $test_string );
   ?>
-  <p>The options listed below let you choose how to clean and customize uploads file and post name:<br>
+
+
+  <div style="border:1px solid #eee; padding:.2em .5em; width:20%;" class="alignright">
+    <p><a href="http://wordpress.org/plugins/uploadplus/">UploadPlus</a> is mantained and developed by <a href="http://swergroup.com" target="_blank">SWERgroup</a>, with the help of the open source community.</p>
+
+    <ul>
+      <li><a href="http://wordpress.org/support/plugin/uploadplus/">Support forum on wordpress.org</a>
+      <li><a href="http://github.com/swergroup/uploadplus/">Code repository on Github</a>
+      <li><a href="https://travis-ci.org/swergroup/uploadplus">Build status on Travis CI</a>
+    </ul>
+
+    <p>Found this plugin useful? Would like to thanks developers and support team? Need a new feature? Feel free to <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=K9J3Y78FPD7KW">sponsor a coding session!</a></p>
+  </div>
+
+  <p>UploadPlus will clean and customize your uploads' file and post name with your own style. <!-- You can preview how a file name will be cleaned using this tool: --><br>
   <ul>
       <li><strong>Separator</strong> &mdash; choose your favourite one: dashes, underscores or spaces.</li>
       <li><strong>Case</strong>  &mdash; lower, upper or camel case. Or leave its own.</li>
       <li><strong>Prefix</strong> &mdash; choose a date-based one, a random one, your blogname or a custom one!</li>
       <li><strong>Transliteration</strong> &mdash; convert letters from any charset to ascii! <a href="http://en.wikipedia.org/wiki/Transliteration">Learn More</a></li>
+      <li><strong>Random File Name</strong>  &mdash; Like 0cec62efb8fc492f02a7c7fa80d4989769bf944a.jpg </li>
   </ul>
   </p>
 
-  <p>According to actual options, a file named <code><?php _e( $test_string ); ?></code> would be saved as <code><?php _e( $demo_string ); ?></code></p>
+
+  <p>Test file name: <code><?php _e( $test_string ); ?></code> will be saved as <code><?php _e( $demo_string ); ?></code></p>
   <?php
  }
 

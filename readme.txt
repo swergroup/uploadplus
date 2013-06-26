@@ -2,8 +2,8 @@
 Contributors: swergroup, pixline
 Donate link: https://flattr.com/submit/auto?user_id=swergroup&url=http://wordpress.org/plugins/page2cat/&title=Page2Cat%20WP%20plugin
 Tags: media, filename, filenames, clean, rename, uploads, upload, images, files, security, sanitization, transliteration, utf8, ascii, prefix, custom
-Requires at least: 3.5
-Tested up to: master
+Requires at least: 3.3
+Tested up to: 3.6
 Stable tag: trunk
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -22,20 +22,20 @@ Enter UploadPlus: you can set your rules and clean your files' name while they u
 You can apply website-based or date-based prefix, even a custom prefix. Lowercase or Uppercase? Your choice! 
 Some default prefix:
 
-* day (dd_)
-* month/day	(mmdd_)
-* year/month/day (yyyymmdd_)
-* year/month/day/hour/minutes (yyyymmddhhmm_)
-* year/month/day/hour/minutes/seconds (yyyymmddhhmmss_)
+* day
+* month/day
+* [lots of timestamps]
 * random (mt-rand)
 * unix timestamp
 * and many more!
 
-UploadPlus can also transliterate filenames. You can preview settings in the media settings page without uploading files. 
+UploadPlus can also transliterate filenames (text conversion from a non-latin script to raw latin characters).
+You can preview settings in the media settings page without uploading files. 
 
 = Credits = 
 
-GPL&copy; 2008+ [SWERgroup siti internet Torino](http://swergroup.com/sviluppo/siti-internet-torino/)
+GPL2&copy; 2008+ Paolo Tresso/[SWERgroup](http://swergroup.com/sviluppo/siti-internet-torino/).
+
 
 
 == Frequently Asked Questions ==
@@ -51,6 +51,12 @@ If you rely on this plugin for production websites and you can't have an answer 
 1. Option panel (under Options &raquo; Media)
 
 == Changelog ==
+
+
+= 3.3.0 a1 =
+
+* NEW random filename
+* FIX PHP warnings and strict
 
 = 3.2.1 =
 

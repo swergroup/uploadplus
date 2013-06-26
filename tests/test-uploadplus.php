@@ -28,6 +28,7 @@ class UploadPlusTests extends WP_UnitTestCase {
      $this->assertEquals( '20 anni di viaggi, tu e Lonely Planet | | Tu e Lonely Planet (20120425).png.pdf', $this->plugin->find_filename( '/Users/utente/Sites/20 anni di viaggi, tu e Lonely Planet | | Tu e Lonely Planet (20120425).png.pdf' ), 'Filename not found' );        
  }
 
+ 
  function test_greeklish(){
      $convert = $this->plugin->sanitize_greeklish( 'Αισθάνομαι τυχερός' );
      $this->assertEquals( 'esthanome ticheros', $convert, 'String is not greeklish' );

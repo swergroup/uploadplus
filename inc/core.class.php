@@ -190,7 +190,7 @@ class SWER_uploadplus_core {
 
   $random = get_option( 'uploadplus_random' );
   if( 'on' === $random ):
-    $file_name = sha1( time() ) . '.' . $ext;
+    $file_name = substr( sha1( time() ), 0, 20) . '.' . $ext;
   else:
     $file_name = self::_clean_global( $file_name );
     $file_name = self::_clean_filename( $ext, $file_name );

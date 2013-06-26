@@ -6,7 +6,7 @@ class SWER_uploadplus_core {
  var $sep = '-';
 
  // Based on http://www.freestuff.gr/forums/viewtopic.php?p=194579#194579
- function sanitize_greeklish( $text ) {
+ static function sanitize_greeklish( $text ) {
     #if ( !defined( 'WP_CLI' ) && !is_admin() ) return $text;
 
     $expressions = array(
@@ -62,7 +62,7 @@ class SWER_uploadplus_core {
 
             
  /* find extension */
- function find_extension( $filename ) { 
+ static function find_extension( $filename ) { 
   # $exts = split( '[/\\.]', $filename ); 
   # $n = count( $exts ) - 1; 
   # $exts = $exts[$n]; 
@@ -77,7 +77,7 @@ class SWER_uploadplus_core {
   return $explode[0];
 } 
 
- function _utf8_transliteration( $file_name ){
+ static function _utf8_transliteration( $file_name ){
   #$Ar = new I18N_Arabic('Transliteration');
   #$file_name = trim( I18N_Arabic_Transliteration::ar2en( $file_name ) );
   $file_name = self::sanitize_greeklish( $file_name );
@@ -180,22 +180,29 @@ class SWER_uploadplus_core {
 
 
  /*    sanitize uploaded file name    */
- function upp_mangle_filename( $file_name ){	
+ static function upp_mangle_filename( $file_name ){	
   global $sep;
   $ext = self::find_extension( $file_name );
   $utf8 = get_option( 'uploadplus_utf8toascii' );
   if ( $utf8[0] == '1' ):
     $file_name = self::_utf8_transliteration( $file_name );
 	endif;
-  $file_name = self::_clean_global( $file_name );
-  $file_name = self::_clean_filename( $ext, $file_name );
-  $file_name = self::_clean_case( $file_name );
-  $file_name = self::_add_prefix( $file_name );
+
+  $random = get_option( 'uploadplus_random' );
+  if( 'on' === $random ):
+    $file_name = sha1( time() ) . '.' . $ext;
+  else:
+    $file_name = self::_clean_global( $file_name );
+    $file_name = self::_clean_filename( $ext, $file_name );
+    $file_name = self::_clean_case( $file_name );
+    $file_name = self::_add_prefix( $file_name );
+  endif;
+
   return $file_name;
  }
 
  function wp_handle_upload_prefilter( $meta ){
-  $meta['name'] = self::upp_mangle_filename( $meta['name'] );		
+    $meta['name'] = self::upp_mangle_filename( $meta['name'] );		
   return $meta;
  }
 

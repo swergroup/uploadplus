@@ -4,7 +4,7 @@ Plugin Name: UploadPlus : File Name Cleaner
 Plugin URI: http://wordpress.org/extend/plugins/uploadplus/
 Description: Clean file names and enhance security while uploading. 
 Author: SWERgroup
-Version: 3.3.0-alpha
+Version: 3.3.0-alpha1
 Author URI: http://swergroup.com/
 
 Copyright (C) 2007+ Paolo Tresso / SWERgroup (http://swergroup.com/)
@@ -33,7 +33,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-define( 'UPLOADPLUS_VERSION', '3.3.0-alpha' );
+define( 'UPLOADPLUS_VERSION', '3.3.0-alpha1' );
 define( 'UPLOADPLUS_PATH', plugin_dir_path( __FILE__ ) );
 
 require_once UPLOADPLUS_PATH . '/lib/URLify.php';
@@ -50,9 +50,9 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 function uploadplus_activate(){
  global $wp_version;
  
- if ( version_compare( $wp_version, '3.5', '<=' ) ) {
+ if ( version_compare( $wp_version, '3.3', '<=' ) ) {
       deactivate_plugins( __FILE__ );
-      wp_die( __( 'UploadPlus requires WordPress 3.5 or newer', 'uploadplus' ) . ' (yours: '.$wp_version.')' );
+      wp_die( __( 'UploadPlus requires WordPress 3.3 or newer', 'uploadplus' ) );
   }
 
   if ( ! get_option( 'uploadplus_version' ) )
@@ -107,7 +107,7 @@ if ( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
   function __construct() {
     #$core = new SWER_uploadplus_core();
     add_action( 'admin_init', array( &$this, '_admin_init' ) );
-    add_action( 'wp_handle_upload', array( &$this, 'wp_handle_upload' ) );
+    #add_action( 'wp_handle_upload', array( &$this, 'wp_handle_upload' ) );
     add_action( 'wp_handle_upload_prefilter', array( &$this, 'wp_handle_upload_prefilter' ), 1, 1 );
     add_action( 'add_attachment', array( &$this, 'add_attachment' ) );
     
@@ -135,6 +135,10 @@ if ( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
 
     add_settings_field( 'uploadplus_utf8toascii', 'Transliteration', array( 'SWER_uploadplus_admin', 'upp_options_box_utf8toascii'), 'media', 'upp_options_section' );
     register_setting( 'media', 'uploadplus_utf8toascii' );
+
+    add_settings_field( 'uploadplus_random', 'Random File Name', array( 'SWER_uploadplus_admin', 'upp_options_box_random'), 'media', 'upp_options_section' );
+    register_setting( 'media', 'uploadplus_random' );
+
     /*
     add_settings_field('uploadplus_image_desctiption', 'Image Options', 
         array( 'SWER_uploadplus_admin', 'upp_options_box_image'), 'media', 'upp_options_section');

@@ -125,9 +125,16 @@ class SWER_uploadplus_admin extends SWER_uploadplus_core {
     '1'	=> 'Transliterate UTF8 chars into ASCII',
   );
   foreach ( $options as $uk => $uv ) :
-   if ( $utf8ornot[0] == $uk) $flag = 'checked="checked"'; else $flag = '';
+   $flag = ( $utf8ornot[0] == $uk) ? 'checked="checked"' : '';
    echo '<input type="radio" name="uploadplus_utf8toascii[]" id="uploadplus_utf8toascii-'.$uk.'" value="'.$uk.'" '.$flag.'/>'.$uv.' <br>';
   endforeach;
 }    
+
+
+  static function upp_options_box_random(){
+    $random = get_option( 'uploadplus_random' );
+    $check = ( $random ) ? ' checked="checked" ' : '';
+    echo '<input type="checkbox" name="uploadplus_random" id="uploadplus_random" '.$check.'> <br>';
+  }
 
 }

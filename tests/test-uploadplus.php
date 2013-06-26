@@ -14,11 +14,12 @@ class UploadPlusTests extends WP_UnitTestCase {
  }
 
  function test_plugin_options(){
-     $this->assertEquals( '3.3.0-alpha', $this->plugin->version, 'Option: uploadplus_version does not match.' );
+     $this->assertEquals( '3.3.0-alpha1', $this->plugin->version, 'Option: uploadplus_version does not match.' );
  }
 
  function test_extensions(){
      $this->assertEquals( 'jpeg', $this->plugin->find_extension( 'filename.jpeg' ), 'Extension #1 is wrong' );
+     $this->assertEquals( 'gif', $this->plugin->find_extension( 'some boring file name.gif' ), 'Extension #2 is wrong' );
      $this->assertEquals( 'pdf', $this->plugin->find_extension( '20 anni di viaggi, tu e Lonely Planet | | Tu e Lonely Planet (20120425).png.pdf' ), 'Extension #3 is wrong' );
  }
 
@@ -30,6 +31,13 @@ class UploadPlusTests extends WP_UnitTestCase {
  function test_greeklish(){
      $convert = $this->plugin->sanitize_greeklish( 'Αισθάνομαι τυχερός' );
      $this->assertEquals( 'esthanome ticheros', $convert, 'String is not greeklish' );
+ }
+
+ function test_random(){
+     $filename = "some boring file name.gif";
+     update_option( 'uploadplus_random', 'on' );
+     $res = $this->plugin->upp_mangle_filename( $filename );
+     $this->assertTrue( $res !== $filename );
  }
 
  function test_prefix(){
@@ -72,7 +80,6 @@ class UploadPlusTests extends WP_UnitTestCase {
 
      $test14 = $this->plugin->_add_prefix( $filename, '1', 'custom_' );
      $this->assertEquals( 'custom_'.date( 'd' ).'testfilename.ext', $test14, 'Prefix custom not equal' );
-
 
  }
 

@@ -4,7 +4,7 @@ Plugin Name: UploadPlus : File Name Cleaner
 Plugin URI: http://wordpress.org/extend/plugins/uploadplus/
 Description: Clean file names and enhance security while uploading. 
 Author: SWERgroup
-Version: 3.3.0-b1
+Version: 3.3.0-b2
 Author URI: http://swergroup.com/
 
 Copyright (C) 2007+ Paolo Tresso / SWERgroup (http://swergroup.com/)
@@ -28,7 +28,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-define( 'UPLOADPLUS_VERSION', '3.3.0-b1' );
+define( 'UPLOADPLUS_VERSION', '3.3.0-b2' );
 define( 'UPLOADPLUS_PATH', plugin_dir_path( __FILE__ ) );
 
 require_once UPLOADPLUS_PATH . '/lib/URLify.php';
@@ -114,24 +114,24 @@ if ( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
    * admin initialization
    */
   function _admin_init() {
-    add_settings_section( 'upp_options_section', 'UploadPlus plugin (file name cleaner)', array('SWER_uploadplus_admin', 'upp_options_intro'), 'media' );
+    add_settings_section( 'upp_options_section', __( 'UploadPlus options', 'uploadplus' ), array('SWER_uploadplus_admin', 'upp_options_intro'), 'media' );
 
-    add_settings_field( 'uploadplus_separator', 'Separator', array( 'SWER_uploadplus_admin', 'upp_options_box_cleanlevel'), 'media', 'upp_options_section' );
+    add_settings_field( 'uploadplus_separator', _( 'Separator', 'uploadplus' ), array( 'SWER_uploadplus_admin', 'upp_options_box_cleanlevel'), 'media', 'upp_options_section' );
     register_setting( 'media', 'uploadplus_separator' );
     
-    add_settings_field( 'uploadplus_case', 'Case', array( 'SWER_uploadplus_admin', 'upp_options_box_case'), 'media', 'upp_options_section' );
+    add_settings_field( 'uploadplus_case', __( 'Letter Case', 'uploadplus' ), array( 'SWER_uploadplus_admin', 'upp_options_box_case'), 'media', 'upp_options_section' );
     register_setting( 'media', 'uploadplus_case' );
 
-    add_settings_field( 'uploadplus_prefix', 'Prefix', array( 'SWER_uploadplus_admin', 'upp_options_box_prefix'), 'media', 'upp_options_section' );
+    add_settings_field( 'uploadplus_prefix', __( 'File Prefix', 'uploadplus' ), array( 'SWER_uploadplus_admin', 'upp_options_box_prefix'), 'media', 'upp_options_section' );
     register_setting( 'media', 'uploadplus_prefix' );
 
-    add_settings_field( 'uploadplus_customprefix', 'Custom Prefix', array( 'SWER_uploadplus_admin', 'upp_options_box_customprefix'), 'media', 'upp_options_section' );
+    add_settings_field( 'uploadplus_customprefix', __( 'Custom Prefix', 'uploadplus' ), array( 'SWER_uploadplus_admin', 'upp_options_box_customprefix'), 'media', 'upp_options_section' );
     register_setting( 'media', 'uploadplus_customprefix' );
 
-    add_settings_field( 'uploadplus_utf8toascii', 'Transliteration', array( 'SWER_uploadplus_admin', 'upp_options_box_utf8toascii'), 'media', 'upp_options_section' );
+    add_settings_field( 'uploadplus_utf8toascii', __( 'Transliteration', 'uploadplus' ), array( 'SWER_uploadplus_admin', 'upp_options_box_utf8toascii'), 'media', 'upp_options_section' );
     register_setting( 'media', 'uploadplus_utf8toascii' );
 
-    add_settings_field( 'uploadplus_random', 'Random File Name', array( 'SWER_uploadplus_admin', 'upp_options_box_random'), 'media', 'upp_options_section' );
+    add_settings_field( 'uploadplus_random', __( 'Random File Name', 'uploadplus' ), array( 'SWER_uploadplus_admin', 'upp_options_box_random'), 'media', 'upp_options_section' );
     register_setting( 'media', 'uploadplus_random' );
 
     /*

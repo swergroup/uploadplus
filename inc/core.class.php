@@ -61,11 +61,7 @@ class SWER_uploadplus_core {
 }
 
             
- /* find extension */
  static function find_extension( $filename ) { 
-  # $exts = split( '[/\\.]', $filename ); 
-  # $n = count( $exts ) - 1; 
-  # $exts = $exts[$n]; 
   $check = wp_check_filetype( $filename );
   return $check['ext'];
 } 
@@ -85,6 +81,7 @@ class SWER_uploadplus_core {
   return $file_name;
 }
 
+ /*
  function _clean_filename( $ext, $file_name ){
   $file_name = str_replace( '.'.$ext, '', $file_name );
   $file_name = str_replace( '.', '', $file_name );
@@ -92,7 +89,8 @@ class SWER_uploadplus_core {
   $file_name = preg_replace( '/^\s+|\s+$/', '', $file_name );
   $file_name = $file_name . '.' . $ext;
   return $file_name;
-} 
+  } 
+ */
 
  function _clean_case( $file_name ){
   $case = get_option( 'uploadplus_case' );
@@ -179,7 +177,6 @@ class SWER_uploadplus_core {
  # add_filter('sanitize_file_name', 'make_filename_hash', 10);
 
 
- /*    sanitize uploaded file name    */
  static function upp_mangle_filename( $file_name ){	
   global $sep;
   $ext = self::find_extension( $file_name );
@@ -192,10 +189,10 @@ class SWER_uploadplus_core {
   if( 'on' === $random ):
     $file_name = substr( sha1( time() ), 0, 20) . '.' . $ext;
   else:
-    $file_name = self::_clean_global( $file_name );
-    $file_name = self::_clean_filename( $ext, $file_name );
-    $file_name = self::_clean_case( $file_name );
     $file_name = self::_add_prefix( $file_name );
+    $file_name = sanitize_file_name( $file_name );
+    $file_name = self::_clean_case( $file_name );
+    $file_name = self::_clean_global( $file_name );
   endif;
 
   return $file_name;
@@ -206,6 +203,7 @@ class SWER_uploadplus_core {
   return $meta;
  }
 
+ /*
  function wp_handle_upload( $array ){             
   global $action;
   $current_name = self::find_filename( $array['file'] );
@@ -243,6 +241,7 @@ class SWER_uploadplus_core {
   );
   return $post_ID;
 }
+*/
 
  function wp_read_image_metadata( $meta, $file, $sourceImageType ){
   $current_name = self::find_filename( $file );

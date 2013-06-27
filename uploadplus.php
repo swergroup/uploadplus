@@ -9,14 +9,9 @@ Author URI: http://swergroup.com/
 
 Copyright (C) 2007+ Paolo Tresso / SWERgroup (http://swergroup.com/)
 
-Includes code libraries:
+Included code libraries:
 *   Arabic PHP (LGPL) - http://www.ar-php.org/
 *   URLify (Django PHP port) - https://github.com/jbroadway/urlify/
-
-Hints and code:
-* Francesco Terenzani (http://terenzani.it/)
-* Jennifer Hodgdon (http://www.poplarware.com/)
-* difreo (http://wordpress.org/support/topic/plugin-upload-file-name-suffix?replies=3)
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License

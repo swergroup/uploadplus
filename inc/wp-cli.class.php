@@ -4,23 +4,19 @@
  *
  * @package wp-cli
  */
-class UploadPlus_Tests extends WP_CLI_Command {
+class UploadPlus_Cmds extends WP_CLI_Command{
 
-	/**
-	 * Greeklish test ( "Αισθάνομαι τυχερός" in "esthanome ticheros" )
-	 * 
-	 * @synopsis <string>
-	 */
-	function greeklish( $args, $assoc_args ) {
+ function clean( $args, $assoc_args ) {
 		list( $string ) = $args;
 
-		$convert = SWER_uploadplus_core::sanitize_greeklish( $string );
+    $file_name = SWER_uploadplus_core::_clean_global( $string );
+    $file_name = SWER_uploadplus_core::_clean_case( $file_name );
+    #$file_name = SWER_uploadplus_core::_add_prefix( $file_name );
 
 		// Print a success message
-		WP_CLI::success( 'input: ' . $string . ' | output: ' . $convert );
+		WP_CLI::line( $file_name );
 	}
+
 }
 
-WP_CLI::add_command( 'upp', 'UploadPlus_Tests' );
-
-?>
+WP_CLI::add_command( 'upplus', 'UploadPlus_Cmds' );

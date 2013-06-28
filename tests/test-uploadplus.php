@@ -9,25 +9,19 @@ class UploadPlusTests extends WP_UnitTestCase {
      $this->plugin = $GLOBALS['swer-uploadplus'];
  }
 
- function test_plugin_init(){
+ function test_init(){
      $this->assertFalse( null == $this->plugin );
  }
 
- function test_plugin_options(){
+ function test_version(){
      $this->assertEquals( '3.3.0-b2', $this->plugin->version, 'Option: uploadplus_version does not match.' );
  }
 
  function test_extensions(){
-     $this->assertEquals( 'jpeg', $this->plugin->find_extension( 'filename.jpeg' ), 'Extension #1 is wrong' );
-     $this->assertEquals( 'gif', $this->plugin->find_extension( 'some boring file name.gif' ), 'Extension #2 is wrong' );
-     $this->assertEquals( 'pdf', $this->plugin->find_extension( '20 anni di viaggi, tu e Lonely Planet | | Tu e Lonely Planet (20120425).png.pdf' ), 'Extension #3 is wrong' );
+     $this->assertEquals( 'jpeg', $this->plugin->find_extension( 'filename.jpeg' ), 'Extension #1 is not jpeg' );
+     $this->assertEquals( 'gif', $this->plugin->find_extension( 'some boring file name.gif' ), 'Extension #2 is not gif' );
+     $this->assertEquals( 'pdf', $this->plugin->find_extension( 'Upload+ WordPress plugin || SWERgroup (20120425).png.pdf' ), 'Extension #3 is not PDF' );
  }
-
- function test_filename(){
-     $this->assertEquals( 'filename.jpeg', $this->plugin->find_filename( '/Users/utente/Sites/filename.jpeg' ), 'Filename not found' );        
-     $this->assertEquals( '20 anni di viaggi, tu e Lonely Planet | | Tu e Lonely Planet (20120425).png.pdf', $this->plugin->find_filename( '/Users/utente/Sites/20 anni di viaggi, tu e Lonely Planet | | Tu e Lonely Planet (20120425).png.pdf' ), 'Filename not found' );        
- }
-
  
  function test_greeklish(){
      $convert = $this->plugin->sanitize_greeklish( 'Αισθάνομαι τυχερός' );
@@ -35,10 +29,13 @@ class UploadPlusTests extends WP_UnitTestCase {
  }
 
  function test_random(){
-     $filename = "some boring file name.gif";
+     $filename = "some boring, long and stupid file name.gif";
      update_option( 'uploadplus_random', 'on' );
      $res = $this->plugin->upp_mangle_filename( $filename );
      $this->assertTrue( $res !== $filename );
+
+     $name = str_replace( '.gif', '', $res );
+     $this->assertTrue( strlen( $name ) == 20, 'Random file name should be 20 characters long + extension.' );
  }
 
  function test_prefix(){

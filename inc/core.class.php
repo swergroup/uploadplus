@@ -71,7 +71,7 @@ class SWER_uploadplus_core {
 	}
 
 	/**
-	* find file extension (legacy code, should be removed)
+	* find file extension (legacy code)
 	* @deprecated
 	*/
 	static function find_extension( $filename ) { 
@@ -80,7 +80,7 @@ class SWER_uploadplus_core {
 	} 
 
 	/**
-	* find file name without extension (legacy code, should be removed)
+	* find file name without extension (legacy code)
 	* @deprecated
 	*/
 	function find_filename( $filename ) { 
@@ -177,27 +177,48 @@ class SWER_uploadplus_core {
 		$custom  = ( $custom == '' ) ? get_option( 'uploadplus_customprefix' ) : $custom;
 
 		switch ( $options ):
-		case '1':		$file_name = date( 'd' ) . $sep . $file_name;			break;
-		case '2':		$file_name = date( 'md' ) . $sep . $file_name;		break;
-		case '3':		$file_name = date( 'ymd' ) . $sep . $file_name;		break;
-		case '4':		$file_name = date( 'Ymd' ) . $sep . $file_name;		break;
-		case '5':		$file_name = date( 'YmdHi' ).$sep . $file_name;		break;
-		case '6':		$file_name = date( 'YmdHis' ).$sep . $file_name;	break;
-		case '7':		$file_name = date( 'U' ) . $sep . $file_name;			break;
-		case '8':		$file_name = mt_rand() . $sep . $file_name;			  break;
-		case '9':		$file_name = md5( mt_rand() ) . $sep . $file_name;	break;
-		case '10':	$file_name = str_replace( array( '.', '_', '-', ' ' ) ,$sep,  get_bloginfo( 'name' ) ) . $sep . $file_name; break;
-		case 'A':		$file_name = str_replace( array( '.', '_', '-', ' ' ) ,'', get_bloginfo( 'name' ) ) . $sep . $file_name;	break;
-		case 'B':
-			$uploads = wp_upload_dir();
-			$dir = ( $uploads['path'] );
-			$filename = wp_unique_filename( $dir, $file_name, $unique_filename_callback = null );
-			$file_name = $filename;
-			break;
-
-		default: 
-			$file_name = $file_name; 
-			break;
+			case '1':	
+				$file_name = date( 'd' ) . $sep . $file_name;
+				break;
+			case '2':
+				$file_name = date( 'md' ) . $sep . $file_name;
+				break;
+			case '3':
+				$file_name = date( 'ymd' ) . $sep . $file_name;
+				break;
+			case '4':
+				$file_name = date( 'Ymd' ) . $sep . $file_name;
+				break;
+			case '5':
+				$file_name = date( 'YmdHi' ).$sep . $file_name;
+				break;
+			case '6':
+				$file_name = date( 'YmdHis' ).$sep . $file_name;
+				break;
+			case '7':
+				$file_name = date( 'U' ) . $sep . $file_name;
+				break;
+			case '8':
+				$file_name = mt_rand() . $sep . $file_name;
+				break;
+			case '9':
+				$file_name = md5( mt_rand() ) . $sep . $file_name;
+				break;
+			case '10':
+				$file_name = str_replace( array( '.', '_', '-', ' ' ) ,$sep,  get_bloginfo( 'name' ) ) . $sep . $file_name;
+				break;
+			case 'A':
+				$file_name = str_replace( array( '.', '_', '-', ' ' ) ,'', get_bloginfo( 'name' ) ) . $sep . $file_name;
+				break;
+			case 'B':
+				$uploads = wp_upload_dir();
+				$dir = ( $uploads['path'] );
+				$filename = wp_unique_filename( $dir, $file_name, $unique_filename_callback = null );
+				$file_name = $filename;
+				break;
+			default: 
+				$file_name = $file_name; 
+				break;
 
 		endswitch;
 

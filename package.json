@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "ssh://git@bitbucket.org/swergroup/wp-uploadplus.git"
+    "url": "ssh://git@github.com:swergroup/uploadplus.git"
   },
   "keywords": [
     "wp",

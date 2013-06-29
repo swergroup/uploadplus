@@ -2,7 +2,11 @@
 
 require_once( 'inc/core.class.php' );
 
-class UploadPlusTests extends WP_UnitTestCase {
+class UploadPlus_Unit_Tests extends WP_UnitTestCase {
+
+ function test_true(){
+     $this->assertTrue( true );
+ }
 
  function setup(){
      parent::setUp();

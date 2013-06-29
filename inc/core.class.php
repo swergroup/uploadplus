@@ -326,28 +326,25 @@ if ( @rename( $array['file'], $lpath_new ) )
 	 );
 return $array;
 }
-			
-function add_attachment( $post_ID ){
-if ( !$post = get_post( $post_ID ) )
-	return false;
 
-global $wpdb;
-$post = get_post( $post_ID );
-$ext = self::find_extension( $post->post_title );
-# $post_title = self::upp_mangle_filename($post->post_title);
-$post_title = str_replace( array( '-', '_'), ' ', $post->post_title );
-$wpdb->query(
- $wpdb->prepare(
-	"UPDATE $wpdb->posts SET post_title='%s', post_name='%s' WHERE ID ='%d' LIMIT 1;", 
-	$post_title, 
-	$post_title, 
-	$post_ID
- )
-);
-return $post_ID;
-}
 */
 
+	function add_attachment( $post_ID ){
+		if ( false == get_post( $post_ID ) )
+			return false;
+
+		$obj   = get_post( $post_ID );
+		$title = $obj->post_title;
+		$title = apply_filters( 'uploadplus_add_attachment_title', $title );
+
+		// Update the post into the database
+		$uploaded_post = array();
+		$uploaded_post['ID'] = $post_ID;
+		$uploaded_post['post_title'] = $title;
+		wp_update_post( $uploaded_post );
+
+		return $post_ID;
+	}
 
 }
 

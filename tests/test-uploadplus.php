@@ -38,6 +38,10 @@ class UploadPlus_Unit_Tests extends WP_UnitTestCase {
 
  }
 
+ function test_post_title_filter(){
+     
+ }
+
  function test_random(){
      update_option( 'uploadplus_random', 'on' );
      $filename = 'some boring, long and stupid file name.gif';

@@ -29,9 +29,13 @@ class UploadPlus_Unit_Tests extends WP_UnitTestCase {
  }
 */
 
- function test_greeklish(){
-     $convert = $this->plugin->sanitize_greeklish( 'Αισθάνομαι τυχερός' );
-     $this->assertEquals( 'esthanome ticheros', $convert, 'String is not greeklish' );
+ function test_transliteration(){
+     $convert = $this->plugin->_utf8_transliteration( 'Αισθάνομαι τυχερός' );
+     $this->assertEquals( 'esthanome ticheros', $convert, 'Greek string is not converted' );
+
+     $convert2 = $this->plugin->_utf8_transliteration( 'زيدان أجمل اللقطات في دقيقتين' );
+     $this->assertEquals( 'Zydan Ajml Al-Lqtat Fy Dqyqtyn', $convert2, 'Arabic string is not converted' );
+
  }
 
  function test_random(){

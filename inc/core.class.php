@@ -95,8 +95,10 @@ class SWER_uploadplus_core {
 	* @return string  transliterated filename 
 	*/
 	static function _utf8_transliteration( $file_name ){
-		#$Ar = new I18N_Arabic('Transliteration');
-		#$file_name = trim( I18N_Arabic_Transliteration::ar2en( $file_name ) );
+		if ( ! class_exists( 'I18N_Arabic_Transliteration' ) ) 
+			$arabic = new I18N_Arabic( 'Transliteration' );
+
+		$file_name = trim( I18N_Arabic_Transliteration::ar2en( $file_name ) );
 		$file_name = self::sanitize_greeklish( $file_name );
 		$file_name = URLify::downcode( $file_name ); 
 		return $file_name;
@@ -118,7 +120,7 @@ class SWER_uploadplus_core {
 	* @param string   $file_name file name to convert
 	* @return string  converted filename 
 	*/
-	function _clean_case( $file_name ){
+	static function _clean_case( $file_name ){
 		$case = get_option( 'uploadplus_case' );
 		switch ( $case[0] ):
 		case '1' :
@@ -143,10 +145,12 @@ class SWER_uploadplus_core {
 	* @param string   $file_name file name to convert
 	* @return string  converted filename 
 	*/
-	function _clean_global( $file_name ){
+	static function _clean_global( $file_name ){
 		global $sep;
 		$cleanlevel = get_option( 'uploadplus_separator' );
-		switch ( $cleanlevel[0] ):
+		$level = isset( $cleanlevel[0] ) ? $cleanlevel[0] : 'dash';
+
+		switch ( $level ):
 			case 'dash' :
 			default:
 				$file_name = preg_replace( '/[-\s]+/', '-', $file_name );

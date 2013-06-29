@@ -14,6 +14,20 @@ class UploadPlus_Cmds extends WP_CLI_Command{
 		WP_CLI::line( $file_name );
 	}
 
+	function convert( $args ) {
+		list( $string ) = $args;
+		$file_name = SWER_uploadplus_core::_utf8_transliteration( $string );
+		WP_CLI::line( $file_name );
+	}
+
+	function full( $args ) {
+		list( $string ) = $args;
+		$file_name = SWER_uploadplus_core::_clean_global( $string );
+		$file_name = SWER_uploadplus_core::_clean_case( $file_name );
+		$file_name = SWER_uploadplus_core::_utf8_transliteration( $string );
+		WP_CLI::line( $file_name );
+	}
+
 }
 
 WP_CLI::add_command( 'upplus', 'UploadPlus_Cmds' );

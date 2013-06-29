@@ -121,7 +121,7 @@ if ( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
 		function _admin_init() {
 			add_settings_section( 'upp_options_section', __( 'UploadPlus options', 'uploadplus' ), array( 'SWER_uploadplus_admin', 'upp_options_intro' ), 'media' );
 
-			add_settings_field( 'uploadplus_separator', _( 'Separator', 'uploadplus' ), array( 'SWER_uploadplus_admin', 'upp_options_box_cleanlevel' ), 'media', 'upp_options_section' );
+			add_settings_field( 'uploadplus_separator', __( 'Separator', 'uploadplus' ), array( 'SWER_uploadplus_admin', 'upp_options_box_cleanlevel' ), 'media', 'upp_options_section' );
 			register_setting( 'media', 'uploadplus_separator' );
 			
 			add_settings_field( 'uploadplus_case', __( 'Letter Case', 'uploadplus' ), array( 'SWER_uploadplus_admin', 'upp_options_box_case' ), 'media', 'upp_options_section' );

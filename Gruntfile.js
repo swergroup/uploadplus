@@ -48,6 +48,13 @@ module.exports = function (grunt) {
           stdout: true,
           failOnError: false
         }
+      },
+      'phpmd': {
+        command: '/usr/bin/phpmd inc,uploadplus.php text codesize,design,naming,unusedcode',
+        options: {
+          stdout: true,
+          failOnError: false
+        }
       }
     }
 
@@ -59,8 +66,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-phpdocumentor');
     grunt.loadNpmTasks('grunt-shell');
 
-    grunt.registerTask( 'docs' , [ 'phpdocumentor' ] );
-    grunt.registerTask( 'lint' , [ 'phpcs', 'phplint' ] );
+    grunt.registerTask( 'docs' , [ 'shell:phpdoc' ] );
+    grunt.registerTask( 'lint' , [ 'phpcs', 'phplint', 'shell:phpmd' ] );
     grunt.registerTask( 'test' , [ 'shell:phpunit' ] );
     grunt.registerTask( 'default' , [ 'lint', 'test' ] );
 

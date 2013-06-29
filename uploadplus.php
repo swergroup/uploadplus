@@ -111,8 +111,8 @@ if ( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
 			add_action( 'wp_handle_upload_prefilter', array( &$this, 'wp_handle_upload_prefilter' ), 1, 1 );
 			add_action( 'add_attachment', array( &$this, 'add_attachment' ) );
 			
-			#add_filter( 'wp_read_image_metadata' , array( 'SWER_uploadplus_core','wp_read_image_metadata'), 1, 3);
-			add_filter( 'sanitize_file_name', array( &$this, 'sanitize_file_name' ) );
+			add_filter( 'wp_read_image_metadata', array( 'SWER_uploadplus_core', 'wp_read_image_metadata' ), 1, 2 );
+			#add_filter( 'sanitize_file_name', array( &$this, 'sanitize_file_name' ) );
 		}
 
 		/**

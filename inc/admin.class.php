@@ -104,7 +104,7 @@ class SWER_uploadplus_admin extends SWER_uploadplus_core {
 	 */
 	static function upp_options_box_prefix(){
 		global $sep;
-		$clean  = get_option( 'uploadplus_separator' );
+		#$clean  = get_option( 'uploadplus_separator' );
 		$prefix = get_option( 'uploadplus_prefix' );
 
 		$datebased = array(

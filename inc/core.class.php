@@ -70,24 +70,24 @@ class SWER_uploadplus_core {
 		return $text;
 	}
 
-	/**
+	/*
 	* find file extension (legacy code)
 	* @deprecated
-	*/
 	static function find_extension( $filename ) { 
 		$check = wp_check_filetype( $filename );
 		return $check['ext'];
 	} 
+	*/
 
-	/**
+	/*
 	* find file name without extension (legacy code)
 	* @deprecated
-	*/
 	function find_filename( $filename ) { 
 		$explode = explode( '/', $filename );
 		$explode = array_reverse( $explode );
 		return $explode[0];
 	} 
+	*/
 
 	/**
 	* wrapper around (future) multiple transliteration logics
@@ -211,9 +211,9 @@ class SWER_uploadplus_core {
 				$file_name = str_replace( array( '.', '_', '-', ' ' ) ,'', get_bloginfo( 'name' ) ) . $sep . $file_name;
 				break;
 			case 'B':
-				$uploads = wp_upload_dir();
+				$uploads   = wp_upload_dir();
 				$dir = ( $uploads['path'] );
-				$filename = wp_unique_filename( $dir, $file_name, $unique_filename_callback = null );
+				$filename  = wp_unique_filename( $dir, $file_name, null );
 				$file_name = $filename;
 				break;
 			default: 
@@ -250,9 +250,10 @@ class SWER_uploadplus_core {
 	* @return string  clean filename 
 	*/
 	static function upp_mangle_filename( $file_name ){	
-		global $sep;
-		$ext  = self::find_extension( $file_name );
-		$utf8 = get_option( 'uploadplus_utf8toascii' );
+		# $ext  = self::find_extension( $file_name );
+		$check = wp_check_filetype( $file_name );
+		$ext   = $check['ext'];
+		$utf8  = get_option( 'uploadplus_utf8toascii' );
 		if ( $utf8[0] == '1' ):
 			$file_name = self::_utf8_transliteration( $file_name );
 		endif;
@@ -286,19 +287,22 @@ class SWER_uploadplus_core {
 	* @param string $sourceImageType
 	* @return array
 	*/
-	function wp_read_image_metadata( $meta, $file, $sourceImageType ){
-		$cur = self::find_filename( $file );
-		$ext = self::find_extension( $cur );
+	function wp_read_image_metadata( $meta, $file ){
+		$check = wp_check_filetype( $file );
+		$ext = $check['ext'];
+		$cur = str_replace( '.'.$ext, '', $file );
 		$meta['caption'] = str_replace( array( $ext, '_', '-' ), ' ', $cur );
+		// todo: EXIF here?
 		return $meta;
 	}
 
-	/**
+	/*
 	* @deprecated
-	*/
 	function sanitize_file_name( $filename, $filename_raw = null ){
 		return $filename;
 	}
+	*/
+
 
 /*
 function wp_handle_upload( $array ){             

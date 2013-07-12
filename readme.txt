@@ -1,6 +1,6 @@
 === UploadPlus : File Name Cleaner ===
 Contributors: pixline, swergroup
-Donate link: http://bit.ly/16Dot0b
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RZK9B63D336MJ
 Tags: upload, uploads, file, media, filename, clean, rename, images, files, security, sanitization, transliteration, utf8, ascii, prefix, custom, random, options, settings, admin, multisite
 Requires at least: 3.3
 Tested up to: 3.6

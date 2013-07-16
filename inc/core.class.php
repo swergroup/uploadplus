@@ -13,6 +13,8 @@ class SWER_uploadplus_core {
 	*/
 	var $sep = '-';
 
+	var $exif_mime = array( 'image/jpeg', 'image/tiff' );
+
 	/**
 	* transliterate greek script into english characters
 	* @link http://www.freestuff.gr/forums/viewtopic.php?p=194579#194579
@@ -275,12 +277,38 @@ class SWER_uploadplus_core {
 	}
 
 	/**
-	* apply master function to the proper action hook
+	* Apply cleaning methods
+	* 
+	* 
 	* @param array $meta upload meta
 	* @return array
 	*/
 	function wp_handle_upload_prefilter( $meta ){
+		// clean filename
 		$meta['name'] = self::upp_mangle_filename( $meta['name'] );		
+
+		// check for EXIF malware
+		if ( in_array( $meta['type'], $this->exif_mime ) ):
+			$exif_data = exif_read_data( $meta['tmp_name'], 0, true );
+
+			// http://blog.sucuri.net/?p=7654
+			if ( isset( $exif_data['IFD0']['Model'] ) )
+				preg_match( '/\b(base64_decode|eval)\b/i', $exif_data['IFD0']['Model'], $matches );
+
+			if (
+				isset( $exif_data['IFD0']['Make'] ) &&
+				'/.*/e' === $exif_data['IFD0']['Make'] &&
+				0 < count( $matches ) 
+				):
+					$meta['error'] = 8;
+
+					error_log( 'EXIF malware detected! Check http://blog.sucuri.net/?p=7654 for details. ' . "\n" . json_encode( array( $meta, $exif_data ) ) );
+
+					if ( isset( $_POST['html-upload'] ) )
+						wp_die( 'EXIF malware detected! Check http://blog.sucuri.net/?p=7654 for details.', 'EXIF malware detected' );
+			endif;
+		endif;
+
 		return $meta;
 	}
 
@@ -296,7 +324,6 @@ class SWER_uploadplus_core {
 		$ext = $check['ext'];
 		$cur = str_replace( '.'.$ext, '', $file );
 		$meta['caption'] = str_replace( array( $ext, '_', '-' ), ' ', $cur );
-		// todo: EXIF here?
 		return $meta;
 	}
 

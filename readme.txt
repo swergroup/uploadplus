@@ -54,14 +54,13 @@ We do our best to support the plugin on [support forum](http://wordpress.org/sup
 
 = 3.3.0 =
 
-(30/06/2013)
 * NEW random filename option
-* NEW WP compatibility tests (3.3.x, 3.4.x, 3.5.x, 3.6 master)
-* NEW PHP compatibility tests (5.2, 5.3, 5.4, 5.5)
-* NEW Codesniffer + PHPlint pre-commit routines
-* NEW PHPdoc descriptions
-* FIX PHP warnings and strict
-* FIX WP PHP coding styles
+* NEW Wider WP compatibility tests (3.3.x, 3.4.x, 3.5.x, 3.6)
+* NEW Wider PHP compatibility tests (5.2, 5.3, 5.4, 5.5)
+* DEV Codesniffer + PHPlint pre-commit routines
+* DEV PHPdoc descriptions
+* DEV Fix PHP warnings and strict
+* DEV Fix WP coding styles
 
 = 3.2.1 =
 

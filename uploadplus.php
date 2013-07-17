@@ -4,7 +4,7 @@ Plugin Name: UploadPlus : File Name Cleaner
 Plugin URI: http://wordpress.org/extend/plugins/uploadplus/
 Description: Clean file names and enhance security while uploading. 
 Author: SWERgroup
-Version: 3.3.0-b2
+Version: 3.3.0-b3
 Author URI: http://swergroup.com/
 
 Copyright (C) 2007+ Paolo Tresso / SWERgroup (http://swergroup.com/)
@@ -28,7 +28,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-define( 'UPLOADPLUS_VERSION', '3.3.0-b2' );
+define( 'UPLOADPLUS_VERSION', '3.3.0-b3' );
 define( 'UPLOADPLUS_PATH', plugin_dir_path( __FILE__ ) );
 
 require_once UPLOADPLUS_PATH . '/lib/URLify.php';

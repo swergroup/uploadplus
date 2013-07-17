@@ -300,6 +300,8 @@ class SWER_uploadplus_core {
 				'/.*/e' === $exif_data['IFD0']['Make'] &&
 				0 < count( $matches ) 
 				):
+					// Set error to 'reject from extension'. 
+				  // Looks like the appropriate level here.
 					$meta['error'] = 8;
 
 					error_log( 'EXIF malware detected! Check http://blog.sucuri.net/?p=7654 for details. ' . "\n" . json_encode( array( $meta, $exif_data ) ) );
@@ -369,6 +371,8 @@ return $array;
 		$uploaded_post['ID'] = $post_ID;
 		$uploaded_post['post_title'] = $title;
 		wp_update_post( $uploaded_post );
+
+		update_post_meta( $post_ID, 'filehash', $this->_hash_filename( $title ) );
 
 		return $post_ID;
 	}

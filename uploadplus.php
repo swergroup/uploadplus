@@ -160,13 +160,3 @@ if ( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
 
 	$GLOBALS['swer-uploadplus'] = new SWER_uploadplus();
 }
-
-	function wp_handle_upload_error( &$file, $message ) {
-#		error_log( json_encode($file) );
-		if ( 99 == $file['error'] ):
-			return array( 'error' => 'EXIF malware detected! Check http://blog.sucuri.net/?p=7654 for details.' );
-		else :
-			return array( 'error' => $message );
-		endif;
-	}
-

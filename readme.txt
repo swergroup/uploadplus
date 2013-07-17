@@ -1,7 +1,7 @@
 === UploadPlus : File Name Cleaner ===
 Contributors: pixline, swergroup
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RZK9B63D336MJ
-Tags: upload, uploads, file, media, filename, clean, rename, images, files, security, sanitization, transliteration, utf8, ascii, prefix, custom, random, options, settings, admin, multisite
+Tags: uploads, images, image, custom, random, security, sanitization, transliteration, 
 Requires at least: 3.3
 Tested up to: 3.6
 Stable tag: trunk
@@ -12,8 +12,9 @@ Clean file names and enhance security while uploading.
 
 == Description ==
 
-Filenames on the web are different than those on the desktop. Empty spaces and strange characters doesn't belong to web space.
-Enter UploadPlus: you can set your rules and clean your files' name while they upload. Three basic rules:
+*NEW: [EXIF header malware/backdoor](http://blog.sucuri.net/?p=7654) sanitization!*
+
+Filenames on the web are different than those on the desktop. Empty spaces and strange characters doesn't belong to web space. Enter UploadPlus: you can set your rules and clean your files' name while they upload. Three basic rules:
 
 * keep only alphanumeric [A-Za-z] and digits, spaces and strange characters stripped out;
 * convert spaces and strange characters into dashes (-)
@@ -30,21 +31,18 @@ Some default prefix:
 UploadPlus can also transliterate filenames (text conversion from a non-latin script to raw latin characters).
 You can preview settings in the media settings page without uploading files. 
 
-= Contribute = 
 
-Found this plugin useful? Would like to say thanks to developers or support team? Need a new feature? Feel free to [sponsor a coding/support session](http://bit.ly/16Dot0b)!
+= Support = 
+
+We'll do our best to support the plugin on [support forum](http://wordpress.org/support/plugin/page2cat). Paid support and custom coding options are available on [Codeable.io](https://codeable.io) (if you want the plugin author take direct care of your issue, ask for pixline in the subject!).
+
+Found this plugin useful? Would like to say thanks to developers or support team? Need a new feature? Feel free to [sponsor a coding/support session](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RZK9B63D336MJ
+)!
 
 = Credits = 
 
 GPL2&copy; 2008+ Paolo Tresso/[SWERgroup](http://swergroup.com/sviluppo/siti-internet-torino/).
 
-
-
-== Frequently Asked Questions ==
-
-= Is this plugin supported? =
-
-We do our best to support the plugin on [support forum](http://wordpress.org/support/plugin/page2cat), even if we can't guarantee response time. If you need a professional support option please get in touch with our [helpdesk](http://swergroup.zendesk.com).
 
 == Screenshots ==
 

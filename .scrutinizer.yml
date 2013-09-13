@@ -13,6 +13,5 @@ tools:
     php_mess_detector: true
     php_pdepend:
         excluded_dirs: [tests, lib]
-    php_analyzer:
-        excluded_dirs: [tests, lib]
+    php_analyzer: true
     sensiolabs_security_checker: true

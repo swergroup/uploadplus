@@ -59,7 +59,8 @@ class SWER_uploadplus_admin extends SWER_uploadplus_core {
 
 	echo '<p>';
 	foreach ( $styles as $key => $info ) : 
-		if ( $actual[0] == $key ) $flag = 'checked="checked"'; else $flag = '';
+		$flag = checked( $key, $actual[0], false );
+		#if ( $actual[0] == $key ) $flag = 'checked="checked"'; else $flag = '';
 		echo '
 		<input type="radio" name="uploadplus_separator[]" id="uploadplus_style-'.$key.'" '.$flag.' value="'.$key.'"/>
 		'.$info.'<br>
@@ -80,11 +81,7 @@ class SWER_uploadplus_admin extends SWER_uploadplus_core {
 			'3' => __( 'CamelCase', 'uploadplus' ),
 		);
 		foreach ( $cases as $ca => $se ):
-			if ( $case[0] == $ca ):
-				$flag = 'checked="checked"';
-			else :
-				$flag = '';
-			endif;
+			$flag = checked( $ca, $case[0], false );
 			echo '<p><input type="radio" name="uploadplus_case[]" id="uploadplus_lettercase-'.$ca.'" value="'.$ca.'" '.$flag.'/>'.$se.'</p>';
 		endforeach;
 	}

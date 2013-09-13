@@ -18,7 +18,7 @@ class UploadPlus_Unit_Tests extends WP_UnitTestCase {
  }
 
  function test_version(){
-     $this->assertEquals( '3.3.0-b2', $this->plugin->version, 'Option: uploadplus_version does not match.' );
+     $this->assertEquals( '3.3.0-b3', $this->plugin->version, 'Option: uploadplus_version does not match.' );
  }
 
 /*

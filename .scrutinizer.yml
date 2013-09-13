@@ -1,0 +1,14 @@
+filter:
+    excluded_paths: [tests/*, assets/*, lib/*]
+
+tools:
+    php_cpd: true
+    php_pdepend:
+        excluded_dirs: [tests, lib]
+    php_code_coverage: false
+    php_code_sniffer: true
+    php_loc: true
+    php_mess_detector: true
+    php_pdepend: true
+    php_analyzer: true
+    sensiolabs_security_checker: true

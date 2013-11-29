@@ -52,12 +52,13 @@ GPL2&copy; 2008+ Paolo Tresso/[SWERgroup](http://swergroup.com/sviluppo/siti-int
 
 = 3.3.1 =
 
+(01/12/2013)
+
+* NEW built-in EXIF malware check (http://blog.sucuri.net/?p=7654)
 * NEW username prefix option
 * NEW random filename option
 * NEW Wider WP compatibility tests (3.3.x, 3.4.x, 3.5.x, 3.6)
 * NEW Wider PHP compatibility tests (5.2, 5.3, 5.4, 5.5)
-
-= 3.3.0 =
 
 * DEV Codesniffer + PHPlint pre-commit routines
 * DEV PHPdoc descriptions

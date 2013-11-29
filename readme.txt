@@ -1,9 +1,9 @@
 === UploadPlus : File Name Cleaner ===
 Contributors: pixline, swergroup
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RZK9B63D336MJ
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CX6VQ6FVJFN4L
 Tags: uploads, images, image, custom, random, security, sanitization, transliteration, 
 Requires at least: 3.3
-Tested up to: 3.6
+Tested up to: 3.7.1
 Stable tag: trunk
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -34,10 +34,9 @@ You can preview settings in the media settings page without uploading files.
 
 = Support = 
 
-We'll do our best to support the plugin on [support forum](http://wordpress.org/support/plugin/page2cat). Paid support and custom coding options are available on [Codeable.io](https://codeable.io) (if you want the plugin author take direct care of your issue, ask for pixline in the subject!).
+We'll do our best to support the plugin on [support forum](http://wordpress.org/support/plugin/page2cat). Paid support and custom coding options are available on the [SWERgroup HelpDesk](https://swergroup.zendesk.com).
 
-Found this plugin useful? Would like to say thanks to developers or support team? Need a new feature? Feel free to [sponsor a coding/support session](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RZK9B63D336MJ
-)!
+If you found this plugin useful or need a new feature feel free to [sponsor a coding/support session](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CX6VQ6FVJFN4L)!
 
 = Credits = 
 

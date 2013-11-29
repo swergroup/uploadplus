@@ -20,7 +20,7 @@ class SWER_uploadplus_admin extends SWER_uploadplus_core {
 				
 			<p>
 				<a href="http://wordpress.org/support/plugin/uploadplus/"><?php _e( 'Support forum on wordpress.org', 'uploadplus' ); ?></a> &bull; <a href="http://github.com/swergroup/uploadplus/"><?php _e( 'Code repository on Github', 'uploadplus' ); ?></a>
- &bull; <a href="https://travis-ci.org/swergroup/uploadplus"><?php _e( 'Build status on Travis CI', 'uploadplus' ); ?></a>
+ 			 &bull; <a href="https://travis-ci.org/swergroup/uploadplus"><?php _e( 'Build status on Travis CI', 'uploadplus' ); ?></a>
 			</p>
 
 			</div>

@@ -153,19 +153,19 @@ class SWER_uploadplus_core {
 		$level = isset( $cleanlevel[0] ) ? $cleanlevel[0] : 'dash';
 
 		switch ( $level ):
-			case 'dash' :
-			default:
-				$file_name = preg_replace( '/[-\s]+/', '-', $file_name );
-				$sep = '-';
-				break;
-			case 'space' :
-				$file_name = preg_replace( '/[-\s]+/', ' ', $file_name );
-				$sep = ' ';
-				break;
-			case 'underscore':
-				$file_name = preg_replace( '/[-\s]+/', '_', $file_name );
-				$sep = '_';
-				break;
+		case 'dash' :
+		default:
+			$file_name = preg_replace( '/[-\s]+/', '-', $file_name );
+			$sep = '-';
+			break;
+		case 'space' :
+			$file_name = preg_replace( '/[-\s]+/', ' ', $file_name );
+			$sep = ' ';
+			break;
+		case 'underscore':
+			$file_name = preg_replace( '/[-\s]+/', '_', $file_name );
+			$sep = '_';
+			break;
 		endswitch;
 		return $file_name;
 	}
@@ -183,55 +183,54 @@ class SWER_uploadplus_core {
 		$custom  = ( $custom == '' ) ? get_option( 'uploadplus_customprefix' ) : $custom;
 
 		switch ( $options ):
-			case '1':	
-				$file_name = date( 'd' ) . $sep . $file_name;
-				break;
-			case '2':
-				$file_name = date( 'md' ) . $sep . $file_name;
-				break;
-			case '3':
-				$file_name = date( 'ymd' ) . $sep . $file_name;
-				break;
-			case '4':
-				$file_name = date( 'Ymd' ) . $sep . $file_name;
-				break;
-			case '5':
-				$file_name = date( 'YmdHi' ).$sep . $file_name;
-				break;
-			case '6':
-				$file_name = date( 'YmdHis' ).$sep . $file_name;
-				break;
-			case '7':
-				$file_name = date( 'U' ) . $sep . $file_name;
-				break;
-			case '8':
-				$file_name = mt_rand() . $sep . $file_name;
-				break;
-			case '9':
-				$file_name = md5( mt_rand() ) . $sep . $file_name;
-				break;
-			case '10':
-				$file_name = str_replace( array( '.', '_', '-', ' ' ) ,$sep,  get_bloginfo( 'name' ) ) . $sep . $file_name;
-				break;
-			case 'A':
-				$file_name = str_replace( array( '.', '_', '-', ' ' ) ,'', get_bloginfo( 'name' ) ) . $sep . $file_name;
-				break;
-			case 'B':
-				$uploads   = wp_upload_dir();
-				$dir = ( $uploads['path'] );
-				$filename  = wp_unique_filename( $dir, $file_name, null );
-				$file_name = $filename;
-				break;
-			default: 
-				$file_name = $file_name; 
-				break;
-
+		case '1':	
+			$file_name = date( 'd' ) . $sep . $file_name;
+			break;
+		case '2':
+			$file_name = date( 'md' ) . $sep . $file_name;
+			break;
+		case '3':
+			$file_name = date( 'ymd' ) . $sep . $file_name;
+			break;
+		case '4':
+			$file_name = date( 'Ymd' ) . $sep . $file_name;
+			break;
+		case '5':
+			$file_name = date( 'YmdHi' ).$sep . $file_name;
+			break;
+		case '6':
+			$file_name = date( 'YmdHis' ).$sep . $file_name;
+			break;
+		case '7':
+			$file_name = date( 'U' ) . $sep . $file_name;
+			break;
+		case '8':
+			$file_name = mt_rand() . $sep . $file_name;
+			break;
+		case '9':
+			$file_name = md5( mt_rand() ) . $sep . $file_name;
+			break;
+		case '10':
+			$file_name = str_replace( array( '.', '_', '-', ' ' ) ,$sep,  get_bloginfo( 'name' ) ) . $sep . $file_name;
+			break;
+		case 'A':
+			$file_name = str_replace( array( '.', '_', '-', ' ' ) ,'', get_bloginfo( 'name' ) ) . $sep . $file_name;
+			break;
+		case 'B':
+			$uploads   = wp_upload_dir();
+			$dir = ( $uploads['path'] );
+			$filename  = wp_unique_filename( $dir, $file_name, null );
+			$file_name = $filename;
+			break;
+		default: 
+			$file_name = $file_name; 
+			break;
 		endswitch;
 
 		if ( $custom !== '' ):
-				$return_file_name = $custom.$file_name;
+			$return_file_name = $custom.$file_name;
 		else :
-				$return_file_name = $file_name;
+			$return_file_name = $file_name;
 		endif;
 		return $return_file_name;
 	}
@@ -301,7 +300,7 @@ class SWER_uploadplus_core {
 				0 < count( $matches ) 
 				):
 					// Set error to 'reject from extension'. 
-				  // Looks like the appropriate level here.
+					// Looks like the appropriate level here.
 					$meta['error'] = 8;
 
 					error_log( 'EXIF malware detected! Check http://blog.sucuri.net/?p=7654 for details. ' . "\n" . json_encode( array( $meta, $exif_data ) ) );
@@ -337,26 +336,25 @@ class SWER_uploadplus_core {
 	*/
 
 
-/*
-function wp_handle_upload( $array ){             
-global $action;
-$current_name = self::find_filename( $array['file'] );
-$new_name = self::upp_mangle_filename( $current_name );		
+	/*
+	function wp_handle_upload( $array ){             
+		global $action;
+		$current_name = self::find_filename( $array['file'] );
+		$new_name = self::upp_mangle_filename( $current_name );		
 
-$lpath = str_replace( $current_name, '', urldecode( $array['file'] ) );
-$wpath = str_replace( $current_name, '', urldecode( $array['url'] ) );
-$lpath_new = $lpath . $new_name;
-$wpath_new = $wpath . $new_name;
-if ( @rename( $array['file'], $lpath_new ) )
-	return array(
-	 'file' => $lpath_new,
-	 'url' => $wpath_new,
-	 'type' => $array['type'],
-	 );
-return $array;
-}
-
-*/
+		$lpath = str_replace( $current_name, '', urldecode( $array['file'] ) );
+		$wpath = str_replace( $current_name, '', urldecode( $array['url'] ) );
+		$lpath_new = $lpath . $new_name;
+		$wpath_new = $wpath . $new_name;
+		if ( @rename( $array['file'], $lpath_new ) )
+			return array(
+			 'file' => $lpath_new,
+			 'url' => $wpath_new,
+			 'type' => $array['type'],
+			 );
+		return $array;
+	}
+	*/
 
 	function add_attachment( $post_ID ){
 		if ( false == get_post( $post_ID ) )

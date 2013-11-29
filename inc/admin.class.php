@@ -12,61 +12,61 @@ class SWER_uploadplus_admin extends SWER_uploadplus_core {
 	* options header text
 	*/
 	static function upp_options_intro() {
-	$test_string = 'αι βασίλης και σύζηγος.jpeg';
-	$demo_string = parent::upp_mangle_filename( $test_string );
-	?>
-		<div style="border:1px solid #eee; padding:.2em .5em; width:20%;" class="alignright">
-		<p><a href="http://wordpress.org/plugins/uploadplus/">UploadPlus</a> <?php _e( 'is mantained and developed by', 'uploadplus' ); ?><a href="http://swergroup.com" target="_blank">SWERgroup</a>, <?php _e( 'with the help of the open source community.', 'uploadplus' ); ?></p>
+		$test_string = 'αι βασίλης και σύζηγος.jpeg';
+		$demo_string = parent::upp_mangle_filename( $test_string );
+		?>
+			<div style="border:1px solid #eee; padding:.2em .5em; width:20%;" class="alignright">
+			<p><a href="http://wordpress.org/plugins/uploadplus/">UploadPlus</a> <?php _e( 'is mantained and developed by', 'uploadplus' ); ?><a href="http://swergroup.com" target="_blank">SWERgroup</a>, <?php _e( 'with the help of the open source community.', 'uploadplus' ); ?></p>
 
-		<ul>
-		<li><a href="http://wordpress.org/support/plugin/uploadplus/"><?php _e( 'Support forum on wordpress.org', 'uploadplus' ); ?></a>
-		<li><a href="http://github.com/swergroup/uploadplus/"><?php _e( 'Code repository on Github', 'uploadplus' ); ?></a>
-		<li><a href="https://travis-ci.org/swergroup/uploadplus"><?php _e( 'Build status on Travis CI', 'uploadplus' ); ?></a>
-		</ul>
+			<ul>
+			<li><a href="http://wordpress.org/support/plugin/uploadplus/"><?php _e( 'Support forum on wordpress.org', 'uploadplus' ); ?></a>
+			<li><a href="http://github.com/swergroup/uploadplus/"><?php _e( 'Code repository on Github', 'uploadplus' ); ?></a>
+			<li><a href="https://travis-ci.org/swergroup/uploadplus"><?php _e( 'Build status on Travis CI', 'uploadplus' ); ?></a>
+			</ul>
 
-		<p><?php _e( 'Found this plugin useful? Would like to thanks developers and support team? Need a new feature? Feel free to', 'uploadplus' ); ?> <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=K9J3Y78FPD7KW"><?php _e( 'sponsor a coding session!', 'uploadplus' ); ?></a></p>
-		</div>
+			<p><?php _e( 'Found this plugin useful? Would like to thanks developers and support team? Need a new feature? Feel free to', 'uploadplus' ); ?> <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=K9J3Y78FPD7KW"><?php _e( 'sponsor a coding session!', 'uploadplus' ); ?></a></p>
+			</div>
 
-		<p><?php _e( 'UploadPlus will clean and customize your uploads\' file and post name with your own style.', 'uploadplus' ); ?> <!-- You can preview how a file name will be cleaned using this tool: --><br>
-		<ul>
-		<li><strong><?php _e( 'Separator', 'uploadplus' ); ?></strong> &mdash; <?php _e( 'change whitespaces into dashes or underscores.', 'uploadplus' ); ?></li>
-		<li><strong><?php _e( 'Case', 'uploadplus' ); ?></strong>  &mdash; <?php _e( 'lowercase, UPPERCASE or CamelCase.', 'uploadplus' ); ?></li>
-		<li><strong><?php _e( 'Prefix', 'uploadplus' ); ?></strong> &mdash; <?php _e( 'date/time, blogname, random, custom...', 'uploadplus' ); ?></li>
-		<li><strong><?php _e( 'Transliteration', 'uploadplus' ); ?></strong> &mdash; <?php _e( 'convert any non-latin script to latin characters. <a href="http://en.wikipedia.org/wiki/Transliteration">Learn More</a>', 'uploadplus' ); ?></li>
-		<li><strong><?php _e( 'Random File Name', 'uploadplus' ); ?></strong>  &mdash; <?php _e( 'Every file is unique!', 'uploadplus' ); ?></li>
-		</ul>
-		</p>
+			<p><?php _e( 'UploadPlus will clean and customize your uploads\' file and post name with your own style.', 'uploadplus' ); ?> <!-- You can preview how a file name will be cleaned using this tool: --><br>
+			<ul>
+			<li><strong><?php _e( 'Separator', 'uploadplus' ); ?></strong> &mdash; <?php _e( 'change whitespaces into dashes or underscores.', 'uploadplus' ); ?></li>
+			<li><strong><?php _e( 'Case', 'uploadplus' ); ?></strong>  &mdash; <?php _e( 'lowercase, UPPERCASE or CamelCase.', 'uploadplus' ); ?></li>
+			<li><strong><?php _e( 'Prefix', 'uploadplus' ); ?></strong> &mdash; <?php _e( 'date/time, blogname, random, custom...', 'uploadplus' ); ?></li>
+			<li><strong><?php _e( 'Transliteration', 'uploadplus' ); ?></strong> &mdash; <?php _e( 'convert any non-latin script to latin characters. <a href="http://en.wikipedia.org/wiki/Transliteration">Learn More</a>', 'uploadplus' ); ?></li>
+			<li><strong><?php _e( 'Random File Name', 'uploadplus' ); ?></strong>  &mdash; <?php _e( 'Every file is unique!', 'uploadplus' ); ?></li>
+			</ul>
+			</p>
 
 
-		<p>
-		<strong><?php _e( 'Test file name:', 'uploadplus' ); ?></strong> <code><?php _e( $test_string ); ?></code> &bull;
-		<strong><?php _e( 'Output:', 'uploadplus' ); ?></strong> <code><?php _e( $demo_string ); ?></code>
-		</p>
-	<?php
+			<p>
+			<strong><?php _e( 'Test file name:', 'uploadplus' ); ?></strong> <code><?php _e( $test_string ); ?></code> &bull;
+			<strong><?php _e( 'Output:', 'uploadplus' ); ?></strong> <code><?php _e( $demo_string ); ?></code>
+			</p>
+		<?php
 	}
 
 	/**
 	* setting box: clean level (separator)
 	*/
 	static function upp_options_box_cleanlevel(){
-	$actual = get_option( 'uploadplus_separator' );
+		$actual = get_option( 'uploadplus_separator' );
 
-	$styles = array(
-		'space' => 'Space <code>&nbsp;</code>', 
-		'dash' => 'Dashes <code>-</code>', 
-		'underscore' => 'Underscores <code>_</code>', 
-	);
+		$styles = array(
+			'space' => 'Space <code>&nbsp;</code>', 
+			'dash' => 'Dashes <code>-</code>', 
+			'underscore' => 'Underscores <code>_</code>', 
+		);
 
-	echo '<p>';
-	foreach ( $styles as $key => $info ) : 
-		$flag = checked( $key, $actual[0], false );
-		#if ( $actual[0] == $key ) $flag = 'checked="checked"'; else $flag = '';
-		echo '
-		<input type="radio" name="uploadplus_separator[]" id="uploadplus_style-'.$key.'" '.$flag.' value="'.$key.'"/>
-		'.$info.'<br>
-		';
-	endforeach;
-	echo '</p>';
+		echo '<p>';
+		foreach ( $styles as $key => $info ) : 
+			$flag = checked( $key, $actual[0], false );
+			#if ( $actual[0] == $key ) $flag = 'checked="checked"'; else $flag = '';
+			echo '
+			<input type="radio" name="uploadplus_separator[]" id="uploadplus_style-'.$key.'" '.$flag.' value="'.$key.'"/>
+			'.$info.'<br>
+			';
+		endforeach;
+		echo '</p>';
 	}
 
 	/**
@@ -90,9 +90,9 @@ class SWER_uploadplus_admin extends SWER_uploadplus_core {
 	 * setting box: custom prefix
 	 */
 	static function upp_options_box_customprefix(){
-	$prefix = get_option( 'uploadplus_customprefix' );
-	$value  = ( $prefix !== '' ) ? $prefix : '';
-	echo '<p> <input type="text" name="uploadplus_customprefix" id="uploadplus_customprefix" value="'.$value.'" /></p>';
+		$prefix = get_option( 'uploadplus_customprefix' );
+		$value  = ( $prefix !== '' ) ? $prefix : '';
+		echo '<p> <input type="text" name="uploadplus_customprefix" id="uploadplus_customprefix" value="'.$value.'" /></p>';
 	}
 
 
@@ -130,8 +130,8 @@ class SWER_uploadplus_admin extends SWER_uploadplus_core {
 		$flag = $oflag = '';
 		foreach ( $datebased as $key => $val ) :
 			$flag = ( $prefix == $key && $nullval == '' ) ? 'selected="selected"' : '';
-		echo '<option value="'.$key.'" label="'.$val.'" '.$flag.'>'.$val.'</option>
-		';
+			echo '<option value="'.$key.'" label="'.$val.'" '.$flag.'>'.$val.'</option>
+			';
 		endforeach;
 		echo'
 		</optgroup>
@@ -139,8 +139,8 @@ class SWER_uploadplus_admin extends SWER_uploadplus_core {
 		';
 		foreach ( $otherstyles as $okey => $oval ) :
 			$oflag = ( $prefix == $okey && $nullval == '' ) ? 'selected="selected"' : '';
-		echo '<option value="'.$okey.'" label="'.$oval.'" '.$oflag.'>'.$oval.'</option>
-		';
+			echo '<option value="'.$okey.'" label="'.$oval.'" '.$oflag.'>'.$oval.'</option>
+			';
 		endforeach;
 
 		echo '
@@ -160,7 +160,7 @@ class SWER_uploadplus_admin extends SWER_uploadplus_core {
 			);
 		foreach ( $options as $uk => $uv ) :
 			$flag = ( $utf8ornot[0] == $uk) ? 'checked="checked"' : '';
-		echo '<input type="radio" name="uploadplus_utf8toascii[]" id="uploadplus_utf8toascii-'.$uk.'" value="'.$uk.'" '.$flag.'/>'.$uv.' <br>';
+			echo '<input type="radio" name="uploadplus_utf8toascii[]" id="uploadplus_utf8toascii-'.$uk.'" value="'.$uk.'" '.$flag.'/>'.$uv.' <br>';
 		endforeach;
 	}    
 

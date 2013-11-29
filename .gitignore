@@ -1,1 +1,6 @@
 .svn
+vendor
+node_modules
+docs
+composer.lock
+.tm_properties

@@ -1,26 +1,33 @@
 <?php
 /**
- * Implements example command.
+ * UploadPlus command-line utilities
  *
  * @package wp-cli
  */
-class UploadPlus_Tests extends WP_CLI_Command {
+class UploadPlus_Cmds extends WP_CLI_Command{
 
-	/**
-	 * Greeklish test ( "Αισθάνομαι τυχερός" in "esthanome ticheros" )
-	 * 
-	 * @synopsis <string>
-	 */
-	function greeklish( $args, $assoc_args ) {
+	function clean( $args ) {
 		list( $string ) = $args;
-
-		$convert = SWER_uploadplus_core::sanitize_greeklish( $string );
-
-		// Print a success message
-		WP_CLI::success( 'input: ' . $string . ' | output: ' . $convert );
+		$file_name = SWER_uploadplus_core::_clean_global( $string );
+		$file_name = SWER_uploadplus_core::_clean_case( $file_name );
+		#$file_name = SWER_uploadplus_core::_add_prefix( $file_name );
+		WP_CLI::line( $file_name );
 	}
+
+	function convert( $args ) {
+		list( $string ) = $args;
+		$file_name = SWER_uploadplus_core::_utf8_transliteration( $string );
+		WP_CLI::line( $file_name );
+	}
+
+	function full( $args ) {
+		list( $string ) = $args;
+		$file_name = SWER_uploadplus_core::_clean_global( $string );
+		$file_name = SWER_uploadplus_core::_clean_case( $file_name );
+		$file_name = SWER_uploadplus_core::_utf8_transliteration( $string );
+		WP_CLI::line( $file_name );
+	}
+
 }
 
-WP_CLI::add_command( 'upp', 'UploadPlus_Tests' );
-
-?>
+WP_CLI::add_command( 'uploadplus', 'UploadPlus_Cmds' );

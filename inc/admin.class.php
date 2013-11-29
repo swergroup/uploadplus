@@ -16,7 +16,7 @@ class SWER_uploadplus_admin extends SWER_uploadplus_core {
 		$demo_string = parent::upp_mangle_filename( $test_string );
 		?>
 			<div style="border:1px solid #ddd; background:#eee; padding:2%; margin:1em 0; display:inline-block;">
-			<p><a href="http://wordpress.org/plugins/uploadplus/">UploadPlus</a> <?php _e( 'is released by ', 'uploadplus' ); ?><a href="http://swergroup.com" target="_blank">SWERgroup</a>. <?php _e( 'If you find this plugin useful feel free to ', 'uploadplus' ); ?> <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=K9J3Y78FPD7KW"><?php _e( 'say thank you!', 'uploadplus' ); ?></a></p>
+			<p><a href="http://wordpress.org/plugins/uploadplus/">UploadPlus</a> <?php _e( 'is released by ', 'uploadplus' ); ?><a href="http://swergroup.com" target="_blank">SWERgroup</a>. <?php _e( 'If you find this plugin useful feel free to ', 'uploadplus' ); ?> <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CX6VQ6FVJFN4L"><?php _e( 'say thank you!', 'uploadplus' ); ?></a></p>
 				
 			<p>
 				<a href="http://wordpress.org/support/plugin/uploadplus/"><?php _e( 'Support forum on wordpress.org', 'uploadplus' ); ?></a> &bull; <a href="http://github.com/swergroup/uploadplus/"><?php _e( 'Code repository on Github', 'uploadplus' ); ?></a>

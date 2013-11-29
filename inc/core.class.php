@@ -177,8 +177,22 @@ class SWER_uploadplus_core {
 	* @param string $custom     if not null, force a custom prefix
 	* @return string 
 	*/
-	function _add_prefix( $file_name, $options = '', $custom = '' ){
-		global $sep;
+	static function _add_prefix( $file_name, $options = '', $custom = '' ){
+		global $current_user;
+		$option_sep = get_option( 'uploadplus_separator', true );
+		switch ( $option_sep ):
+		case 'dash' :
+		default:
+			$sep = '-';
+			break;
+		case 'space' :
+			$sep = ' ';
+			break;
+		case 'underscore':
+			$sep = '_';
+			break;
+		endswitch;
+		
 		$options = ( $options == '' ) ? get_option( 'uploadplus_prefix' ) : $options;
 		$custom  = ( $custom == '' ) ? get_option( 'uploadplus_customprefix' ) : $custom;
 
@@ -195,12 +209,12 @@ class SWER_uploadplus_core {
 		case '4':
 			$file_name = date( 'Ymd' ) . $sep . $file_name;
 			break;
-		case '5':
-			$file_name = date( 'YmdHi' ).$sep . $file_name;
-			break;
-		case '6':
-			$file_name = date( 'YmdHis' ).$sep . $file_name;
-			break;
+		# case '5':
+		#	$file_name = date( 'YmdHi' ).$sep . $file_name;
+		#	break;
+		# case '6':
+		#	$file_name = date( 'YmdHis' ).$sep . $file_name;
+		#	break;
 		case '7':
 			$file_name = date( 'U' ) . $sep . $file_name;
 			break;
@@ -222,13 +236,17 @@ class SWER_uploadplus_core {
 			$filename  = wp_unique_filename( $dir, $file_name, null );
 			$file_name = $filename;
 			break;
+		case 'C':
+			get_currentuserinfo();
+			$file_name = $current_user->user_login . $sep . $file_name;
+			break;
 		default: 
 			$file_name = $file_name; 
 			break;
 		endswitch;
 
 		if ( $custom !== '' ):
-			$return_file_name = $custom.$file_name;
+			$return_file_name = $custom . $file_name;
 		else :
 			$return_file_name = $file_name;
 		endif;

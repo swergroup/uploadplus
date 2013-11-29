@@ -50,11 +50,15 @@ GPL2&copy; 2008+ Paolo Tresso/[SWERgroup](http://swergroup.com/sviluppo/siti-int
 
 == Changelog ==
 
-= 3.3.0 =
+= 3.3.1 =
 
+* NEW username prefix option
 * NEW random filename option
 * NEW Wider WP compatibility tests (3.3.x, 3.4.x, 3.5.x, 3.6)
 * NEW Wider PHP compatibility tests (5.2, 5.3, 5.4, 5.5)
+
+= 3.3.0 =
+
 * DEV Codesniffer + PHPlint pre-commit routines
 * DEV PHPdoc descriptions
 * DEV Fix PHP warnings and strict

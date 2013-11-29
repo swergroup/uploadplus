@@ -1,6 +1,6 @@
 <?php
 /**
- * Implements example command.
+ * UploadPlus command-line utilities
  *
  * @package wp-cli
  */
@@ -30,4 +30,4 @@ class UploadPlus_Cmds extends WP_CLI_Command{
 
 }
 
-WP_CLI::add_command( 'upplus', 'UploadPlus_Cmds' );
+WP_CLI::add_command( 'uploadplus', 'UploadPlus_Cmds' );

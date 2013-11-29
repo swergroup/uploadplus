@@ -12,22 +12,20 @@ class SWER_uploadplus_admin extends SWER_uploadplus_core {
 	* options header text
 	*/
 	static function upp_options_intro() {
-		$test_string = 'αι βασίλης και σύζηγος.jpeg';
+		$test_string = 'Ελληνικά language files.jpeg';
 		$demo_string = parent::upp_mangle_filename( $test_string );
 		?>
-			<div style="border:1px solid #eee; padding:.2em .5em; width:20%;" class="alignright">
-			<p><a href="http://wordpress.org/plugins/uploadplus/">UploadPlus</a> <?php _e( 'is mantained and developed by', 'uploadplus' ); ?><a href="http://swergroup.com" target="_blank">SWERgroup</a>, <?php _e( 'with the help of the open source community.', 'uploadplus' ); ?></p>
+			<div style="border:1px solid #ddd; background:#eee; padding:2%; margin:1em 0; display:inline-block;">
+			<p><a href="http://wordpress.org/plugins/uploadplus/">UploadPlus</a> <?php _e( 'is released by ', 'uploadplus' ); ?><a href="http://swergroup.com" target="_blank">SWERgroup</a>. <?php _e( 'If you find this plugin useful feel free to ', 'uploadplus' ); ?> <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=K9J3Y78FPD7KW"><?php _e( 'say thank you!', 'uploadplus' ); ?></a></p>
+				
+			<p>
+				<a href="http://wordpress.org/support/plugin/uploadplus/"><?php _e( 'Support forum on wordpress.org', 'uploadplus' ); ?></a> &bull; <a href="http://github.com/swergroup/uploadplus/"><?php _e( 'Code repository on Github', 'uploadplus' ); ?></a>
+ &bull; <a href="https://travis-ci.org/swergroup/uploadplus"><?php _e( 'Build status on Travis CI', 'uploadplus' ); ?></a>
+			</p>
 
-			<ul>
-			<li><a href="http://wordpress.org/support/plugin/uploadplus/"><?php _e( 'Support forum on wordpress.org', 'uploadplus' ); ?></a>
-			<li><a href="http://github.com/swergroup/uploadplus/"><?php _e( 'Code repository on Github', 'uploadplus' ); ?></a>
-			<li><a href="https://travis-ci.org/swergroup/uploadplus"><?php _e( 'Build status on Travis CI', 'uploadplus' ); ?></a>
-			</ul>
-
-			<p><?php _e( 'Found this plugin useful? Would like to thanks developers and support team? Need a new feature? Feel free to', 'uploadplus' ); ?> <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=K9J3Y78FPD7KW"><?php _e( 'sponsor a coding session!', 'uploadplus' ); ?></a></p>
 			</div>
 
-			<p><?php _e( 'UploadPlus will clean and customize your uploads\' file and post name with your own style.', 'uploadplus' ); ?> <!-- You can preview how a file name will be cleaned using this tool: --><br>
+			<p><?php _e( 'UploadPlus clean and customize filenames with your favourite style:', 'uploadplus' ); ?> <!-- You can preview how a file name will be cleaned using this tool: --><br>
 			<ul>
 			<li><strong><?php _e( 'Separator', 'uploadplus' ); ?></strong> &mdash; <?php _e( 'change whitespaces into dashes or underscores.', 'uploadplus' ); ?></li>
 			<li><strong><?php _e( 'Case', 'uploadplus' ); ?></strong>  &mdash; <?php _e( 'lowercase, UPPERCASE or CamelCase.', 'uploadplus' ); ?></li>
@@ -100,17 +98,18 @@ class SWER_uploadplus_admin extends SWER_uploadplus_core {
 	 * setting box: standard prefix
 	 */
 	static function upp_options_box_prefix(){
-		global $sep;
+		global $sep, $current_user;
 		#$clean  = get_option( 'uploadplus_separator' );
 		$prefix = get_option( 'uploadplus_prefix' );
-
+		get_currentuserinfo();
+		
 		$datebased = array(
 			'1' => 'd (' . date( 'd' ) . $sep . ')',
 			'2' => 'md (' . date( 'md' ) . $sep . ')',
 			'3' => 'ymd (' . date( 'ymd' ) . $sep . ')"',
 			'4' => 'Ymd (' . date( 'Ymd' ) . $sep . ')',
-			'5' => 'YmdHi (' . date( 'YmdHi' ) . $sep . ')',
-			'6' => 'YmdHis (' . date( 'YmdHis' ) . $sep . ')',
+			# '5' => 'YmdHi (' . date( 'YmdHi' ) . $sep . ')',
+			# '6' => 'YmdHis (' . date( 'YmdHis' ) . $sep . ')',
 			'7' => 'unix timestamp (' . date( 'U' ) . $sep . ')',
 		);
 		$otherstyles = array(
@@ -119,6 +118,7 @@ class SWER_uploadplus_admin extends SWER_uploadplus_core {
 			'10' => '['.__( 'Blog name', 'uploadplus' ).'] '.str_replace( array( '.', ' ', '-', '_' ) ,$sep, get_bloginfo( 'name' ) ).$sep,
 			'A' => '['.__( 'Short blog name', 'uploadplus' ).'] '.str_replace( array( '.', '_', '-', ' ' ), '', get_bloginfo( 'name' ) ).$sep,
 			'B' => __( 'WordPress unique filename', 'uploadplus' ),
+			'C' => 'username (' . $current_user->user_login . $sep . ')',
 		);
 
 		$nullval = ( $prefix == '' ) ? 'selected="selected"' : '';

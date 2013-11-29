@@ -1,7 +1,8 @@
 <?php
 /*
 Plugin Name: UploadPlus : File Name Cleaner
-Plugin URI: http://wordpress.org/extend/plugins/uploadplus/
+Plugin URI: http://wordpress.org/extend/plugins/uploadplus
+Git URI: https://github.com/swergroup/uploadplus
 Description: Clean file names and enhance security while uploading. 
 Author: SWERgroup
 Version: 3.3.1

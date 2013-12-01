@@ -41,6 +41,18 @@ If you found this plugin useful or need a new feature feel free to [sponsor a co
 GPL2&copy; 2008+ Paolo Tresso/[SWERgroup](http://swergroup.com/sviluppo/siti-internet-torino/).
 
 
+== Filters ==
+
+The plugin ships with a few filters:
+
+
+* `uploadplus_prefix`
+* `uploadplus_upload_prefilter`
+* `uploadplus_image_metadata`
+* `uploadplus_attachment_title`
+
+This will help you make your own modifications of the plugin behaviour, and share them on the support forum as well. More on this point later!
+
 == Screenshots ==
 
 1. Option panel (under Options &raquo; Media)
@@ -48,6 +60,8 @@ GPL2&copy; 2008+ Paolo Tresso/[SWERgroup](http://swergroup.com/sviluppo/siti-int
 == Changelog ==
 
 = 3.3.2 =
+
+(02/12/2013)
 
 * NEW Bugfix and improvements, props Jonas Lundman.
 * NEW EXIF data as prefix via [Exifography](http://wordpress.org/plugins/thesography/) plugin. concept props Jonas Lundman.

@@ -17,8 +17,8 @@ class UploadPlus_Unit_Tests extends WP_UnitTestCase {
 		$this->assertFalse( null == $this->plugin );
 	}
 
-	function test_version(){
-		$this->assertEquals( '3.3.2', $this->plugin->version, 'Option: uploadplus_version does not match.' );
+	function test_values(){
+		$this->assertEquals( '-', $this->plugin->sep, 'Default separator does not match.' );
 	}
 
 	function test_function_utf8_transliteration(){

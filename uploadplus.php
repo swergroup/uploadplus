@@ -29,7 +29,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-define( 'UPLOADPLUS_VERSION', '3.3.1' );
+define( 'UPLOADPLUS_VERSION', '3.3.2' );
 define( 'UPLOADPLUS_PATH', plugin_dir_path( __FILE__ ) );
 
 require_once UPLOADPLUS_PATH . '/lib/URLify.php';

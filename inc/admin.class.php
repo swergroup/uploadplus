@@ -129,6 +129,16 @@ class SWER_uploadplus_admin extends SWER_uploadplus_core {
 		';
 		$flag = $oflag = '';
 		foreach ( $datebased as $key => $val ) :
+			
+			// legacy options
+			if ( '5' === $key || '6' === $key ):
+				$key = '4';
+			elseif ( '9' === $key ):
+				$key = '8';
+			elseif ( 'A' === $key ):
+				$key = '10';
+			endif;
+			
 			$flag = ( $prefix == $key && $nullval == '' ) ? 'selected="selected"' : '';
 			echo '<option value="'.$key.'" label="'.$val.'" '.$flag.'>'.$val.'</option>
 			';

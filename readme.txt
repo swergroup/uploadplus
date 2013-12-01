@@ -61,7 +61,7 @@ This will help you make your own modifications of the plugin behaviour, and shar
 
 = 3.3.2 =
 
-(02/12/2013)
+WARNING: Some prefixes does not exists anymore. Please check and save your settings after uploading.
 
 * NEW Bugfix and improvements, props Jonas Lundman.
 * NEW EXIF data as prefix via [Exifography](http://wordpress.org/plugins/thesography/) plugin. concept props Jonas Lundman.

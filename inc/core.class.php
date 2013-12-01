@@ -8,8 +8,8 @@
 class SWER_uploadplus_core {
 
 	/**
-	* default separator
-	*/
+	 * default separator
+	 */
 	var $sep = '-';
 
 	var $exif_mime = array( 'image/jpeg', 'image/tiff' );
@@ -165,8 +165,6 @@ class SWER_uploadplus_core {
 		$options = ( $options == '' ) ? get_option( 'uploadplus_prefix' ) : $options;
 		$custom  = ( $custom == '' ) ? get_option( 'uploadplus_customprefix' ) : $custom;
 
-		# print_r( array( $sep, $options, $custom ) ); die(); 
-
 		switch ( $options ):
 		case '1':	
 			$file_name = date( 'd' ) . $sep . $file_name;
@@ -178,14 +176,10 @@ class SWER_uploadplus_core {
 			$file_name = date( 'ymd' ) . $sep . $file_name;
 			break;
 		case '4':
+		case '5':
+		case '6':
 			$file_name = date( 'Ymd' ) . $sep . $file_name;
 			break;
-		# case '5':
-		#	$file_name = date( 'YmdHi' ).$sep . $file_name;
-		#	break;
-		# case '6':
-		#	$file_name = date( 'YmdHis' ).$sep . $file_name;
-		#	break;
 		case '7':
 			$file_name = date( 'U' ) . $sep . $file_name;
 			break;
@@ -196,8 +190,6 @@ class SWER_uploadplus_core {
 			$file_name = md5( mt_rand() ) . $sep . $file_name;
 			break;
 		case '10':
-			$file_name = sanitize_file_name( get_bloginfo( 'name' ) ) . $sep . $file_name;
-			break;
 		case 'A':
 			$file_name = sanitize_file_name( get_bloginfo( 'name' ) ) . $sep . $file_name;
 			break;

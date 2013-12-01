@@ -35,4 +35,3 @@ tools:
         excluded_dirs:
             - lib
             - tests
-    php_code_coverage: true

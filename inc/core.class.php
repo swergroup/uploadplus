@@ -126,13 +126,13 @@ class SWER_uploadplus_core {
 		$case = get_option( 'uploadplus_case' );
 		switch ( $case[0] ):
 		case '1' :
-			$file_name = strtolower( $file_name );
+			$file_name = strtolower( trim( $file_name ) );
 			break;
 		case '2' :
-			$file_name = strtoupper( $file_name );
+			$file_name = strtoupper( trim( $file_name ) );
 			break;
 		case '3' :
-			$file_name = ucwords( $file_name );
+			$file_name = ucwords( trim( $file_name ) );
 			break;
 		default:
 			$file_name = trim( $file_name );
@@ -196,6 +196,8 @@ class SWER_uploadplus_core {
 		$options = ( $options == '' ) ? get_option( 'uploadplus_prefix' ) : $options;
 		$custom  = ( $custom == '' ) ? get_option( 'uploadplus_customprefix' ) : $custom;
 
+		# print_r( array( $sep, $options, $custom ) ); die(); 
+
 		switch ( $options ):
 		case '1':	
 			$file_name = date( 'd' ) . $sep . $file_name;
@@ -225,10 +227,10 @@ class SWER_uploadplus_core {
 			$file_name = md5( mt_rand() ) . $sep . $file_name;
 			break;
 		case '10':
-			$file_name = str_replace( array( '.', '_', '-', ' ' ) ,$sep,  get_bloginfo( 'name' ) ) . $sep . $file_name;
+			$file_name = sanitize_file_name( get_bloginfo( 'name' ) ) . $sep . $file_name;
 			break;
 		case 'A':
-			$file_name = str_replace( array( '.', '_', '-', ' ' ) ,'', get_bloginfo( 'name' ) ) . $sep . $file_name;
+			$file_name = sanitize_file_name( get_bloginfo( 'name' ) ) . $sep . $file_name;
 			break;
 		case 'B':
 			$uploads   = wp_upload_dir();
@@ -251,6 +253,29 @@ class SWER_uploadplus_core {
 			$return_file_name = $file_name;
 		endif;
 		return $return_file_name;
+	}
+
+	function _fix_separators( $file_name ){
+		$option_sep = get_option( 'uploadplus_separator', true );
+		switch ( $option_sep ):
+		case 'dash' :
+		default:
+			$sep = '-';
+			break;
+		case 'space' :
+			$sep = ' ';
+			break;
+		case 'underscore':
+			$sep = '_';
+			break;
+		endswitch;
+
+		return str_replace( array( '-', '_', ' ', '&nbsp;' ), $sep, $file_name );
+	}
+
+	function _fix_dots( $file_name ){
+		$replace = array( '-.', '_.', ' .' );
+		return str_replace( $replace, '.', $file_name );
 	}
 
 	/**
@@ -289,6 +314,9 @@ class SWER_uploadplus_core {
 			$file_name = sanitize_file_name( $file_name );
 			$file_name = self::_clean_case( $file_name );
 			$file_name = self::_clean_global( $file_name );
+
+			$file_name = self::_fix_separators( $file_name );
+			$file_name = self::_fix_dots( $file_name );
 		endif;
 		return $file_name;
 	}

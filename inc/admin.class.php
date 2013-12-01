@@ -114,8 +114,8 @@ class SWER_uploadplus_admin extends SWER_uploadplus_core {
 		);
 		$otherstyles = array(
 			'8' => '['.__( 'Random', 'uploadplus' ).'] '.mt_rand().$sep,
-			'9' => '['.__( 'Random 2x', 'uploadplus' ).'] '.md5( mt_rand() ).$sep,
-			'10' => '['.__( 'Blog name', 'uploadplus' ).'] '.sanitize_file_name( get_bloginfo( 'name' ) ).$sep,
+			#'9' => '['.__( 'Random 2x', 'uploadplus' ).'] '.md5( mt_rand() ).$sep,
+			'10' => '['.__( 'Blog name', 'uploadplus' ).'] '. self::_clean_case( sanitize_file_name( get_bloginfo( 'name' ) ) ).$sep,
 			# 'A' => '['.__( 'Short blog name', 'uploadplus' ).'] '.str_replace( array( '.', '_', '-', ' ' ), '', get_bloginfo( 'name' ) ).$sep,
 			'B' => __( 'WordPress unique filename', 'uploadplus' ),
 			'C' => 'username (' . $current_user->user_login . $sep . ')',

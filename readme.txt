@@ -12,8 +12,6 @@ Clean file names and enhance security while uploading.
 
 == Description ==
 
-*NEW: [EXIF header malware/backdoor](http://blog.sucuri.net/?p=7654) sanitization!*
-
 Filenames on the web are different than those on the desktop. Empty spaces and strange characters doesn't belong to web space. Enter UploadPlus: you can set your rules and clean your files' name while they upload. Three basic rules:
 
 * keep only alphanumeric [A-Za-z] and digits, spaces and strange characters stripped out;
@@ -48,6 +46,13 @@ GPL2&copy; 2008+ Paolo Tresso/[SWERgroup](http://swergroup.com/sviluppo/siti-int
 1. Option panel (under Options &raquo; Media)
 
 == Changelog ==
+
+= 3.3.2 =
+
+* NEW Bugfix and improvements, props Jonas Lundman.
+* NEW EXIF data as prefix via [Exifography](http://wordpress.org/plugins/thesography/) plugin. concept props Jonas Lundman.
+* NEW Custom filter: `uploadplus_attachment_title`. props Jonas Lundman.
+* NEW Custom filters: `uploadplus_prefix` and `uploadplus_upload_prefilter`
 
 = 3.3.1 =
 

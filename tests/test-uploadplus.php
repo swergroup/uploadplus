@@ -17,40 +17,22 @@ class UploadPlus_Unit_Tests extends WP_UnitTestCase {
 		$this->assertFalse( null == $this->plugin );
 	}
 
-	function test_version(){
-		$this->assertEquals( '3.3.1', $this->plugin->version, 'Option: uploadplus_version does not match.' );
+	function test_values(){
+		$this->assertEquals( '-', $this->plugin->sep, 'Default separator does not match.' );
 	}
 
-	/*
-	function test_extensions(){
-	$this->assertEquals( 'jpeg', $this->plugin->find_extension( 'filename.jpeg' ), 'Extension #1 is not jpeg' );
-	$this->assertEquals( 'gif', $this->plugin->find_extension( 'some boring file name.gif' ), 'Extension #2 is not gif' );
-	$this->assertEquals( 'pdf', $this->plugin->find_extension( 'Upload+ WordPress plugin || SWERgroup (20120425).png.pdf' ), 'Extension #3 is not PDF' );
-	}
-	*/
-
-	function test_transliteration(){
+	function test_function_utf8_transliteration(){
 		$convert = $this->plugin->_utf8_transliteration( 'Αισθάνομαι τυχερός' );
 		$this->assertEquals( 'esthanome ticheros', $convert, 'Greek string is not converted' );
 
 		$convert2 = $this->plugin->_utf8_transliteration( 'زيدان أجمل اللقطات في دقيقتين' );
 		$this->assertEquals( 'Zydan Ajml Al-Lqtat Fy Dqyqtyn', $convert2, 'Arabic string is not converted' );
+		
+		$convert3 = $this->plugin->_utf8_transliteration( "WP Nice Côte d'Azur" );
+		$this->assertEquals( "WP Nice Cote D'Azur", $convert3, 'String 3 not converted.' );
 	}
 
-	function test_post_title_filter(){
-	}
-
-	function test_random(){
-		update_option( 'uploadplus_random', 'on' );
-		$filename = 'some boring, long and stupid file name.gif';
-		$res = $this->plugin->upp_mangle_filename( $filename );
-		$this->assertTrue( $res !== $filename );
-
-		$name = str_replace( '.gif', '', $res );
-		$this->assertTrue( strlen( $name ) == 20, 'Random file name should be 20 characters long + extension.' );
-	}
-
-	function test_prefix(){
+	function test_function_add_prefix(){
 		$filename = 'testfilename.gif';
 		
 		$test1 = $this->plugin->_add_prefix( $filename, '1', '' );
@@ -79,9 +61,11 @@ class UploadPlus_Unit_Tests extends WP_UnitTestCase {
 		$test10 = $this->plugin->_add_prefix( $filename, '10', '' );
 		$this->assertEquals( 'Test-Blog'.'-testfilename.gif', $test10, 'Prefix #10 not equal' );
 
+		/*
 		$test11 = $this->plugin->_add_prefix( $filename, 'A', '' );
 		$this->assertEquals( 'TestBlog'.'-testfilename.gif', $test11, 'Prefix #A not equal' );
-
+		*/
+		
 		$test12 = $this->plugin->_add_prefix( $filename, 'B', '' );
 		$this->assertEquals( 'testfilename.gif', $test12, 'Prefix #B not equal' );
 
@@ -91,5 +75,39 @@ class UploadPlus_Unit_Tests extends WP_UnitTestCase {
 		$test14 = $this->plugin->_add_prefix( $filename, '1', 'custom_' );
 		$this->assertEquals( 'custom_'.date( 'd' ).'-testfilename.gif', $test14, 'Prefix custom not equal' );
 	}
+
+	function test_option_uploadplus_case(){
+		$filename = '_My blogNamephoto_1234-.JPG';
+
+		$res = $this->plugin->upp_mangle_filename( $filename );
+		$this->assertEquals( 'My-blogNamephoto-1234.JPG', $res );
+
+		// lowercase
+		update_option( 'uploadplus_case', '1' );
+		$res2 = $this->plugin->upp_mangle_filename( $filename );
+		$this->assertEquals( 'my-blognamephoto-1234.jpg', $res2 );
+
+		// uppercase
+		update_option( 'uploadplus_case', '2' );
+		$res3 = $this->plugin->upp_mangle_filename( $filename );
+		$this->assertEquals( 'MY-BLOGNAMEPHOTO-1234.JPG', $res3 );
+
+		// ucwords
+		update_option( 'uploadplus_case', '3' );
+		$res4 = $this->plugin->upp_mangle_filename( $filename );
+		$this->assertEquals( 'My-blogNamephoto-1234.JPG', $res4 );
+	}
+
+	function test_option_uploadplus_random(){
+		update_option( 'uploadplus_random', 'on' );
+		$filename = 'some boring, long and stupid file name.gif';
+		$res = $this->plugin->upp_mangle_filename( $filename );
+		#print_r($res);
+		$this->assertTrue( $res !== $filename );
+
+		$name = str_replace( '.gif', '', $res );
+		$this->assertTrue( strlen( $name ) == 20, 'Random file name should be 20 characters long + extension.' );
+	}
+
 
 }

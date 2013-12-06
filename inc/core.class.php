@@ -1,5 +1,4 @@
 <?php
-#if( ! array_key_exists( 'swer-uploadplus-core', $GLOBALS ) ) { 
 
 /**
  * UploadPlus core class
@@ -9,8 +8,8 @@
 class SWER_uploadplus_core {
 
 	/**
-	* default separator
-	*/
+	 * default separator
+	 */
 	var $sep = '-';
 
 	var $exif_mime = array( 'image/jpeg', 'image/tiff' );
@@ -72,25 +71,6 @@ class SWER_uploadplus_core {
 		return $text;
 	}
 
-	/*
-	* find file extension (legacy code)
-	* @deprecated
-	static function find_extension( $filename ) { 
-		$check = wp_check_filetype( $filename );
-		return $check['ext'];
-	} 
-	*/
-
-	/*
-	* find file name without extension (legacy code)
-	* @deprecated
-	function find_filename( $filename ) { 
-		$explode = explode( '/', $filename );
-		$explode = array_reverse( $explode );
-		return $explode[0];
-	} 
-	*/
-
 	/**
 	* wrapper around (future) multiple transliteration logics
 	* @param string $file_name  filename to transliterate
@@ -106,17 +86,6 @@ class SWER_uploadplus_core {
 		return $file_name;
 	}
 
-	/*
-	function _clean_filename( $ext, $file_name ){
-	$file_name = str_replace( '.'.$ext, '', $file_name );
-	$file_name = str_replace( '.', '', $file_name );
-	$file_name = preg_replace( '~[^\\pL0-9_]+~u', '-', $file_name );
-	$file_name = preg_replace( '/^\s+|\s+$/', '', $file_name );
-	$file_name = $file_name . '.' . $ext;
-	return $file_name;
-	} 
-	*/
-
 	/**
 	* convert string between cases, according to options
 	* @param string   $file_name file name to convert
@@ -126,13 +95,13 @@ class SWER_uploadplus_core {
 		$case = get_option( 'uploadplus_case' );
 		switch ( $case[0] ):
 		case '1' :
-			$file_name = strtolower( $file_name );
+			$file_name = strtolower( trim( $file_name ) );
 			break;
 		case '2' :
-			$file_name = strtoupper( $file_name );
+			$file_name = strtoupper( trim( $file_name ) );
 			break;
 		case '3' :
-			$file_name = ucwords( $file_name );
+			$file_name = ucwords( trim( $file_name ) );
 			break;
 		default:
 			$file_name = trim( $file_name );
@@ -207,14 +176,10 @@ class SWER_uploadplus_core {
 			$file_name = date( 'ymd' ) . $sep . $file_name;
 			break;
 		case '4':
+		case '5':
+		case '6':
 			$file_name = date( 'Ymd' ) . $sep . $file_name;
 			break;
-		# case '5':
-		#	$file_name = date( 'YmdHi' ).$sep . $file_name;
-		#	break;
-		# case '6':
-		#	$file_name = date( 'YmdHis' ).$sep . $file_name;
-		#	break;
 		case '7':
 			$file_name = date( 'U' ) . $sep . $file_name;
 			break;
@@ -225,10 +190,8 @@ class SWER_uploadplus_core {
 			$file_name = md5( mt_rand() ) . $sep . $file_name;
 			break;
 		case '10':
-			$file_name = str_replace( array( '.', '_', '-', ' ' ) ,$sep,  get_bloginfo( 'name' ) ) . $sep . $file_name;
-			break;
 		case 'A':
-			$file_name = str_replace( array( '.', '_', '-', ' ' ) ,'', get_bloginfo( 'name' ) ) . $sep . $file_name;
+			$file_name = sanitize_file_name( get_bloginfo( 'name' ) ) . $sep . $file_name;
 			break;
 		case 'B':
 			$uploads   = wp_upload_dir();
@@ -250,7 +213,34 @@ class SWER_uploadplus_core {
 		else :
 			$return_file_name = $file_name;
 		endif;
+		
+		// allow custom filters on the original filename
+		$return_file_name = apply_filters( 'uploadplus_prefix', $return_file_name, $file_name );
+		
 		return $return_file_name;
+	}
+
+	static function _fix_separators( $file_name ){
+		$option_sep = get_option( 'uploadplus_separator', true );
+		switch ( $option_sep ):
+		case 'dash' :
+		default:
+			$sep = '-';
+			break;
+		case 'space' :
+			$sep = ' ';
+			break;
+		case 'underscore':
+			$sep = '_';
+			break;
+		endswitch;
+
+		return str_replace( array( '-', '_', ' ', '&nbsp;' ), $sep, $file_name );
+	}
+
+	static function _fix_dots( $file_name ){
+		$replace = array( '-.', '_.', ' .' );
+		return str_replace( $replace, '.', $file_name );
 	}
 
 	/**
@@ -288,7 +278,10 @@ class SWER_uploadplus_core {
 			$file_name = self::_add_prefix( $file_name );
 			$file_name = sanitize_file_name( $file_name );
 			$file_name = self::_clean_case( $file_name );
-			$file_name = self::_clean_global( $file_name );
+			#$file_name = self::_clean_global( $file_name );
+
+			$file_name = self::_fix_separators( $file_name );
+			$file_name = self::_fix_dots( $file_name );
 		endif;
 		return $file_name;
 	}
@@ -301,33 +294,44 @@ class SWER_uploadplus_core {
 	* @return array
 	*/
 	function wp_handle_upload_prefilter( $meta ){
+		
 		// clean filename
 		$meta['name'] = self::upp_mangle_filename( $meta['name'] );		
 
-		// check for EXIF malware
-		if ( in_array( $meta['type'], $this->exif_mime ) ):
+		// If the file has EXIF data, proceed.
+		if ( in_array( $meta['type'], $this->exif_mime ) && function_exists( 'exif_read_data' ) ):
 			$exif_data = exif_read_data( $meta['tmp_name'], 0, true );
+			$meta = self::_exif_datetime( $meta, $exif_data );	
 
 			// http://blog.sucuri.net/?p=7654
-			if ( isset( $exif_data['IFD0']['Model'] ) )
+			if ( isset( $exif_data['IFD0']['Model'] ) ):
 				preg_match( '/\b(base64_decode|eval)\b/i', $exif_data['IFD0']['Model'], $matches );
-
-			if (
-				isset( $exif_data['IFD0']['Make'] ) &&
-				'/.*/e' === $exif_data['IFD0']['Make'] &&
-				0 < count( $matches ) 
-				):
-					// Set error to 'reject from extension'. 
-					// Looks like the appropriate level here.
-					$meta['error'] = 8;
-
-					error_log( 'EXIF malware detected! Check http://blog.sucuri.net/?p=7654 for details. ' . "\n" . json_encode( array( $meta, $exif_data ) ) );
-
-					if ( isset( $_POST['html-upload'] ) )
-						wp_die( 'EXIF malware detected! Check http://blog.sucuri.net/?p=7654 for details.', 'EXIF malware detected' );
+				if (
+					isset( $exif_data['IFD0']['Make'] ) &&
+					'/.*/e' === $exif_data['IFD0']['Make'] &&
+					0 < count( $matches ) 
+					):
+						// Set error to 'reject from extension'. 
+						// Looks like the appropriate level here.
+						$meta['error'] = 8;
+						error_log( 'EXIF malware detected! Check http://blog.sucuri.net/?p=7654 for details. ' . "\n" . json_encode( array( $meta, $exif_data ) ) );
+						if ( isset( $_POST['html-upload'] ) )
+							wp_die( 'EXIF malware detected! Check http://blog.sucuri.net/?p=7654 for details.', 'EXIF malware detected' );
+				endif;
 			endif;
-		endif;
 
+		endif;
+		
+		// let filters here
+		$meta = apply_filters( 'uploadplus_upload_prefilter', $meta );
+
+		return $meta;
+	}
+
+	function _exif_datetime( $meta, $exif_data ){
+		if ( isset( $exif_data['FILE']['FileDateTime'] ) ):
+			$meta['created_timestamp'] = $exif_data['FILE']['FileDateTime'];
+		endif;
 		return $meta;
 	}
 
@@ -338,41 +342,54 @@ class SWER_uploadplus_core {
 	* @param string $sourceImageType
 	* @return array
 	*/
-	function wp_read_image_metadata( $meta, $file ){
-		$check = wp_check_filetype( $file );
-		$ext = $check['ext'];
-		$cur = str_replace( '.'.$ext, '', $file );
-		$meta['caption'] = str_replace( array( $ext, '_', '-' ), ' ', $cur );
+	function wp_read_image_metadata( $meta, $file, $sourceImageType ){
+		$filename = basename( $file );
+		#$meta['caption'] = $filename;
+		$meta['title'] = $filename;
+
+		$exif_data = array(
+			'datetime_digitized' => 'DateTimeDigitized',
+			'datetime_original' => 'DateTimeOriginal',
+			'datetime_file' => 'FileDateTime',
+			# 'latitude' => 'GPSLatitude',
+			# 'latitude_ref' => 'GPSLatitudeRef',
+			# 'longitude' => 'GPSLongitude',
+			# 'longitude_ref' => 'GPSLongitudeRef',
+		);
+		
+		$image_types = apply_filters(
+			'wp_read_image_metadata_types',
+			array(
+				IMAGETYPE_JPEG,
+				IMAGETYPE_TIFF_II,
+				IMAGETYPE_TIFF_MM,
+				)
+			);
+		
+		if (
+			is_callable( 'exif_read_data' ) && 
+			in_array( $sourceImageType, $image_types )
+		) {
+			$exif = @exif_read_data( $file );	
+			foreach ( $exif_data as $key => $value ){
+				if ( ! empty( $exif[ $value ] ) )
+					$meta[ $key ] = $exif[ $value ];
+				}
+				
+			if ( isset( $exif['FileDateTime'] ) ):
+				$meta['created_timestamp'] = $exif['FileDateTime'];
+			elseif ( isset( $exif['DateTimeOriginal'] ) ):
+				$meta['created_timestamp'] = $exif['DateTimeOriginal'];
+			elseif ( isset( $exif['DateTimeDigitized'] ) ):
+				$meta['created_timestamp'] = $exif['DateTimeDigitized'];
+			endif;
+		}
+		
+		$meta = apply_filters( 'uploadplus_image_metadata', $meta );
+		error_log( json_encode( $meta ) );
+		
 		return $meta;
 	}
-
-	/*
-	* @deprecated
-	function sanitize_file_name( $filename, $filename_raw = null ){
-		return $filename;
-	}
-	*/
-
-
-	/*
-	function wp_handle_upload( $array ){             
-		global $action;
-		$current_name = self::find_filename( $array['file'] );
-		$new_name = self::upp_mangle_filename( $current_name );		
-
-		$lpath = str_replace( $current_name, '', urldecode( $array['file'] ) );
-		$wpath = str_replace( $current_name, '', urldecode( $array['url'] ) );
-		$lpath_new = $lpath . $new_name;
-		$wpath_new = $wpath . $new_name;
-		if ( @rename( $array['file'], $lpath_new ) )
-			return array(
-			 'file' => $lpath_new,
-			 'url' => $wpath_new,
-			 'type' => $array['type'],
-			 );
-		return $array;
-	}
-	*/
 
 	function add_attachment( $post_ID ){
 		if ( false == get_post( $post_ID ) )
@@ -380,7 +397,7 @@ class SWER_uploadplus_core {
 
 		$obj   = get_post( $post_ID );
 		$title = $obj->post_title;
-		$title = apply_filters( 'uploadplus_add_attachment_title', $title );
+		$title = apply_filters( 'uploadplus_attachment_title', $title );
 
 		// Update the post into the database
 		$uploaded_post = array();
@@ -388,12 +405,9 @@ class SWER_uploadplus_core {
 		$uploaded_post['post_title'] = $title;
 		wp_update_post( $uploaded_post );
 
-		update_post_meta( $post_ID, 'filehash', $this->_hash_filename( $title ) );
+		# update_post_meta( $post_ID, 'filehash', $this->_hash_filename( $title ) );
 
 		return $post_ID;
 	}
 
 }
-
-#    $GLOBALS['swer-uploadplus-core'] = new SWER_uploadplus_core();
-#}

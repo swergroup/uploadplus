@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/uploadplus
 Git URI: https://github.com/swergroup/uploadplus
 Description: Clean file names and enhance security while uploading. 
 Author: SWERgroup
-Version: 3.3.1
+Version: 3.3.2
 Author URI: http://swergroup.com/
 
 Copyright (C) 2007+ Paolo Tresso / SWERgroup (http://swergroup.com/)
@@ -29,7 +29,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-define( 'UPLOADPLUS_VERSION', '3.3.1' );
+define( 'UPLOADPLUS_VERSION', '3.3.2' );
 define( 'UPLOADPLUS_PATH', plugin_dir_path( __FILE__ ) );
 
 require_once UPLOADPLUS_PATH . '/lib/URLify.php';
@@ -113,7 +113,7 @@ if ( ! array_key_exists( 'swer-uploadplus', $GLOBALS ) ) {
 			add_action( 'add_attachment', array( &$this, 'add_attachment' ) );
 			
 			add_filter( 'wp_handle_upload_prefilter', array( &$this, 'wp_handle_upload_prefilter' ) );
-			add_filter( 'wp_read_image_metadata', array( 'SWER_uploadplus_core', 'wp_read_image_metadata' ), 1, 2 );
+			add_filter( 'wp_read_image_metadata', array( &$this, 'wp_read_image_metadata' ), 1, 3 );
 			#add_filter( 'sanitize_file_name', array( &$this, 'sanitize_file_name' ) );
 			#$this->error = new WP_Error();
 		}

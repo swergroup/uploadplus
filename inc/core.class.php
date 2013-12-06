@@ -299,7 +299,7 @@ class SWER_uploadplus_core {
 		$meta['name'] = self::upp_mangle_filename( $meta['name'] );		
 
 		// If the file has EXIF data, proceed.
-		if ( in_array( $meta['type'], $this->exif_mime ) ):
+		if ( in_array( $meta['type'], $this->exif_mime ) && function_exists('exif_read_data') ):
 			$exif_data = exif_read_data( $meta['tmp_name'], 0, true );
 			$meta = self::_exif_datetime( $meta, $exif_data );	
 
